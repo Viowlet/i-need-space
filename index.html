@@ -721,6 +721,8 @@ body.sectioned #newsletter.page-section.active .nl-helmet{ margin-top:auto !impo
 .nl-letter p em{ font-style:italic; color:var(--sky); font-weight:400 }
 .nl-letter .nl-letter-cta{ color:#fff; font-weight:400 }
 .nl-letter .nl-sign{ display:block; margin-top:6px; font-style:italic; color:var(--ink-faint); font-size:.92rem; column-span:all }
+.nl-letter p strong{ font-weight:600; color:#fff }
+.nl-letter .nl-sign{ text-align:right }
 @media(max-width:720px){ .nl-letter{ column-count:1; max-width:640px } }
 /* ============================================================
    FOOTER + NEWSLETTER
@@ -1467,13 +1469,16 @@ body.sectioned #recorrido.page-section.active .sv-frame #svIframe{
 <section class="newsletter page-section" id="newsletter">
   <div class="wrap">
     <div class="nl-letter">
-      <h3 data-i18n="nlLetterTitle">For now, we are a one-planet species</h3>
-      <p data-i18n="nlLetterP1">One of my earliest memories of space goes back to around the year 2000, when I was eight. One sunny afternoon my father set up his telescope in broad daylight and pointed it at something moving across the sky — the International Space Station. I looked through the eyepiece and was mesmerised, asking the simplest questions: how could people live up there? How could they float around the Earth? What was it like inside?</p>
-      <p data-i18n="nlLetterP2">That fascination never left. It grew into a lasting passion for astronomy, cosmology and space exploration. I chose to study Psychology because I wanted to understand human behaviour, thought and wellbeing — and although my work took me through very different corners of the field, my curiosity about human spaceflight never faded.</p>
-      <p data-i18n="nlLetterP3">Today those two worlds have finally met. In 2026 I began a PhD in Space Psychology, focused on how humans adapt to extreme environments. I'm also part of a research group that built a mathematical model to measure psychological change across psychotherapy — clinical work and quantitative methods together, making sense of processes that resist simple explanation. It reinforced something I keep returning to: understanding people means integrating perspectives, not isolating them.</p>
-      <p data-i18n-html="nlLetterP4">That's why I built <em>I Need Space</em>. As a psychologist I want to understand the physiological mechanisms behind human adaptation and performance in orbit, because future missions will depend on researchers who can hold physiology and psychology inside one framework. This site exists to translate that research — mine and everyone else's — into something you don't need a doctorate to read. Not science made simple. Science made human. And beyond the papers, I believe that playing and exploring matters as much as the technical literature.</p>
-      <p data-i18n="nlLetterP5">Sometime this century, for the first time since we left Africa on foot, some of us will stop being able to see Earth from where we stand. Every migration before this one still had sky, weather, the same 24 hours. This one won't. More than twenty years after that afternoon at the telescope, I'm asking the same questions with a different purpose: how do we adapt, physically and psychologically, to living in space? How do we protect health, performance and wellbeing so far from everything we evolved for? What will let us explore farther, safely?</p>
-      <p class="nl-letter-cta" data-i18n="nlLetterP6">I don't know yet if we're ready to be a species with more than one address — but I'd rather spend my career finding out than wait for the answer to arrive on its own. If that keeps you up at night too, this is for you. One letter a month. No noise, no filler. Just what's worth carrying with us off this planet.</p>
+      <h3 data-i18n="nlWTitle">There is no Planet B... yet.</h3>
+      <p data-i18n-html="nlW1">One of my earliest memories involving space dates back to the year 2000, when I was eight. My father set up his telescope in broad daylight, pointing it at the sky—not to see the stars, but something else much closer.</p>
+      <p data-i18n-html="nlW2">After a few minutes of adjusting and calibrating it, he told me to wait for his signal. Then he said: <em>“Now!”</em></p>
+      <p data-i18n-html="nlW3">I rushed to look through the eyepiece and saw a huge metallic object moving slowly across the sky: <strong>the International Space Station.</strong></p>
+      <p data-i18n-html="nlW4"><em>How can people live while floating in the sky? What are the astronauts doing in there?</em></p>
+      <p data-i18n-html="nlW5">Those questions stayed with me. My father did not explain orbital mechanics to me that afternoon; he simply made space reachable.</p>
+      <p data-i18n-html="nlW6">I studied Psychology because I wanted to understand how humans think, behave, and thrive. After working in different fields and exploring various paths, my fascination with other worlds never disappeared.</p>
+      <p data-i18n-html="nlW7">A quarter of a century later, that curiosity became a purpose: a PhD in Psychology focused on long-duration space missions, and this project—because, as I learned that afternoon, learning lasts when it is engaging and shared.</p>
+      <p data-i18n-html="nlW8">I want to take one small step towards the future of human space exploration, and to inspire the generations who may one day become wanderers and settlers across the Solar System. You are here to learn, explore, and dream about what comes next.</p>
+      <p class="nl-letter-cta" data-i18n-html="nlW9">The sky is no longer the limit. I need space.<br><strong>Do you?</strong></p>
       <span class="nl-sign">— Violeta Sarabia</span>
     </div>
     <span class="eyebrow" data-i18n="nlEyebrow">One letter a month</span>
@@ -1551,6 +1556,16 @@ const I18N = {
     nlLetterP4:"That's why I built <em>I Need Space</em>. As a psychologist I want to understand the physiological mechanisms behind human adaptation and performance in orbit, because future missions will depend on researchers who can hold physiology and psychology inside one framework. This site exists to translate that research — mine and everyone else's — into something you don't need a doctorate to read. Not science made simple. Science made human. And beyond the papers, I believe that playing and exploring matters as much as the technical literature.",
     nlLetterP5:"Sometime this century, for the first time since we left Africa on foot, some of us will stop being able to see Earth from where we stand. Every migration before this one still had sky, weather, the same 24 hours. This one won't. More than twenty years after that afternoon at the telescope, I'm asking the same questions with a different purpose: how do we adapt, physically and psychologically, to living in space? How do we protect health, performance and wellbeing so far from everything we evolved for? What will let us explore farther, safely?",
     nlLetterP6:"I don't know yet if we're ready to be a species with more than one address — but I'd rather spend my career finding out than wait for the answer to arrive on its own. If that keeps you up at night too, this is for you. One letter a month. No noise, no filler. Just what's worth carrying with us off this planet.",
+    nlWTitle:"There is no Planet B... yet.",
+    nlW1:"One of my earliest memories involving space dates back to the year 2000, when I was eight. My father set up his telescope in broad daylight, pointing it at the sky—not to see the stars, but something else much closer.",
+    nlW2:"After a few minutes of adjusting and calibrating it, he told me to wait for his signal. Then he said: <em>“Now!”</em>",
+    nlW3:"I rushed to look through the eyepiece and saw a huge metallic object moving slowly across the sky: <strong>the International Space Station.</strong>",
+    nlW4:"<em>How can people live while floating in the sky? What are the astronauts doing in there?</em>",
+    nlW5:"Those questions stayed with me. My father did not explain orbital mechanics to me that afternoon; he simply made space reachable.",
+    nlW6:"I studied Psychology because I wanted to understand how humans think, behave, and thrive. After working in different fields and exploring various paths, my fascination with other worlds never disappeared.",
+    nlW7:"A quarter of a century later, that curiosity became a purpose: a PhD in Psychology focused on long-duration space missions, and this project—because, as I learned that afternoon, learning lasts when it is engaging and shared.",
+    nlW8:"I want to take one small step towards the future of human space exploration, and to inspire the generations who may one day become wanderers and settlers across the Solar System. You are here to learn, explore, and dream about what comes next.",
+    nlW9:"The sky is no longer the limit. I need space.<br><strong>Do you?</strong>",
     nlLede:"Once a month you get a letter about what space exploration teaches us about ourselves. No noise, no filler. Only when there's something worth thinking about.",
     nlBtn:"Subscribe",nlNote:"No spam. Unsubscribe whenever you want.",
     nlThanks:(e)=>"Thanks! We'll write to "+e+" once a month.",
@@ -1647,6 +1662,16 @@ const I18N = {
     nlLetterP4:"Por eso creé <em>I Need Space</em>. Como psicóloga, quiero entender los mecanismos fisiológicos que sostienen la adaptación y el rendimiento humano en órbita, porque creo que las próximas misiones dependerán cada vez más de investigadores capaces de sostener la fisiología y la psicología dentro de un mismo marco. Esta web existe para traducir esa investigación —la mía y la de mucha otra gente— en algo que se pueda leer sin un doctorado. No es ciencia simplificada. Es ciencia hecha humana. Y más allá de los artículos, creo que jugar y explorar importa tanto como la literatura técnica.",
     nlLetterP5:"En algún momento de este siglo, por primera vez desde que salimos de África a pie, algunos dejaremos de poder ver la Tierra desde donde estemos. Todas las migraciones anteriores tuvieron cielo, clima, las mismas 24 horas. Esta no. Más de veinte años después de aquella tarde ante el telescopio, me hago las mismas preguntas con un propósito distinto: ¿cómo nos adaptamos, física y psicológicamente, a vivir en el espacio? ¿Cómo protegemos la salud, el rendimiento y el bienestar tan lejos de todo aquello para lo que evolucionamos? ¿Qué nos permitirá explorar más lejos, de forma segura?",
     nlLetterP6:"Todavía no sé si estamos preparados para ser una especie con más de una dirección, pero prefiero pasarme la carrera intentando averiguarlo antes que esperar a que la respuesta llegue sola. Si a ti también te quita el sueño, esto es para ti. Una carta al mes. Sin ruido, sin relleno. Solo lo que merece la pena llevarse fuera de este planeta.",
+    nlWTitle:"No hay Planeta B... todavía.",
+    nlW1:"Uno de mis primeros recuerdos relacionados con el espacio se remonta al año 2000, cuando tenía ocho años. Mi padre montó su telescopio a plena luz del día y lo apuntó al cielo; no para ver las estrellas, sino algo mucho más cercano.",
+    nlW2:"Tras unos minutos ajustándolo y calibrándolo, me dijo que esperara a su señal. Entonces dijo: <em>«¡Ahora!»</em>",
+    nlW3:"Corrí a mirar por el ocular y vi un enorme objeto metálico que cruzaba lentamente el cielo: <strong>la Estación Espacial Internacional.</strong>",
+    nlW4:"<em>¿Cómo puede vivir la gente flotando en el cielo? ¿Qué hacen los astronautas ahí dentro?</em>",
+    nlW5:"Aquellas preguntas se quedaron conmigo. Mi padre no me explicó mecánica orbital aquella tarde; simplemente hizo que el espacio estuviera a mi alcance.",
+    nlW6:"Estudié Psicología porque quería entender cómo pensamos, cómo nos comportamos y cómo prosperamos los seres humanos. Trabajé en distintos ámbitos y exploré caminos muy diversos, pero mi fascinación por otros mundos nunca desapareció.",
+    nlW7:"Un cuarto de siglo después, aquella curiosidad se convirtió en un propósito: un doctorado en Psicología centrado en misiones espaciales de larga duración, y este proyecto, porque aquella tarde aprendí que el aprendizaje perdura cuando es estimulante y compartido.",
+    nlW8:"Quiero dar un pequeño paso hacia el futuro de la exploración espacial humana e inspirar a las generaciones que quizá algún día recorran y habiten el Sistema Solar. Estás aquí para aprender, explorar y soñar con lo que viene.",
+    nlW9:"El cielo ya no es el límite. I need space.<br><strong>¿Y tú?</strong>",
     nlLede:"Una vez al mes recibes una carta sobre lo que la exploración espacial nos enseña sobre nosotros mismos. Sin ruido, sin relleno. Solo cuando hay algo que merece la pena pensar.",
     nlBtn:"Suscribirme",nlNote:"Sin spam. Te puedes dar de baja cuando quieras.",
     nlThanks:(e)=>"¡Gracias! Te escribiremos a "+e+" una vez al mes.",
