@@ -494,7 +494,8 @@ section{padding:clamp(48px,8vw,96px) clamp(20px,5vw,64px)}
 .iss-people{padding:0 14px 13px}
 .iss-people .lab{font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);font-weight:500;margin-bottom:6px}
 .iss-people .count{font-size:1.6rem;font-weight:700;color:#fff;line-height:1}
-.iss-people .names{font-size:.62rem;color:var(--ink-soft);margin-top:6px;line-height:1.5;font-weight:300;max-height:54px;overflow-y:auto}
+.iss-people .names{font-size:.62rem;color:var(--ink-soft);margin-top:6px;line-height:1.5;font-weight:300;max-height:84px;overflow-y:auto}
+.iss-people .names .st{color:var(--sky);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:.56rem}
 .iss-foot{padding:8px 14px;border-top:1px solid var(--line);font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
 
 @media(max-width:560px){
@@ -1079,6 +1080,12 @@ body.sectioned #recorrido.page-section.active .sv-frame #svIframe{
   font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--sky);
   background:rgba(4,12,26,.5); border:1px solid var(--line); border-radius:99px; padding:7px 16px; backdrop-filter:blur(4px); }
 
+.solar-gl{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:2 }
+.solar.gl-on .planet .pbody img, .solar.gl-on .sun img{ opacity:0 }
+.solar.gl-on .sun{ z-index:1 }
+.solar-credit{ position:absolute; right:12px; bottom:10px; z-index:6; font-size:.56rem; letter-spacing:.04em; color:var(--ink-faint); opacity:.75 }
+.solar-credit a{ color:inherit }
+@media(max-width:640px){ .solar-credit{ top:8px; bottom:auto } }
 /* ---- navigable body (Earth / Moon) ---- */
 .kb-body-top{ display:flex; align-items:center; gap:14px; margin-bottom:12px; flex-wrap:wrap }
 .kb-back{ font:inherit; font-size:.8rem; cursor:pointer; color:var(--sky);
@@ -1259,7 +1266,7 @@ body.sectioned #recorrido.page-section.active .sv-frame #svIframe{
       <div class="count" id="peopleCount">··</div>
       <div class="names" id="peopleNames">—</div>
     </div>
-    <div class="iss-foot" id="issFoot" data-i18n="issData">Position: wheretheiss.at · crew: Jun 2026</div>
+    <div class="iss-foot" id="issFoot" data-i18n="issData">Position: wheretheiss.at · crew: Oct 2026</div>
   </div>
 </div>
 
@@ -1447,13 +1454,15 @@ body.sectioned #recorrido.page-section.active .sv-frame #svIframe{
         <p data-i18n="svFallback">The tour could not load embedded in this browser. You can open it fullscreen in Google Street View.</p>
         <a class="btn" href="https://maps.app.goo.gl/6kBJMwBaDcw5Uz317" target="_blank" rel="noopener" data-i18n="svOpen">Open tour</a>
       </div>
-      <!-- Street View incrustado (formato svembed, sin clave de API) -->
+      <!-- Street View incrustado (formato embed de Google Maps, sin clave de API).
+           !3f = orientación, !4f = inclinación, !5f = zoom (0 = lo más abierto posible;
+           súbelo, p. ej. a 0.5 o 1, si quieres que arranque más cerca) -->
       <iframe
         id="svIframe"
         loading="lazy"
         allowfullscreen
         referrerpolicy="no-referrer-when-downgrade"
-        src="https://maps.google.com/maps?layer=c&panoid=zChzPIAn4RIAAAQvxgbyEg&cbp=12,223,0,0,-3&output=svembed">
+        src="https://www.google.com/maps/embed?pb=!4v1793460000000!6m8!1m7!1szChzPIAn4RIAAAQvxgbyEg!2m2!1d29.5602853!2d-95.0853915!3f223!4f3!5f0">
       </iframe>
     </div>
     <p class="sv-note"><span data-i18n="svNote">Tour in Google Street View. If it does not load embedded in some browser, </span><a href="https://maps.app.goo.gl/6kBJMwBaDcw5Uz317" target="_blank" rel="noopener" data-i18n="svNoteLink">open it fullscreen here</a>.</p>
@@ -1569,7 +1578,7 @@ const I18N = {
     nlLede:"Once a month you get a letter about what space exploration teaches us about ourselves. No noise, no filler. Only when there's something worth thinking about.",
     nlBtn:"Subscribe",nlNote:"No spam. Unsubscribe whenever you want.",
     nlThanks:(e)=>"Thanks! We'll write to "+e+" once a month.",
-    issOffline:"Position: reference data · crew: Jun 2026",issData:"Position: wheretheiss.at · crew: Jun 2026",
+    issOffline:"Position: estimated (no connection) · crew: Oct 2026",issData:"Position: wheretheiss.at · crew: Oct 2026",
     kFree:"◆ Free course",
     kFree2:"◆ Free course",
     kFree3:"◆ Free course",
@@ -1671,11 +1680,11 @@ const I18N = {
     nlW6:"Estudié Psicología porque quería entender cómo pensamos, cómo nos comportamos y cómo prosperamos los seres humanos. Trabajé en distintos ámbitos y exploré caminos muy diversos, pero mi fascinación por otros mundos nunca desapareció.",
     nlW7:"Un cuarto de siglo después, aquella curiosidad se convirtió en un propósito: un doctorado en Psicología centrado en misiones espaciales de larga duración, y este proyecto, porque aquella tarde aprendí que el aprendizaje perdura cuando es estimulante y compartido.",
     nlW8:"Quiero dar un pequeño paso hacia el futuro de la exploración espacial humana e inspirar a las generaciones que quizá algún día recorran y habiten el Sistema Solar. Estás aquí para aprender, explorar y soñar con lo que viene.",
-    nlW9:"El cielo ya no es el límite. Necesito espacio.<br><strong>¿Y tú?</strong>",
+    nlW9:"El cielo ya no es el límite. I need space.<br><strong>¿Y tú?</strong>",
     nlLede:"Una vez al mes recibes una carta sobre lo que la exploración espacial nos enseña sobre nosotros mismos. Sin ruido, sin relleno. Solo cuando hay algo que merece la pena pensar.",
     nlBtn:"Suscribirme",nlNote:"Sin spam. Te puedes dar de baja cuando quieras.",
     nlThanks:(e)=>"¡Gracias! Te escribiremos a "+e+" una vez al mes.",
-    issOffline:"Posición: datos de referencia · tripulación: jun 2026",issData:"Posición: wheretheiss.at · tripulación: jun 2026",
+    issOffline:"Posición: estimada (sin conexión) · tripulación: oct 2026",issData:"Posición: wheretheiss.at · tripulación: oct 2026",
     kFree:"◆ Curso gratuito",
     kFree2:"◆ Curso gratuito",
     kFree3:"◆ Curso gratuito",
@@ -1943,24 +1952,69 @@ function applyLang(){
 
 /* =====================================================================
    3. TARJETA NASA — PERFIL DEL DÍA
-   Datos reales. El perfil "del día" se elige por el día del año, de
-   forma determinista (rota 365). Botones para navegar manualmente.
-   Las fotos usan Wikimedia (dominio público / NASA) con respaldo a
-   un avatar generado si la imagen falla.
+   Datos reales. El perfil "del día" se elige por la fecha, de forma
+   determinista (todo el mundo ve el mismo y cambia una vez al día).
+   La foto se obtiene de la API de Wikipedia (imagen principal del
+   artículo, en inglés y si no en español), se guarda en el navegador
+   y solo si todo falla se muestra un avatar generado.
    ===================================================================== */
 const ASTROS=[
-  {name:"Neil Armstrong",org:"NASA",born:{en:"5 Aug 1930 · Wapakoneta, Ohio (USA)",es:"5 ago 1930 · Wapakoneta, Ohio (EE. UU.)"},days:{en:"8 days",es:"8 días"},missions:"Gemini 8, Apollo 11",role:{en:"Test pilot and aeronautical engineer. First human to walk on the Moon.",es:"Piloto de pruebas e ingeniero aeronáutico. Primer ser humano en pisar la Luna."},photo:"https://commons.wikimedia.org/wiki/Special:FilePath/Neil_Armstrong_pose.jpg?width=300"},
-  {name:"Sally Ride",org:"NASA",born:{en:"26 May 1951 · Los Angeles (USA)",es:"26 may 1951 · Los Ángeles (EE. UU.)"},days:{en:"14 days",es:"14 días"},missions:"STS-7, STS-41-G",role:{en:"Physicist. First American woman in space.",es:"Física. Primera mujer estadounidense en el espacio."},photo:"https://commons.wikimedia.org/wiki/Special:FilePath/Sally_Ride_%281984%29.jpg?width=300"},
-  {name:"Yuri Gagarin",org:"USSR",born:{en:"9 Mar 1934 · Klushino (USSR)",es:"9 mar 1934 · Klúshino (URSS)"},days:{en:"1 day",es:"1 día"},missions:"Vostok 1",role:{en:"Fighter pilot. First human to travel to space.",es:"Piloto de caza. Primer ser humano en viajar al espacio."},photo:"https://commons.wikimedia.org/wiki/Special:FilePath/Gagarin_in_Sweden.jpg?width=300"},
-  {name:"Chris Hadfield",org:"CSA",born:{en:"29 Aug 1959 · Sarnia, Ontario (Canada)",es:"29 ago 1959 · Sarnia, Ontario (Canadá)"},days:{en:"166 days",es:"166 días"},missions:"STS-74, STS-100, Soyuz TMA-07M",role:{en:"Test pilot. ISS commander and science communicator.",es:"Piloto de pruebas. Comandante de la ISS y divulgador."},photo:"https://commons.wikimedia.org/wiki/Special:FilePath/Chris_Hadfield_in_2014.jpg?width=300"},
-  {name:"Samantha Cristoforetti",org:"ESA",born:{en:"26 Apr 1977 · Milan (Italy)",es:"26 abr 1977 · Milán (Italia)"},days:{en:"~370 days",es:"~370 días"},missions:"Soyuz TMA-15M, Crew-4",role:{en:"Engineer and military pilot. European record for female endurance.",es:"Ingeniera y piloto militar. Récord europeo de permanencia femenina."},photo:"https://commons.wikimedia.org/wiki/Special:FilePath/Samantha_Cristoforetti_official_portrait_in_an_EMU_spacesuit.jpg?width=300"},
-  {name:"Buzz Aldrin",org:"NASA",born:{en:"20 Jan 1930 · Montclair, New Jersey (USA)",es:"20 ene 1930 · Montclair, Nueva Jersey (EE. UU.)"},days:{en:"12 days",es:"12 días"},missions:"Gemini 12, Apollo 11",role:{en:"Doctor of astronautics (MIT). Second human to walk on the Moon.",es:"Doctor en astronáutica (MIT). Segundo humano en pisar la Luna."},photo:"https://commons.wikimedia.org/wiki/Special:FilePath/Buzz_Aldrin.jpg?width=300"},
-  {name:"Valentina Tereshkova",org:"USSR",born:{en:"6 Mar 1937 · Maslennikovo (USSR)",es:"6 mar 1937 · Máslennikovo (URSS)"},days:{en:"3 days",es:"3 días"},missions:"Vostok 6",role:{en:"Engineer. First woman in space.",es:"Ingeniera. Primera mujer en el espacio."},photo:"https://commons.wikimedia.org/wiki/Special:FilePath/Valentina_Tereshkova%2C_1969.jpg?width=300"},
-  {name:"Pedro Duque",org:"ESA",born:{en:"14 Mar 1963 · Madrid (Spain)",es:"14 mar 1963 · Madrid (España)"},days:{en:"18 days",es:"18 días"},missions:"STS-95, Soyuz TMA-3",role:{en:"Aeronautical engineer. First Spanish astronaut.",es:"Ingeniero aeronáutico. Primer astronauta español."},photo:"https://commons.wikimedia.org/wiki/Special:FilePath/Pedro_Duque.jpg?width=300"},
-  {name:"Mae Jemison",org:"NASA",born:{en:"17 Oct 1956 · Decatur, Alabama (USA)",es:"17 oct 1956 · Decatur, Alabama (EE. UU.)"},days:{en:"8 days",es:"8 días"},missions:"STS-47",role:{en:"Physician and engineer. First African-American woman in space.",es:"Médica e ingeniera. Primera mujer afroamericana en el espacio."},photo:"https://commons.wikimedia.org/wiki/Special:FilePath/Mae_Carol_Jemison.jpg?width=300"},
-  {name:"Tim Peake",org:"ESA",born:{en:"7 Apr 1972 · Chichester (UK)",es:"7 abr 1972 · Chichester (Reino Unido)"},days:{en:"186 days",es:"186 días"},missions:"Soyuz TMA-19M / Principia",role:{en:"British Army test pilot. ESA astronaut.",es:"Piloto de pruebas del ejército británico. Astronauta de la ESA."},photo:"https://commons.wikimedia.org/wiki/Special:FilePath/Tim_Peake_2013.jpg?width=300"},
-  {name:"Peggy Whitson",org:"NASA",born:{en:"9 Feb 1960 · Mount Ayr, Iowa (USA)",es:"9 feb 1960 · Mount Ayr, Iowa (EE. UU.)"},days:{en:"~675 days",es:"~675 días"},missions:"Exp. 5, 16, 50/51, Ax-2",role:{en:"Biochemist. U.S. record for cumulative time in space.",es:"Bioquímica. Récord de permanencia acumulada de EE. UU."},photo:"https://commons.wikimedia.org/wiki/Special:FilePath/Peggy_Whitson_2016.jpg?width=300"},
-  {name:"Alexei Leonov",org:"USSR",born:{en:"30 May 1934 · Listvyanka (USSR)",es:"30 may 1934 · Listvianka (URSS)"},days:{en:"7 days",es:"7 días"},missions:"Voskhod 2, Soyuz 19 (Apollo-Soyuz)",role:{en:"Pilot. First human to perform a spacewalk.",es:"Piloto. Primer ser humano en realizar un paseo espacial."},photo:"https://commons.wikimedia.org/wiki/Special:FilePath/Alexey_Leonov.jpg?width=300"}
+  {name:"Neil Armstrong",wiki:"Neil Armstrong",org:"NASA",born:{en:"5 Aug 1930 · Wapakoneta, Ohio (USA)",es:"5 ago 1930 · Wapakoneta, Ohio (EE. UU.)"},days:{en:"8 days",es:"8 días"},missions:"Gemini 8, Apollo 11",role:{en:"Test pilot and aeronautical engineer. First human to walk on the Moon.",es:"Piloto de pruebas e ingeniero aeronáutico. Primer ser humano en pisar la Luna."}},
+  {name:"Sally Ride",wiki:"Sally Ride",org:"NASA",born:{en:"26 May 1951 · Los Angeles (USA)",es:"26 may 1951 · Los Ángeles (EE. UU.)"},days:{en:"14 days",es:"14 días"},missions:"STS-7, STS-41-G",role:{en:"Physicist. First American woman in space.",es:"Física. Primera mujer estadounidense en el espacio."}},
+  {name:"Yuri Gagarin",wiki:"Yuri Gagarin",org:"USSR",born:{en:"9 Mar 1934 · Klushino (USSR)",es:"9 mar 1934 · Klúshino (URSS)"},days:{en:"1 day",es:"1 día"},missions:"Vostok 1",role:{en:"Fighter pilot. First human to travel to space.",es:"Piloto de caza. Primer ser humano en viajar al espacio."}},
+  {name:"Chris Hadfield",wiki:"Chris Hadfield",org:"CSA",born:{en:"29 Aug 1959 · Sarnia, Ontario (Canada)",es:"29 ago 1959 · Sarnia, Ontario (Canadá)"},days:{en:"166 days",es:"166 días"},missions:"STS-74, STS-100, Soyuz TMA-07M",role:{en:"Test pilot. ISS commander and science communicator.",es:"Piloto de pruebas. Comandante de la ISS y divulgador."}},
+  {name:"Samantha Cristoforetti",wiki:"Samantha Cristoforetti",org:"ESA",born:{en:"26 Apr 1977 · Milan (Italy)",es:"26 abr 1977 · Milán (Italia)"},days:{en:"~370 days",es:"~370 días"},missions:"Soyuz TMA-15M, Crew-4",role:{en:"Engineer and military pilot. European record for female endurance.",es:"Ingeniera y piloto militar. Récord europeo de permanencia femenina."}},
+  {name:"Buzz Aldrin",wiki:"Buzz Aldrin",org:"NASA",born:{en:"20 Jan 1930 · Montclair, New Jersey (USA)",es:"20 ene 1930 · Montclair, Nueva Jersey (EE. UU.)"},days:{en:"12 days",es:"12 días"},missions:"Gemini 12, Apollo 11",role:{en:"Doctor of astronautics (MIT). Second human to walk on the Moon.",es:"Doctor en astronáutica (MIT). Segundo humano en pisar la Luna."}},
+  {name:"Valentina Tereshkova",wiki:"Valentina Tereshkova",org:"USSR",born:{en:"6 Mar 1937 · Maslennikovo (USSR)",es:"6 mar 1937 · Máslennikovo (URSS)"},days:{en:"3 days",es:"3 días"},missions:"Vostok 6",role:{en:"Engineer. First woman in space.",es:"Ingeniera. Primera mujer en el espacio."}},
+  {name:"Pedro Duque",wiki:"Pedro Duque",org:"ESA",born:{en:"14 Mar 1963 · Madrid (Spain)",es:"14 mar 1963 · Madrid (España)"},days:{en:"18 days",es:"18 días"},missions:"STS-95, Soyuz TMA-3",role:{en:"Aeronautical engineer. First Spanish astronaut.",es:"Ingeniero aeronáutico. Primer astronauta español."}},
+  {name:"Mae Jemison",wiki:"Mae Jemison",org:"NASA",born:{en:"17 Oct 1956 · Decatur, Alabama (USA)",es:"17 oct 1956 · Decatur, Alabama (EE. UU.)"},days:{en:"8 days",es:"8 días"},missions:"STS-47",role:{en:"Physician and engineer. First African-American woman in space.",es:"Médica e ingeniera. Primera mujer afroamericana en el espacio."}},
+  {name:"Tim Peake",wiki:"Tim Peake",org:"ESA",born:{en:"7 Apr 1972 · Chichester (UK)",es:"7 abr 1972 · Chichester (Reino Unido)"},days:{en:"186 days",es:"186 días"},missions:"Soyuz TMA-19M / Principia",role:{en:"British Army test pilot. ESA astronaut.",es:"Piloto de pruebas del ejército británico. Astronauta de la ESA."}},
+  {name:"Peggy Whitson",wiki:"Peggy Whitson",org:"NASA",born:{en:"9 Feb 1960 · Mount Ayr, Iowa (USA)",es:"9 feb 1960 · Mount Ayr, Iowa (EE. UU.)"},days:{en:"~675 days",es:"~675 días"},missions:"Exp. 5, 16, 50/51, Ax-2",role:{en:"Biochemist. U.S. record for cumulative time in space.",es:"Bioquímica. Récord de permanencia acumulada de EE. UU."}},
+  {name:"Alexei Leonov",wiki:"Alexei Leonov",org:"USSR",born:{en:"30 May 1934 · Listvyanka (USSR)",es:"30 may 1934 · Listvianka (URSS)"},days:{en:"7 days",es:"7 días"},missions:"Voskhod 2, Soyuz 19 (Apollo-Soyuz)",role:{en:"Pilot. First human to perform a spacewalk.",es:"Piloto. Primer ser humano en realizar un paseo espacial."}},
+  {name:"John Glenn",org:"NASA",wiki:"John Glenn",born:{en:"18 Jul 1921 · Cambridge, Ohio (USA)",es:"18 jul 1921 · Cambridge, Ohio (EE. UU.)"},days:{en:"~9 days",es:"~9 días"},missions:"Friendship 7, STS-95",role:{en:"Marine Corps pilot. First American to orbit the Earth.",es:"Piloto del Cuerpo de Marines. Primer estadounidense en orbitar la Tierra."}},
+  {name:"Valeri Polyakov",org:"USSR · Russia",wiki:"Valeri Polyakov",born:{en:"27 Apr 1942 · Tula (USSR)",es:"27 abr 1942 · Tula (URSS)"},days:{en:"~679 days",es:"~679 días"},missions:"Soyuz TM-6/TM-7, Soyuz TM-18/TM-20 (Mir)",role:{en:"Physician. Record for the longest single spaceflight: 437 days.",es:"Médico. Récord del vuelo espacial individual más largo: 437 días."}},
+  {name:"Sergei Krikalev",org:"USSR · Russia",wiki:"Sergei Krikalev",born:{en:"27 Aug 1958 · Leningrad (USSR)",es:"27 ago 1958 · Leningrado (URSS)"},days:{en:"~803 days",es:"~803 días"},missions:"Mir (×2), STS-60, STS-88, ISS Exp. 1, Exp. 11",role:{en:"Engineer. In orbit when the USSR ceased to exist; ISS's first resident crew.",es:"Ingeniero. Estaba en órbita cuando la URSS dejó de existir; primera tripulación residente de la ISS."}},
+  {name:"Yang Liwei",org:"CNSA · China",wiki:"Yang Liwei",born:{en:"21 Jun 1965 · Suizhong, Liaoning (China)",es:"21 jun 1965 · Suizhong, Liaoning (China)"},days:{en:"1 day",es:"1 día"},missions:"Shenzhou 5",role:{en:"Fighter pilot. First person launched into space by China.",es:"Piloto de caza. Primera persona lanzada al espacio por China."}},
+  {name:"Liu Yang",org:"CNSA · China",wiki:"Liu Yang (astronaut)",born:{en:"6 Oct 1978 · Zhengzhou, Henan (China)",es:"6 oct 1978 · Zhengzhou, Henan (China)"},days:{en:"~196 days",es:"~196 días"},missions:"Shenzhou 9, Shenzhou 14",role:{en:"Air force pilot. First Chinese woman in space.",es:"Piloto de la fuerza aérea. Primera mujer china en el espacio."}},
+  {name:"Wang Yaping",org:"CNSA · China",wiki:"Wang Yaping",born:{en:"27 Jan 1980 · Yantai, Shandong (China)",es:"27 ene 1980 · Yantai, Shandong (China)"},days:{en:"~198 days",es:"~198 días"},missions:"Shenzhou 10, Shenzhou 13",role:{en:"Air force pilot. First Chinese woman to walk in space.",es:"Piloto de la fuerza aérea. Primera mujer china en caminar por el espacio."}},
+  {name:"Koichi Wakata",org:"JAXA",wiki:"Koichi Wakata",born:{en:"1 Aug 1963 · Ōmiya, Saitama (Japan)",es:"1 ago 1963 · Ōmiya, Saitama (Japón)"},days:{en:"~504 days",es:"~504 días"},missions:"STS-72, STS-92, Exp. 18–20, Exp. 38/39, Crew-5",role:{en:"Aeronautical engineer. First Japanese commander of the ISS.",es:"Ingeniero aeronáutico. Primer comandante japonés de la ISS."}},
+  {name:"Chiaki Mukai",org:"JAXA",wiki:"Chiaki Mukai",born:{en:"6 May 1952 · Tatebayashi, Gunma (Japan)",es:"6 may 1952 · Tatebayashi, Gunma (Japón)"},days:{en:"~23 days",es:"~23 días"},missions:"STS-65, STS-95",role:{en:"Cardiovascular surgeon. First Japanese woman in space.",es:"Cirujana cardiovascular. Primera mujer japonesa en el espacio."}},
+  {name:"Kalpana Chawla",org:"NASA",wiki:"Kalpana Chawla",born:{en:"17 Mar 1962 · Karnal (India)",es:"17 mar 1962 · Karnal (India)"},days:{en:"~31 days",es:"~31 días"},missions:"STS-87, STS-107",role:{en:"Aerospace engineer. First woman of Indian origin in space.",es:"Ingeniera aeroespacial. Primera mujer de origen indio en el espacio."}},
+  {name:"Rakesh Sharma",org:"Intercosmos · India",wiki:"Rakesh Sharma",born:{en:"13 Jan 1949 · Patiala (India)",es:"13 ene 1949 · Patiala (India)"},days:{en:"~8 days",es:"~8 días"},missions:"Soyuz T-11 (Salyut 7)",role:{en:"Indian Air Force pilot. First Indian citizen in space.",es:"Piloto de la Fuerza Aérea india. Primer ciudadano indio en el espacio."}},
+  {name:"Shubhanshu Shukla",org:"ISRO",wiki:"Shubhanshu Shukla",born:{en:"10 Oct 1985 · Lucknow (India)",es:"10 oct 1985 · Lucknow (India)"},days:{en:"~20 days",es:"~20 días"},missions:"Axiom Mission 4",role:{en:"Air force test pilot. First Indian aboard the ISS.",es:"Piloto de pruebas de la fuerza aérea. Primer indio a bordo de la ISS."}},
+  {name:"Ulf Merbold",org:"ESA",wiki:"Ulf Merbold",born:{en:"20 Jun 1941 · Greiz (Germany)",es:"20 jun 1941 · Greiz (Alemania)"},days:{en:"~49 days",es:"~49 días"},missions:"STS-9 (Spacelab 1), STS-42, Euromir 94",role:{en:"Physicist. First ESA astronaut to fly in space.",es:"Físico. Primer astronauta de la ESA en volar al espacio."}},
+  {name:"Jean-Loup Chrétien",org:"CNES",wiki:"Jean-Loup Chrétien",born:{en:"20 Aug 1938 · La Rochelle (France)",es:"20 ago 1938 · La Rochelle (Francia)"},days:{en:"~43 days",es:"~43 días"},missions:"Soyuz T-6, Soyuz TM-7, STS-86",role:{en:"Test pilot. First Western European in space.",es:"Piloto de pruebas. Primer europeo occidental en el espacio."}},
+  {name:"Claudie Haigneré",org:"CNES · ESA",wiki:"Claudie Haigneré",born:{en:"13 May 1957 · Le Creusot (France)",es:"13 may 1957 · Le Creusot (Francia)"},days:{en:"~25 days",es:"~25 días"},missions:"Cassiopée (Mir), Andromède (ISS)",role:{en:"Rheumatologist and neuroscientist. First French woman in space.",es:"Reumatóloga y neurocientífica. Primera mujer francesa en el espacio."}},
+  {name:"Thomas Pesquet",org:"ESA",wiki:"Thomas Pesquet",born:{en:"27 Feb 1978 · Rouen (France)",es:"27 feb 1978 · Ruan (Francia)"},days:{en:"~396 days",es:"~396 días"},missions:"Proxima (Soyuz MS-03), Alpha (Crew-2)",role:{en:"Engineer and airline pilot. ISS commander in 2021.",es:"Ingeniero y piloto comercial. Comandante de la ISS en 2021."}},
+  {name:"Alexander Gerst",org:"ESA",wiki:"Alexander Gerst",born:{en:"3 May 1976 · Künzelsau (Germany)",es:"3 may 1976 · Künzelsau (Alemania)"},days:{en:"~362 days",es:"~362 días"},missions:"Blue Dot, Horizons",role:{en:"Geophysicist and volcanologist. ISS commander in 2018.",es:"Geofísico y vulcanólogo. Comandante de la ISS en 2018."}},
+  {name:"Luca Parmitano",org:"ESA",wiki:"Luca Parmitano",born:{en:"27 Sep 1976 · Paternò, Sicily (Italy)",es:"27 sep 1976 · Paternò, Sicilia (Italia)"},days:{en:"~367 days",es:"~367 días"},missions:"Volare, Beyond",role:{en:"Air force test pilot. First Italian commander of the ISS.",es:"Piloto de pruebas de la fuerza aérea. Primer comandante italiano de la ISS."}},
+  {name:"Frank De Winne",org:"ESA",wiki:"Frank De Winne",born:{en:"25 Apr 1961 · Ghent (Belgium)",es:"25 abr 1961 · Gante (Bélgica)"},days:{en:"~198 days",es:"~198 días"},missions:"Odissea, OasISS",role:{en:"Air force test pilot. First ESA astronaut to command the ISS.",es:"Piloto de pruebas de la fuerza aérea. Primer astronauta de la ESA en comandar la ISS."}},
+  {name:"Andreas Mogensen",org:"ESA",wiki:"Andreas Mogensen",born:{en:"2 Nov 1976 · Copenhagen (Denmark)",es:"2 nov 1976 · Copenhague (Dinamarca)"},days:{en:"~209 days",es:"~209 días"},missions:"iriss, Huginn (Crew-7)",role:{en:"Engineer. First Dane in space and ISS commander in 2024.",es:"Ingeniero. Primer danés en el espacio y comandante de la ISS en 2024."}},
+  {name:"Sławosz Uznański-Wiśniewski",org:"ESA",wiki:"Sławosz Uznański-Wiśniewski",born:{en:"12 Sep 1984 · Łódź (Poland)",es:"12 sep 1984 · Łódź (Polonia)"},days:{en:"~20 days",es:"~20 días"},missions:"Ignis (Axiom Mission 4)",role:{en:"Engineer at CERN. Second Pole in space.",es:"Ingeniero del CERN. Segundo polaco en el espacio."}},
+  {name:"Mirosław Hermaszewski",org:"Intercosmos · Poland",wiki:"Mirosław Hermaszewski",born:{en:"15 Sep 1941 · Lipniki (Poland, now Ukraine)",es:"15 sep 1941 · Lipniki (Polonia, hoy Ucrania)"},days:{en:"~8 days",es:"~8 días"},missions:"Soyuz 30 (Salyut 6)",role:{en:"Air force pilot. First Pole in space.",es:"Piloto de la fuerza aérea. Primer polaco en el espacio."}},
+  {name:"Vladimír Remek",org:"Intercosmos · Czechoslovakia",wiki:"Vladimír Remek",born:{en:"26 Sep 1948 · České Budějovice (Czechoslovakia)",es:"26 sep 1948 · České Budějovice (Checoslovaquia)"},days:{en:"~8 days",es:"~8 días"},missions:"Soyuz 28 (Salyut 6)",role:{en:"Fighter pilot. First person in space from outside the USA and USSR.",es:"Piloto de caza. Primera persona en el espacio que no era de EE. UU. ni de la URSS."}},
+  {name:"Phạm Tuân",org:"Intercosmos · Vietnam",wiki:"Phạm Tuân",born:{en:"14 Feb 1947 · Thái Bình (Vietnam)",es:"14 feb 1947 · Thái Bình (Vietnam)"},days:{en:"~8 days",es:"~8 días"},missions:"Soyuz 37 (Salyut 6)",role:{en:"Fighter pilot. First Asian in space.",es:"Piloto de caza. Primer asiático en el espacio."}},
+  {name:"Arnaldo Tamayo Méndez",org:"Intercosmos · Cuba",wiki:"Arnaldo Tamayo Méndez",born:{en:"29 Jan 1942 · Guantánamo (Cuba)",es:"29 ene 1942 · Guantánamo (Cuba)"},days:{en:"~8 days",es:"~8 días"},missions:"Soyuz 38 (Salyut 6)",role:{en:"Air force pilot. First Latin American and first person of African descent in space.",es:"Piloto de la fuerza aérea. Primer latinoamericano y primera persona afrodescendiente en el espacio."}},
+  {name:"Rodolfo Neri Vela",org:"Mexico",wiki:"Rodolfo Neri Vela",born:{en:"19 Feb 1952 · Chilpancingo (Mexico)",es:"19 feb 1952 · Chilpancingo (México)"},days:{en:"~7 days",es:"~7 días"},missions:"STS-61-B",role:{en:"Telecommunications engineer. First Mexican in space.",es:"Ingeniero en telecomunicaciones. Primer mexicano en el espacio."}},
+  {name:"Franklin Chang-Díaz",org:"NASA",wiki:"Franklin Chang Díaz",born:{en:"5 Apr 1950 · San José (Costa Rica)",es:"5 abr 1950 · San José (Costa Rica)"},days:{en:"~66 days",es:"~66 días"},missions:"7 Space Shuttle flights (STS-61-C – STS-111)",role:{en:"Plasma physicist. Record seven spaceflights.",es:"Físico de plasmas. Récord de siete vuelos espaciales."}},
+  {name:"Marcos Pontes",org:"AEB · Brazil",wiki:"Marcos Pontes",born:{en:"11 Mar 1963 · Bauru (Brazil)",es:"11 mar 1963 · Bauru (Brasil)"},days:{en:"~10 days",es:"~10 días"},missions:"Soyuz TMA-8 / TMA-7 (Missão Centenário)",role:{en:"Air force test pilot. First Brazilian in space.",es:"Piloto de pruebas de la fuerza aérea. Primer brasileño en el espacio."}},
+  {name:"Ellen Ochoa",org:"NASA",wiki:"Ellen Ochoa",born:{en:"10 May 1958 · Los Angeles (USA)",es:"10 may 1958 · Los Ángeles (EE. UU.)"},days:{en:"~41 days",es:"~41 días"},missions:"STS-56, STS-66, STS-96, STS-110",role:{en:"Optics engineer and inventor. First Hispanic woman in space.",es:"Ingeniera óptica e inventora. Primera mujer hispana en el espacio."}},
+  {name:"Sultan bin Salman Al Saud",org:"Saudi Arabia",wiki:"Sultan bin Salman Al Saud",born:{en:"27 Jun 1956 · Riyadh (Saudi Arabia)",es:"27 jun 1956 · Riad (Arabia Saudí)"},days:{en:"~7 days",es:"~7 días"},missions:"STS-51-G",role:{en:"Air force pilot. First Arab and first Muslim in space.",es:"Piloto de la fuerza aérea. Primer árabe y primer musulmán en el espacio."}},
+  {name:"Sultan Al Neyadi",org:"MBRSC · UAE",wiki:"Sultan Al Neyadi",born:{en:"23 May 1981 · Umm Ghafa, Al Ain (UAE)",es:"23 may 1981 · Umm Ghafa, Al Ain (EAU)"},days:{en:"~186 days",es:"~186 días"},missions:"Crew-6 (Exp. 68/69)",role:{en:"Network-security engineer. First Arab to perform a spacewalk.",es:"Ingeniero en seguridad de redes. Primer árabe en realizar un paseo espacial."}},
+  {name:"Yi So-yeon",org:"KARI · South Korea",wiki:"Yi So-yeon",born:{en:"2 Jun 1978 · Gwangju (South Korea)",es:"2 jun 1978 · Gwangju (Corea del Sur)"},days:{en:"~11 days",es:"~11 días"},missions:"Soyuz TMA-12 / TMA-11",role:{en:"Bioengineer. First Korean in space.",es:"Bioingeniera. Primera persona coreana en el espacio."}},
+  {name:"Helen Sharman",org:"Project Juno · UK",wiki:"Helen Sharman",born:{en:"30 May 1963 · Sheffield (UK)",es:"30 may 1963 · Sheffield (Reino Unido)"},days:{en:"~8 days",es:"~8 días"},missions:"Soyuz TM-12 / TM-11 (Mir)",role:{en:"Chemist. First Briton in space.",es:"Química. Primera persona británica en el espacio."}},
+  {name:"Roberta Bondar",org:"CSA",wiki:"Roberta Bondar",born:{en:"4 Dec 1945 · Sault Ste. Marie, Ontario (Canada)",es:"4 dic 1945 · Sault Ste. Marie, Ontario (Canadá)"},days:{en:"~8 days",es:"~8 días"},missions:"STS-42",role:{en:"Neurologist. First Canadian woman in space.",es:"Neuróloga. Primera mujer canadiense en el espacio."}},
+  {name:"Michael Collins",org:"NASA",wiki:"Michael Collins (astronaut)",born:{en:"31 Oct 1930 · Rome (Italy)",es:"31 oct 1930 · Roma (Italia)"},days:{en:"~11 days",es:"~11 días"},missions:"Gemini 10, Apollo 11",role:{en:"Test pilot. Orbited the Moon alone while Apollo 11 landed.",es:"Piloto de pruebas. Orbitó la Luna en solitario mientras el Apolo 11 alunizaba."}},
+  {name:"Guion Bluford",org:"NASA",wiki:"Guion Bluford",born:{en:"22 Nov 1942 · Philadelphia (USA)",es:"22 nov 1942 · Filadelfia (EE. UU.)"},days:{en:"~29 days",es:"~29 días"},missions:"STS-8, STS-61-A, STS-39, STS-53",role:{en:"Air force pilot and aerospace engineer. First African American in space.",es:"Piloto de la fuerza aérea e ingeniero aeroespacial. Primer afroamericano en el espacio."}},
+  {name:"Eileen Collins",org:"NASA",wiki:"Eileen Collins",born:{en:"19 Nov 1956 · Elmira, New York (USA)",es:"19 nov 1956 · Elmira, Nueva York (EE. UU.)"},days:{en:"~38 days",es:"~38 días"},missions:"STS-63, STS-84, STS-93, STS-114",role:{en:"Air force pilot. First woman to pilot and to command the Space Shuttle.",es:"Piloto de la fuerza aérea. Primera mujer en pilotar y comandar el transbordador."}},
+  {name:"Scott Kelly",org:"NASA",wiki:"Scott Kelly (astronaut)",born:{en:"21 Feb 1964 · Orange, New Jersey (USA)",es:"21 feb 1964 · Orange, Nueva Jersey (EE. UU.)"},days:{en:"~520 days",es:"~520 días"},missions:"STS-103, STS-118, Exp. 25/26, Exp. 43–46",role:{en:"Navy test pilot. Subject of NASA's Twins Study after nearly a year in orbit.",es:"Piloto de pruebas de la Armada. Protagonista del Estudio de Gemelos de la NASA tras casi un año en órbita."}},
+  {name:"Sunita Williams",org:"NASA",wiki:"Sunita Williams",born:{en:"19 Sep 1965 · Euclid, Ohio (USA)",es:"19 sep 1965 · Euclid, Ohio (EE. UU.)"},days:{en:"~608 days",es:"~608 días"},missions:"Exp. 14/15, Exp. 32/33, Starliner CFT / Exp. 71/72",role:{en:"Navy helicopter test pilot. Most spacewalk time by a woman.",es:"Piloto de pruebas de helicópteros de la Armada. Mujer con más tiempo de paseos espaciales."}},
+  {name:"Oleg Kononenko",org:"Roscosmos",wiki:"Oleg Kononenko",born:{en:"21 Jun 1964 · Chardzhou (USSR, now Turkmenistan)",es:"21 jun 1964 · Chardzhou (URSS, hoy Turkmenistán)"},days:{en:"~1,111 days",es:"~1111 días"},missions:"Soyuz TMA-12, TMA-03M, TMA-17M, MS-11, MS-24",role:{en:"Engineer. World record for cumulative time in space.",es:"Ingeniero. Récord mundial de tiempo acumulado en el espacio."}},
+  {name:"Christina Koch",org:"NASA",wiki:"Christina Koch",born:{en:"29 Jan 1979 · Grand Rapids, Michigan (USA)",es:"29 ene 1979 · Grand Rapids, Míchigan (EE. UU.)"},days:{en:"~338 days",es:"~338 días"},missions:"Exp. 59–61, Artemis II",role:{en:"Electrical engineer. Longest single flight by a woman; first woman to fly around the Moon.",es:"Ingeniera eléctrica. Vuelo individual más largo de una mujer; primera mujer en viajar alrededor de la Luna."}},
+  {name:"Victor Glover",org:"NASA",wiki:"Victor J. Glover",born:{en:"30 Apr 1976 · Pomona, California (USA)",es:"30 abr 1976 · Pomona, California (EE. UU.)"},days:{en:"~178 days",es:"~178 días"},missions:"Crew-1 (Exp. 64), Artemis II",role:{en:"Navy test pilot. Pilot of Artemis II around the Moon.",es:"Piloto de pruebas de la Armada. Piloto del Artemis II alrededor de la Luna."}},
+  {name:"Jeremy Hansen",org:"CSA",wiki:"Jeremy Hansen",born:{en:"27 Jan 1976 · London, Ontario (Canada)",es:"27 ene 1976 · London, Ontario (Canadá)"},days:{en:"~10 days",es:"~10 días"},missions:"Artemis II",role:{en:"Fighter pilot. First Canadian to travel around the Moon.",es:"Piloto de caza. Primer canadiense en viajar alrededor de la Luna."}},
+  {name:"Pablo Álvarez Fernández",org:"ESA",rank:{en:"Career astronaut",es:"Astronauta de carrera"},wiki:"Pablo Álvarez Fernández",born:{en:"23 Dec 1988 · León (Spain)",es:"23 dic 1988 · León (España)"},days:{en:"Not flown yet",es:"Aún sin volar"},missions:"—",role:{en:"Aeronautical engineer (ExoMars rover). ESA career astronaut since 2024.",es:"Ingeniero aeronáutico (rover ExoMars). Astronauta de carrera de la ESA desde 2024."}},
+  {name:"Sara García Alonso",org:"ESA",rank:{en:"Reserve astronaut",es:"Astronauta de reserva"},wiki:"Sara García Alonso",born:{en:"10 Jan 1989 · León (Spain)",es:"10 ene 1989 · León (España)"},days:{en:"Not flown yet",es:"Aún sin volar"},missions:"—",role:{en:"Molecular biologist and cancer researcher (CNIO). ESA reserve astronaut.",es:"Bióloga molecular e investigadora del cáncer (CNIO). Astronauta de reserva de la ESA."}}
 ];
 
 /* Short biographies shown when the INFO tab is opened (keyed by name). */
@@ -2024,7 +2078,227 @@ const ASTRO_BIO={
     en:["Alexei Leonov was a Soviet Air Force pilot and a talented artist who often sketched what he saw in space. He was selected among the first group of cosmonauts in 1960.",
         "In March 1965 he performed the first-ever spacewalk, spending about 12 minutes outside Voskhod 2 — and nearly could not get back in when his suit stiffened. A decade later he commanded the Soviet side of the historic Apollo–Soyuz mission."],
     es:["Alexei Leonov fue piloto de la Fuerza Aérea Soviética y un artista con talento que a menudo dibujaba lo que veía en el espacio. Fue seleccionado en el primer grupo de cosmonautas en 1960.",
-        "En marzo de 1965 realizó el primer paseo espacial de la historia, unos 12 minutos fuera del Voskhod 2, y estuvo a punto de no poder regresar cuando su traje se endureció. Una década después comandó la parte soviética de la histórica misión Apolo-Soyuz."]}
+        "En marzo de 1965 realizó el primer paseo espacial de la historia, unos 12 minutos fuera del Voskhod 2, y estuvo a punto de no poder regresar cuando su traje se endureció. Una década después comandó la parte soviética de la histórica misión Apolo-Soyuz."]},
+  "John Glenn":{
+    en:["John Glenn flew 59 combat missions as a Marine pilot in the Second World War and set a transcontinental speed record before being chosen as one of NASA's original 'Mercury Seven' astronauts in 1959.",
+        "On 20 February 1962 he circled the Earth three times aboard Friendship 7. He later served 24 years as a U.S. senator and, in 1998, returned to orbit on STS-95 at age 77, becoming the oldest person to fly in space at the time."],
+    es:["John Glenn voló 59 misiones de combate como piloto de los Marines en la Segunda Guerra Mundial y batió un récord de velocidad transcontinental antes de ser elegido en 1959 como uno de los siete astronautas originales del programa Mercury.",
+        "El 20 de febrero de 1962 dio tres vueltas a la Tierra a bordo del Friendship 7. Después fue senador durante 24 años y en 1998 volvió a la órbita en el STS-95 con 77 años, convirtiéndose entonces en la persona de más edad en volar al espacio."]},
+  "Valeri Polyakov":{
+    en:["Valeri Polyakov was a physician specialising in space medicine who wanted to prove that the human body and mind could withstand the long trip to Mars.",
+        "Between January 1994 and March 1995 he lived 437 consecutive days aboard the Mir station — still the longest single spaceflight in history. His careful self-monitoring of mood and cognition is a landmark for space psychology. He died in 2022."],
+    es:["Valeri Polyakov era médico especialista en medicina espacial y quería demostrar que el cuerpo y la mente humanos podían soportar un viaje largo como el de Marte.",
+        "Entre enero de 1994 y marzo de 1995 vivió 437 días seguidos a bordo de la estación Mir, que sigue siendo el vuelo espacial individual más largo de la historia. Su seguimiento minucioso de su propio ánimo y rendimiento cognitivo es un hito para la psicología espacial. Murió en 2022."]},
+  "Sergei Krikalev":{
+    en:["Sergei Krikalev is an engineer who flew six missions over three decades. In 1991–92 he spent more than 300 days on Mir and returned to Earth after the Soviet Union had dissolved — he became known as 'the last Soviet citizen'.",
+        "He was the first Russian to fly on the Space Shuttle and a member of the very first crew to live aboard the International Space Station in 2000. He later led Russia's human spaceflight programme."],
+    es:["Sergei Krikalev es ingeniero y voló seis misiones a lo largo de tres décadas. En 1991-92 pasó más de 300 días en la Mir y regresó a la Tierra cuando la Unión Soviética ya se había disuelto, por lo que se le llamó 'el último ciudadano soviético'.",
+        "Fue el primer ruso en volar en el transbordador estadounidense y formó parte de la primera tripulación que vivió en la Estación Espacial Internacional, en el año 2000. Después dirigió el programa de vuelos tripulados de Rusia."]},
+  "Yang Liwei":{
+    en:["Yang Liwei was a People's Liberation Army Air Force fighter pilot selected for China's first group of astronauts in 1998.",
+        "On 15 October 2003 he flew alone aboard Shenzhou 5, orbiting the Earth 14 times in about 21 hours. With that flight China became the third country able to launch humans into space with its own rockets."],
+    es:["Yang Liwei era piloto de caza de la Fuerza Aérea del Ejército Popular de Liberación y fue seleccionado en 1998 en el primer grupo de astronautas de China.",
+        "El 15 de octubre de 2003 voló en solitario a bordo del Shenzhou 5 y dio 14 vueltas a la Tierra en unas 21 horas. Con ese vuelo, China se convirtió en el tercer país capaz de lanzar personas al espacio con sus propios cohetes."]},
+  "Liu Yang":{
+    en:["Liu Yang was a transport pilot in the Chinese air force, praised for safely landing her aircraft after a bird strike, before joining the astronaut corps in 2010.",
+        "In June 2012 she flew on Shenzhou 9 to the Tiangong-1 laboratory, becoming the first Chinese woman in space. A decade later she spent six months on the new Tiangong space station with Shenzhou 14."],
+    es:["Liu Yang era piloto de transporte de la fuerza aérea china, reconocida por aterrizar su avión con seguridad tras el impacto de unas aves, antes de entrar en el cuerpo de astronautas en 2010.",
+        "En junio de 2012 voló en el Shenzhou 9 al laboratorio Tiangong-1 y se convirtió en la primera mujer china en el espacio. Una década después pasó seis meses en la nueva estación Tiangong con el Shenzhou 14."]},
+  "Wang Yaping":{
+    en:["Wang Yaping was a military transport pilot who flew relief missions after the 2008 Sichuan earthquake. In 2013, on Shenzhou 10, she taught a live physics lesson from orbit to millions of Chinese students.",
+        "During the six-month Shenzhou 13 mission in 2021–22 she became the first Chinese woman to perform a spacewalk, and kept teaching science classes from the Tiangong station."],
+    es:["Wang Yaping era piloto de transporte militar y participó en misiones de ayuda tras el terremoto de Sichuan de 2008. En 2013, en el Shenzhou 10, dio una clase de física en directo desde la órbita para millones de estudiantes chinos.",
+        "Durante los seis meses de la misión Shenzhou 13, en 2021-22, se convirtió en la primera mujer china en realizar un paseo espacial y siguió impartiendo clases de ciencia desde la estación Tiangong."]},
+  "Koichi Wakata":{
+    en:["Koichi Wakata is an aeronautical engineer who worked on aircraft structures at Japan Airlines before being selected as an astronaut in 1992. He became an expert operator of robotic arms on the Shuttle and the ISS.",
+        "Across five missions he has spent more than 500 days in space. In 2014 he became the first Japanese commander of the International Space Station, and he flew again with SpaceX Crew-5 in 2022–23."],
+    es:["Koichi Wakata es ingeniero aeronáutico; trabajó en estructuras de aviones en Japan Airlines antes de ser seleccionado como astronauta en 1992. Se convirtió en experto en el manejo de brazos robóticos en el transbordador y en la ISS.",
+        "En cinco misiones ha pasado más de 500 días en el espacio. En 2014 fue el primer comandante japonés de la Estación Espacial Internacional y volvió a volar con SpaceX Crew-5 en 2022-23."]},
+  "Chiaki Mukai":{
+    en:["Chiaki Mukai is a cardiovascular surgeon who joined Japan's space agency in 1985. In 1994, aboard STS-65, she became the first Japanese woman in space, studying how microgravity affects living organisms.",
+        "She flew again in 1998 on STS-95 alongside John Glenn and Pedro Duque. She later became a professor and an advocate for space medicine and education."],
+    es:["Chiaki Mukai es cirujana cardiovascular y entró en la agencia espacial japonesa en 1985. En 1994, a bordo del STS-65, se convirtió en la primera mujer japonesa en el espacio, estudiando cómo afecta la microgravedad a los organismos vivos.",
+        "Volvió a volar en 1998 en el STS-95 junto a John Glenn y Pedro Duque. Después fue profesora y una gran defensora de la medicina y la educación espaciales."]},
+  "Kalpana Chawla":{
+    en:["Kalpana Chawla studied aeronautical engineering in India and earned a PhD in the United States, where she worked on computational fluid dynamics at NASA Ames before being selected as an astronaut in 1994.",
+        "In 1997 she flew on STS-87, becoming the first woman of Indian origin in space. She died with her six crewmates when Space Shuttle Columbia broke apart during re-entry on 1 February 2003."],
+    es:["Kalpana Chawla estudió ingeniería aeronáutica en la India y se doctoró en Estados Unidos, donde trabajó en dinámica de fluidos computacional en NASA Ames antes de ser seleccionada como astronauta en 1994.",
+        "En 1997 voló en el STS-87 y se convirtió en la primera mujer de origen indio en el espacio. Murió junto a sus seis compañeros cuando el transbordador Columbia se desintegró durante la reentrada el 1 de febrero de 2003."]},
+  "Rakesh Sharma":{
+    en:["Rakesh Sharma was a squadron leader and test pilot in the Indian Air Force when he was selected for a joint Soviet–Indian mission under the Intercosmos programme.",
+        "In April 1984 he spent nearly eight days aboard the Salyut 7 station. Asked by the Indian prime minister how India looked from space, he famously replied 'Saare Jahan Se Achha' — better than the whole world."],
+    es:["Rakesh Sharma era jefe de escuadrón y piloto de pruebas de la Fuerza Aérea india cuando fue seleccionado para una misión conjunta soviético-india dentro del programa Intercosmos.",
+        "En abril de 1984 pasó casi ocho días a bordo de la estación Salyut 7. Cuando la primera ministra india le preguntó cómo se veía la India desde el espacio, respondió con un famoso verso: 'Saare Jahan Se Achha', mejor que el mundo entero."]},
+  "Shubhanshu Shukla":{
+    en:["Shubhanshu Shukla is an Indian Air Force test pilot with more than 2,000 flight hours, selected in 2019 as one of the astronaut-designates for India's Gaganyaan programme.",
+        "In June–July 2025 he piloted the private Axiom Mission 4, becoming the first Indian to visit the International Space Station and the second Indian in space, 41 years after Rakesh Sharma."],
+    es:["Shubhanshu Shukla es piloto de pruebas de la Fuerza Aérea india con más de 2000 horas de vuelo, seleccionado en 2019 como uno de los futuros astronautas del programa Gaganyaan.",
+        "En junio-julio de 2025 pilotó la misión privada Axiom 4 y se convirtió en el primer indio en visitar la Estación Espacial Internacional y el segundo indio en el espacio, 41 años después de Rakesh Sharma."]},
+  "Ulf Merbold":{
+    en:["Ulf Merbold grew up in East Germany and moved to the West to study physics, later researching materials science at the Max Planck Institute in Stuttgart.",
+        "In 1983 he flew on the first Spacelab mission (STS-9), becoming the first ESA astronaut and the first non-American to fly on the Space Shuttle. He flew twice more, including a month aboard Mir in 1994."],
+    es:["Ulf Merbold creció en Alemania Oriental y se trasladó al Oeste para estudiar Física; después investigó en ciencia de materiales en el Instituto Max Planck de Stuttgart.",
+        "En 1983 voló en la primera misión Spacelab (STS-9) y se convirtió en el primer astronauta de la ESA y el primer no estadounidense en volar en el transbordador. Voló dos veces más, incluido un mes en la Mir en 1994."]},
+  "Jean-Loup Chrétien":{
+    en:["Jean-Loup Chrétien was a French Air Force test pilot selected by the French space agency CNES in 1980.",
+        "In 1982 he visited the Soviet Salyut 7 station, becoming the first Western European in space. In 1988 he became the first person who was neither American nor Soviet to perform a spacewalk, and he later flew on the Space Shuttle to Mir."],
+    es:["Jean-Loup Chrétien era piloto de pruebas de la Fuerza Aérea francesa y fue seleccionado por la agencia espacial francesa CNES en 1980.",
+        "En 1982 visitó la estación soviética Salyut 7 y se convirtió en el primer europeo occidental en el espacio. En 1988 fue la primera persona que no era estadounidense ni soviética en realizar un paseo espacial, y después voló en el transbordador hasta la Mir."]},
+  "Claudie Haigneré":{
+    en:["Claudie Haigneré is a physician specialised in rheumatology and sports medicine who also holds a doctorate in neuroscience. She was selected by CNES in 1985.",
+        "In 1996 she spent two weeks on Mir, becoming the first French woman in space, and in 2001 she was the first European woman to visit the ISS. She later served as a French government minister for research and for European affairs."],
+    es:["Claudie Haigneré es médica especialista en reumatología y medicina deportiva, y doctora en neurociencia. Fue seleccionada por el CNES en 1985.",
+        "En 1996 pasó dos semanas en la Mir y se convirtió en la primera mujer francesa en el espacio; en 2001 fue la primera mujer europea en visitar la ISS. Después fue ministra francesa de Investigación y de Asuntos Europeos."]},
+  "Thomas Pesquet":{
+    en:["Thomas Pesquet is an aerospace engineer and former Air France pilot, selected by ESA in 2009. He is also a judo black belt and a keen saxophonist.",
+        "He has spent almost 400 days on the ISS across the Proxima (2016–17) and Alpha (2021) missions, commanding the station in 2021. His photographs of Earth from orbit have reached millions of people."],
+    es:["Thomas Pesquet es ingeniero aeroespacial y ex piloto de Air France, seleccionado por la ESA en 2009. También es cinturón negro de judo y aficionado al saxofón.",
+        "Ha pasado casi 400 días en la ISS en las misiones Proxima (2016-17) y Alpha (2021), en la que comandó la estación. Sus fotografías de la Tierra desde la órbita han llegado a millones de personas."]},
+  "Alexander Gerst":{
+    en:["Alexander Gerst is a geophysicist and volcanologist who studied active volcanoes in Antarctica and elsewhere before being selected by ESA in 2009.",
+        "He flew the Blue Dot mission in 2014 and the Horizons mission in 2018, when he became the second ESA astronaut to command the ISS. He is known for his reflective messages about how fragile the Earth looks from orbit."],
+    es:["Alexander Gerst es geofísico y vulcanólogo; estudió volcanes activos en la Antártida y en otros lugares antes de ser seleccionado por la ESA en 2009.",
+        "Voló la misión Blue Dot en 2014 y la misión Horizons en 2018, cuando se convirtió en el segundo astronauta de la ESA en comandar la ISS. Es conocido por sus mensajes sobre lo frágil que se ve la Tierra desde la órbita."]},
+  "Luca Parmitano":{
+    en:["Luca Parmitano is an Italian Air Force test pilot selected by ESA in 2009. During a spacewalk in 2013, water began filling his helmet — he stayed calm and found his way back to the airlock almost blind.",
+        "On his second mission, Beyond (2019–20), he led a series of complex spacewalks to repair a cosmic-ray detector and became the first Italian to command the International Space Station."],
+    es:["Luca Parmitano es piloto de pruebas de la Fuerza Aérea italiana, seleccionado por la ESA en 2009. Durante un paseo espacial en 2013, su casco empezó a llenarse de agua; mantuvo la calma y volvió a la esclusa casi a ciegas.",
+        "En su segunda misión, Beyond (2019-20), dirigió varios paseos espaciales complejos para reparar un detector de rayos cósmicos y se convirtió en el primer italiano en comandar la Estación Espacial Internacional."]},
+  "Frank De Winne":{
+    en:["Frank De Winne is a Belgian Air Force test pilot who joined ESA's astronaut corps in 2000. In 2002 he flew the Odissea taxi mission to the ISS.",
+        "In 2009, during the six-month OasISS mission, he became the first ESA astronaut to command the International Space Station. He later headed ESA's European Astronaut Centre in Cologne."],
+    es:["Frank De Winne es piloto de pruebas de la Fuerza Aérea belga y entró en el cuerpo de astronautas de la ESA en 2000. En 2002 voló la misión Odissea a la ISS.",
+        "En 2009, durante los seis meses de la misión OasISS, se convirtió en el primer astronauta de la ESA en comandar la Estación Espacial Internacional. Después dirigió el Centro Europeo de Astronautas de la ESA en Colonia."]},
+  "Andreas Mogensen":{
+    en:["Andreas Mogensen is an engineer with a PhD in aerospace engineering, selected by ESA in 2009. In 2015 he became the first Dane in space on the ten-day iriss mission.",
+        "In 2023–24 he returned for six months as pilot of SpaceX Crew-7 (mission Huginn) and took command of the International Space Station."],
+    es:["Andreas Mogensen es ingeniero y doctor en ingeniería aeroespacial, seleccionado por la ESA en 2009. En 2015 se convirtió en el primer danés en el espacio con la misión iriss, de diez días.",
+        "En 2023-24 regresó durante seis meses como piloto de SpaceX Crew-7 (misión Huginn) y asumió el mando de la Estación Espacial Internacional."]},
+  "Sławosz Uznański-Wiśniewski":{
+    en:["Sławosz Uznański-Wiśniewski is an engineer who worked on the Large Hadron Collider at CERN. He was selected as an ESA project astronaut in 2022.",
+        "In 2025 he flew to the ISS on Axiom Mission 4 (Polish mission 'Ignis'), becoming the second Pole in space, almost half a century after Mirosław Hermaszewski."],
+    es:["Sławosz Uznański-Wiśniewski es ingeniero y trabajó en el Gran Colisionador de Hadrones del CERN. Fue seleccionado como astronauta de proyecto de la ESA en 2022.",
+        "En 2025 viajó a la ISS en la misión Axiom 4 (misión polaca 'Ignis') y se convirtió en el segundo polaco en el espacio, casi medio siglo después de Mirosław Hermaszewski."]},
+  "Mirosław Hermaszewski":{
+    en:["Mirosław Hermaszewski was a Polish Air Force pilot who survived the violence in Volhynia as a child and went on to fly fighter jets.",
+        "In June 1978, under the Intercosmos programme, he spent about eight days on the Salyut 6 station, becoming the first and, for 47 years, the only Pole in space. He died in 2022."],
+    es:["Mirosław Hermaszewski fue piloto de la Fuerza Aérea polaca; sobrevivió de niño a la violencia en Volinia y llegó a pilotar cazas.",
+        "En junio de 1978, dentro del programa Intercosmos, pasó unos ocho días en la estación Salyut 6 y se convirtió en el primer polaco en el espacio, y durante 47 años el único. Murió en 2022."]},
+  "Vladimír Remek":{
+    en:["Vladimír Remek was a Czechoslovak fighter pilot chosen for the first flight of the Soviet Intercosmos programme, which invited allied countries to send their own cosmonauts.",
+        "In March 1978 he spent eight days on Salyut 6, becoming the first person in space who was neither American nor Soviet. He later became a diplomat and a member of the European Parliament."],
+    es:["Vladimír Remek era piloto de caza checoslovaco y fue elegido para el primer vuelo del programa soviético Intercosmos, que invitaba a países aliados a enviar sus propios cosmonautas.",
+        "En marzo de 1978 pasó ocho días en la Salyut 6 y se convirtió en la primera persona en el espacio que no era estadounidense ni soviética. Después fue diplomático y eurodiputado."]},
+  "Phạm Tuân":{
+    en:["Phạm Tuân was a Vietnamese People's Air Force fighter pilot, decorated as a Hero of the People's Armed Forces.",
+        "In July 1980 he flew to Salyut 6 aboard Soyuz 37, becoming the first Asian and the first Vietnamese person in space. During the eight-day flight he carried out scientific experiments and observed Vietnam from orbit."],
+    es:["Phạm Tuân era piloto de caza de la Fuerza Aérea Popular de Vietnam, condecorado como Héroe de las Fuerzas Armadas Populares.",
+        "En julio de 1980 voló a la Salyut 6 en la Soyuz 37 y se convirtió en el primer asiático y el primer vietnamita en el espacio. Durante los ocho días de vuelo realizó experimentos científicos y observó Vietnam desde la órbita."]},
+  "Arnaldo Tamayo Méndez":{
+    en:["Arnaldo Tamayo Méndez grew up poor in eastern Cuba, working as a shoeshiner and carpenter's helper before training as a military pilot.",
+        "In September 1980 he flew to Salyut 6 on Soyuz 38, becoming the first Latin American, the first Cuban and the first person of African descent in space. He carried out experiments on sugar-cane crystallisation and human physiology."],
+    es:["Arnaldo Tamayo Méndez creció en la pobreza en el oriente de Cuba; trabajó como limpiabotas y ayudante de carpintero antes de formarse como piloto militar.",
+        "En septiembre de 1980 voló a la Salyut 6 en la Soyuz 38 y se convirtió en el primer latinoamericano, el primer cubano y la primera persona afrodescendiente en el espacio. Realizó experimentos sobre cristalización del azúcar de caña y fisiología humana."]},
+  "Rodolfo Neri Vela":{
+    en:["Rodolfo Neri Vela is a telecommunications engineer with a doctorate from the University of Birmingham who worked on Mexico's Morelos satellite system.",
+        "In November 1985 he flew on Space Shuttle mission STS-61-B, which deployed the Morelos-II satellite, becoming the first Mexican in space. He has since devoted much of his career to science outreach."],
+    es:["Rodolfo Neri Vela es ingeniero en telecomunicaciones, doctorado por la Universidad de Birmingham, y trabajó en el sistema de satélites mexicano Morelos.",
+        "En noviembre de 1985 voló en la misión STS-61-B del transbordador, que desplegó el satélite Morelos-II, y se convirtió en el primer mexicano en el espacio. Desde entonces ha dedicado gran parte de su carrera a la divulgación."]},
+  "Franklin Chang-Díaz":{
+    en:["Franklin Chang-Díaz emigrated from Costa Rica to the United States at 18 with little money and little English, and went on to earn a PhD in plasma physics at MIT.",
+        "Selected by NASA in 1980, he flew seven Space Shuttle missions between 1986 and 2002, a record he shares with Jerry Ross. He later founded Ad Astra Rocket Company to develop the VASIMR plasma engine."],
+    es:["Franklin Chang-Díaz emigró de Costa Rica a Estados Unidos a los 18 años con poco dinero y sin apenas hablar inglés, y llegó a doctorarse en física de plasmas en el MIT.",
+        "Seleccionado por la NASA en 1980, voló siete misiones del transbordador entre 1986 y 2002, un récord que comparte con Jerry Ross. Después fundó Ad Astra Rocket Company para desarrollar el motor de plasma VASIMR."]},
+  "Marcos Pontes":{
+    en:["Marcos Pontes is a Brazilian Air Force test pilot and engineer who trained with NASA from 1998 as part of Brazil's ISS partnership.",
+        "In March–April 2006 he flew to the ISS aboard a Soyuz on the 'Centenary Mission', marking 100 years since Santos-Dumont's 14-bis flight. He later served as Brazil's Minister of Science, Technology and Innovation."],
+    es:["Marcos Pontes es piloto de pruebas e ingeniero de la Fuerza Aérea brasileña y se entrenó con la NASA desde 1998 dentro de la participación de Brasil en la ISS.",
+        "En marzo-abril de 2006 viajó a la ISS en una Soyuz en la 'Misión Centenario', que conmemoraba los 100 años del vuelo del 14-bis de Santos-Dumont. Después fue ministro de Ciencia, Tecnología e Innovación de Brasil."]},
+  "Ellen Ochoa":{
+    en:["Ellen Ochoa is an electrical engineer with a PhD from Stanford who co-invented optical systems for image processing. She is also a classical flautist, and took her flute into orbit.",
+        "In 1993, on STS-56, she became the first Hispanic woman in space. After four Shuttle flights she became the first Hispanic director of NASA's Johnson Space Center."],
+    es:["Ellen Ochoa es ingeniera eléctrica, doctorada en Stanford, y coinventora de sistemas ópticos para el procesamiento de imágenes. También es flautista clásica y se llevó su flauta a la órbita.",
+        "En 1993, en el STS-56, se convirtió en la primera mujer hispana en el espacio. Tras cuatro vuelos en el transbordador fue la primera directora hispana del Centro Espacial Johnson de la NASA."]},
+  "Sultan bin Salman Al Saud":{
+    en:["Prince Sultan bin Salman Al Saud was a Royal Saudi Air Force pilot who flew as a payload specialist on Space Shuttle Discovery.",
+        "In June 1985, on STS-51-G, he became the first Arab, the first Muslim and the first member of a royal family to travel to space. Decades later he became the first chairman of the Saudi Space Commission."],
+    es:["El príncipe Sultan bin Salman Al Saud era piloto de la Real Fuerza Aérea saudí y voló como especialista de carga útil en el transbordador Discovery.",
+        "En junio de 1985, en el STS-51-G, se convirtió en el primer árabe, el primer musulmán y el primer miembro de una familia real en viajar al espacio. Décadas después fue el primer presidente de la Comisión Espacial Saudí."]},
+  "Sultan Al Neyadi":{
+    en:["Sultan Al Neyadi is an engineer with a PhD in data leakage prevention who served in the UAE Armed Forces before being selected for the UAE astronaut programme in 2018.",
+        "In 2023 he spent six months on the ISS with SpaceX Crew-6 — the first long-duration mission by an Arab astronaut — and became the first Arab to perform a spacewalk."],
+    es:["Sultan Al Neyadi es ingeniero, doctor en prevención de fugas de datos, y sirvió en las Fuerzas Armadas de los Emiratos antes de ser seleccionado para el programa de astronautas de los EAU en 2018.",
+        "En 2023 pasó seis meses en la ISS con SpaceX Crew-6, la primera misión de larga duración de un astronauta árabe, y se convirtió en el primer árabe en realizar un paseo espacial."]},
+  "Yi So-yeon":{
+    en:["Yi So-yeon is a bioengineer with a PhD from KAIST, chosen from some 36,000 applicants in South Korea's first astronaut selection.",
+        "In April 2008 she spent about eleven days aboard the ISS, running biological and physical experiments, and became the first Korean in space."],
+    es:["Yi So-yeon es bioingeniera, doctorada en el KAIST, elegida entre unos 36 000 aspirantes en la primera selección de astronautas de Corea del Sur.",
+        "En abril de 2008 pasó unos once días a bordo de la ISS realizando experimentos biológicos y físicos, y se convirtió en la primera persona coreana en el espacio."]},
+  "Helen Sharman":{
+    en:["Helen Sharman was a chemist working for a confectionery company when she heard a radio advert: 'Astronaut wanted. No experience necessary.' She was selected from about 13,000 applicants.",
+        "In May 1991, through the privately funded Project Juno, she spent eight days aboard Mir, becoming the first Briton in space. She later returned to research and science outreach."],
+    es:["Helen Sharman era química en una empresa de golosinas cuando oyó un anuncio en la radio: 'Se busca astronauta. No se necesita experiencia'. Fue seleccionada entre unas 13 000 personas.",
+        "En mayo de 1991, gracias al Proyecto Juno, de financiación privada, pasó ocho días en la Mir y se convirtió en la primera persona británica en el espacio. Después volvió a la investigación y la divulgación."]},
+  "Roberta Bondar":{
+    en:["Roberta Bondar is a neurologist and researcher with a PhD in neurobiology, one of the six original Canadian astronauts selected in 1983.",
+        "In January 1992 she flew on STS-42 with the International Microgravity Laboratory, becoming the first Canadian woman in space. She went on to lead space-medicine research and became an acclaimed nature photographer."],
+    es:["Roberta Bondar es neuróloga e investigadora, doctorada en neurobiología, y una de los seis primeros astronautas canadienses seleccionados en 1983.",
+        "En enero de 1992 voló en el STS-42 con el Laboratorio Internacional de Microgravedad y se convirtió en la primera mujer canadiense en el espacio. Después dirigió investigaciones en medicina espacial y es una reconocida fotógrafa de naturaleza."]},
+  "Michael Collins":{
+    en:["Michael Collins was an Air Force test pilot who performed two spacewalks on Gemini 10 in 1966.",
+        "During Apollo 11 he piloted the command module Columbia, orbiting the Moon alone while Armstrong and Aldrin walked on the surface. His memoir 'Carrying the Fire' is considered one of the finest astronaut books. He died in 2021."],
+    es:["Michael Collins era piloto de pruebas de la Fuerza Aérea y realizó dos paseos espaciales en el Gemini 10, en 1966.",
+        "Durante el Apolo 11 pilotó el módulo de mando Columbia y orbitó la Luna en solitario mientras Armstrong y Aldrin caminaban por la superficie. Sus memorias, 'Carrying the Fire', se consideran uno de los mejores libros escritos por un astronauta. Murió en 2021."]},
+  "Guion Bluford":{
+    en:["Guion 'Guy' Bluford flew 144 combat missions in Vietnam as an Air Force pilot and later earned a PhD in aerospace engineering.",
+        "In August 1983, on STS-8, he became the first African American in space. He flew four Shuttle missions in total and later worked in the aerospace industry."],
+    es:["Guion 'Guy' Bluford voló 144 misiones de combate en Vietnam como piloto de la Fuerza Aérea y después se doctoró en ingeniería aeroespacial.",
+        "En agosto de 1983, en el STS-8, se convirtió en el primer afroamericano en el espacio. Voló cuatro misiones del transbordador y después trabajó en la industria aeroespacial."]},
+  "Eileen Collins":{
+    en:["Eileen Collins was an Air Force instructor and test pilot who joined NASA in 1991. In 1995 she became the first woman to pilot the Space Shuttle.",
+        "In 1999 she commanded STS-93, which deployed the Chandra X-ray Observatory, and in 2005 she led STS-114, the 'return to flight' mission after the Columbia accident."],
+    es:["Eileen Collins era instructora y piloto de pruebas de la Fuerza Aérea y entró en la NASA en 1991. En 1995 se convirtió en la primera mujer en pilotar el transbordador.",
+        "En 1999 comandó el STS-93, que puso en órbita el observatorio de rayos X Chandra, y en 2005 dirigió el STS-114, la misión de 'regreso al vuelo' tras el accidente del Columbia."]},
+  "Scott Kelly":{
+    en:["Scott Kelly is a former Navy test pilot whose identical twin, Mark, is also an astronaut. He flew four missions, including two Space Shuttle flights.",
+        "In 2015–16 he spent 340 consecutive days on the ISS while Mark stayed on Earth, allowing NASA's Twins Study to compare how a year in space changes the body, the genes and the mind."],
+    es:["Scott Kelly es ex piloto de pruebas de la Armada y su gemelo idéntico, Mark, también es astronauta. Voló cuatro misiones, dos de ellas en el transbordador.",
+        "En 2015-16 pasó 340 días seguidos en la ISS mientras Mark se quedaba en la Tierra, lo que permitió al Estudio de Gemelos de la NASA comparar cómo cambia un año en el espacio el cuerpo, los genes y la mente."]},
+  "Sunita Williams":{
+    en:["Sunita Williams is a former Navy helicopter test pilot who joined NASA in 1998. On her first mission she ran the Boston Marathon on a treadmill aboard the ISS.",
+        "She has made nine spacewalks, the most time outside a spacecraft of any woman. In 2024 she flew on the first crewed test of Boeing's Starliner and, after technical problems, stayed on the ISS until March 2025."],
+    es:["Sunita Williams es ex piloto de pruebas de helicópteros de la Armada y entró en la NASA en 1998. En su primera misión corrió el maratón de Boston en una cinta a bordo de la ISS.",
+        "Ha realizado nueve paseos espaciales y es la mujer que más tiempo ha pasado fuera de una nave. En 2024 voló en la primera prueba tripulada de la Starliner de Boeing y, tras sus problemas técnicos, permaneció en la ISS hasta marzo de 2025."]},
+  "Oleg Kononenko":{
+    en:["Oleg Kononenko is a mechanical engineer who worked on spacecraft design at the Progress rocket centre in Samara before becoming a cosmonaut.",
+        "Across five long missions to the ISS he accumulated more than 1,110 days in orbit — over three years — and in 2024 set the world record for cumulative time in space."],
+    es:["Oleg Kononenko es ingeniero mecánico y trabajó en el diseño de naves en el centro de cohetes Progress de Samara antes de convertirse en cosmonauta.",
+        "En cinco misiones largas a la ISS acumuló más de 1110 días en órbita, más de tres años, y en 2024 batió el récord mundial de tiempo acumulado en el espacio."]},
+  "Christina Koch":{
+    en:["Christina Koch is an electrical engineer who built instruments for NASA science missions and spent long seasons at research stations in Antarctica and the Arctic before joining NASA in 2013.",
+        "In 2019 she took part in the first all-female spacewalk and completed 328 days in orbit, the longest single spaceflight by a woman. In April 2026 she flew on Artemis II, becoming the first woman to travel around the Moon."],
+    es:["Christina Koch es ingeniera eléctrica; construyó instrumentos para misiones científicas de la NASA y pasó largas temporadas en estaciones de investigación de la Antártida y el Ártico antes de entrar en la NASA en 2013.",
+        "En 2019 participó en el primer paseo espacial solo de mujeres y completó 328 días en órbita, el vuelo individual más largo de una mujer. En abril de 2026 voló en el Artemis II y se convirtió en la primera mujer en viajar alrededor de la Luna."]},
+  "Victor Glover":{
+    en:["Victor Glover is a U.S. Navy test pilot and engineer selected by NASA in 2013. In 2020–21 he flew as pilot of SpaceX Crew-1, spending about six months on the ISS.",
+        "In April 2026 he piloted the Orion spacecraft on Artemis II, the first crewed flight around the Moon since 1972, becoming the first Black astronaut to travel beyond low Earth orbit."],
+    es:["Victor Glover es piloto de pruebas e ingeniero de la Armada de EE. UU., seleccionado por la NASA en 2013. En 2020-21 voló como piloto de SpaceX Crew-1 y pasó unos seis meses en la ISS.",
+        "En abril de 2026 pilotó la nave Orion en el Artemis II, el primer vuelo tripulado alrededor de la Luna desde 1972, y se convirtió en el primer astronauta negro en viajar más allá de la órbita baja terrestre."]},
+  "Jeremy Hansen":{
+    en:["Jeremy Hansen is a Royal Canadian Air Force fighter pilot selected by the Canadian Space Agency in 2009. Before flying he trained as an aquanaut and cave explorer and helped train other astronaut classes.",
+        "In April 2026 he flew on Artemis II, his first spaceflight, becoming the first Canadian — and the first non-American — to travel around the Moon."],
+    es:["Jeremy Hansen es piloto de caza de la Real Fuerza Aérea canadiense, seleccionado por la Agencia Espacial Canadiense en 2009. Antes de volar se entrenó como acuanauta y explorador de cuevas y ayudó a formar a otras promociones de astronautas.",
+        "En abril de 2026 voló en el Artemis II, su primer vuelo espacial, y se convirtió en el primer canadiense, y el primer no estadounidense, en viajar alrededor de la Luna."]},
+  "Pablo Álvarez Fernández":{
+    en:["Pablo Álvarez Fernández is an aeronautical engineer from León who studied in Spain and Poland. He worked for Airbus and Safran and, from 2017 to 2020, on the ExoMars rover, designing seals to keep Mars free of terrestrial microbes.",
+        "In November 2022 he was selected from more than 22,000 applicants as an ESA career astronaut — the first Spaniard in the European corps since Pedro Duque — and he was certified for spaceflight in April 2024."],
+    es:["Pablo Álvarez Fernández es ingeniero aeronáutico leonés y estudió en España y Polonia. Trabajó para Airbus y Safran y, entre 2017 y 2020, en el rover ExoMars, diseñando sellos para que Marte no se contamine con microbios terrestres.",
+        "En noviembre de 2022 fue seleccionado entre más de 22 000 aspirantes como astronauta de carrera de la ESA, el primer español en el cuerpo europeo desde Pedro Duque, y en abril de 2024 obtuvo la certificación para volar al espacio."]},
+  "Sara García Alonso":{
+    en:["Sara García Alonso is a molecular biologist and biotechnologist from León who researches targeted therapies against KRAS-driven lung cancer at Spain's National Cancer Research Centre (CNIO).",
+        "In November 2022 she was selected as a member of the ESA Astronaut Reserve, the first Spanish woman to reach that milestone. She combines her cancer research with astronaut training and science outreach, including her book 'Órbitas' (2025)."],
+    es:["Sara García Alonso es bióloga molecular y biotecnóloga leonesa e investiga terapias dirigidas contra el cáncer de pulmón impulsado por KRAS en el Centro Nacional de Investigaciones Oncológicas (CNIO).",
+        "En noviembre de 2022 fue seleccionada como miembro de la Reserva de Astronautas de la ESA, la primera mujer española en lograrlo. Compagina su investigación oncológica con el entrenamiento de astronauta y la divulgación, incluido su libro 'Órbitas' (2025)."]}
 };
 
 (function(){
@@ -2033,9 +2307,56 @@ const ASTRO_BIO={
   // date, so everyone sees the same astronaut and it changes once per day.
   // There is no manual navigation — nobody can browse the full deck.
   const idx=Math.floor(Date.now()/86400000)%ASTROS.length;
+  /* ---- Foto desde Wikipedia ----
+     1) caché del navegador · 2) artículo en inglés · 3) artículo en español
+     · 4) búsqueda por nombre · 5) avatar generado. */
+  const PHOTO_KEY='ins_astro_photo_v2';
+  function photoCache(){ try{ return JSON.parse(localStorage.getItem(PHOTO_KEY)||'{}'); }catch(e){ return {}; } }
+  function savePhoto(name,url){ try{ const c=photoCache(); c[name]=url; localStorage.setItem(PHOTO_KEY,JSON.stringify(c)); }catch(e){} }
+  async function wikiThumb(lang,params){
+    const u='https://'+lang+'.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageimages&piprop=thumbnail&pithumbsize=360&'+params;
+    const r=await fetch(u); if(!r.ok) return null;
+    const d=await r.json(), pages=d&&d.query&&d.query.pages;
+    if(!pages) return null;
+    for(const k in pages){ if(pages[k].thumbnail&&pages[k].thumbnail.source) return pages[k].thumbnail.source; }
+    return null;
+  }
+  function silhouette(a){
+    const ini=a.name.split(' ').map(s=>s[0]).slice(0,2).join('');
+    return 'data:image/svg+xml;utf8,'+encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="84" height="104" viewBox="0 0 84 104">'+
+      '<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">'+
+      '<stop offset="0" stop-color="#16284a"/><stop offset="1" stop-color="#0a1428"/></linearGradient></defs>'+
+      '<rect width="84" height="104" fill="url(#g)"/>'+
+      '<circle cx="42" cy="40" r="19" fill="#2a4a72"/>'+
+      '<path d="M14 104 q0 -34 28 -34 q28 0 28 34 z" fill="#2a4a72"/>'+
+      '<text x="42" y="98" font-family="sans-serif" font-size="9" letter-spacing="1" fill="#5fb4ff" text-anchor="middle">'+ini+'</text>'+
+      '</svg>');
+  }
+  let photoToken=0;
+  async function loadPhoto(img,a){
+    const token=++photoToken;
+    const title=a.wiki||a.name;
+    const tries=[
+      ()=>Promise.resolve(photoCache()[a.name]||null),
+      ()=>wikiThumb('en','titles='+encodeURIComponent(title)),
+      ()=>wikiThumb('es','titles='+encodeURIComponent(a.wikiEs||title)),
+      ()=>wikiThumb('en','generator=search&gsrlimit=1&gsrsearch='+encodeURIComponent(a.name+' astronaut'))
+    ];
+    for(let i=0;i<tries.length;i++){
+      let url=null;
+      try{ url=await tries[i](); }catch(e){ url=null; }
+      if(token!==photoToken) return;                 // otra tarjeta ya se está mostrando
+      if(!url) continue;
+      const ok=await new Promise(res=>{ const t=new Image(); t.onload=()=>res(true); t.onerror=()=>res(false); t.src=url; });
+      if(token!==photoToken) return;
+      if(ok){ img.src=url; if(i>0) savePhoto(a.name,url); return; }
+    }
+    img.src=silhouette(a);
+  }
   function render(){
     const a=ASTROS[idx];
-    $('cardOrg').textContent=a.org+' · Astronaut';
+    $('cardOrg').textContent=a.org+' · '+(a.rank?(a.rank[LANG]||a.rank.en):(LANG==='es'?'Astronauta':'Astronaut'));
     $('cardName').textContent=a.name;
     $('cardBorn').textContent=a.born[LANG]||a.born.en;
     $('cardDays').textContent=a.days[LANG]||a.days.en;
@@ -2044,21 +2365,7 @@ const ASTRO_BIO={
     $('cardId').textContent='ID · '+String(100+idx*7).padStart(3,'0');
     const img=$('cardPhoto');
     img.alt=a.name;
-    img.onerror=function(){
-      img.onerror=null;
-      // Respaldo: retrato silueta estilo credencial (siempre disponible)
-      const ini=a.name.split(' ').map(s=>s[0]).slice(0,2).join('');
-      img.src='data:image/svg+xml;utf8,'+encodeURIComponent(
-        '<svg xmlns="http://www.w3.org/2000/svg" width="84" height="104" viewBox="0 0 84 104">'+
-        '<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">'+
-        '<stop offset="0" stop-color="#16284a"/><stop offset="1" stop-color="#0a1428"/></linearGradient></defs>'+
-        '<rect width="84" height="104" fill="url(#g)"/>'+
-        '<circle cx="42" cy="40" r="19" fill="#2a4a72"/>'+        /* cabeza */
-        '<path d="M14 104 q0 -34 28 -34 q28 0 28 34 z" fill="#2a4a72"/>'+ /* hombros */
-        '<text x="42" y="98" font-family="sans-serif" font-size="9" letter-spacing="1" fill="#5fb4ff" text-anchor="middle">'+ini+'</text>'+
-        '</svg>');
-    };
-    img.src=a.photo;
+    loadPhoto(img,a);
     // biography for the INFO panel
     const bio=ASTRO_BIO[a.name];
     const box=$('cardInfoText'); box.innerHTML='';
@@ -2078,115 +2385,160 @@ const ASTRO_BIO={
 
 /* =====================================================================
    4. ISS: POSICIÓN EN VIVO + HUMANOS EN EL ESPACIO (DATO FIJO)
-   - Posición/velocidad/altitud: api.wheretheiss.at (HTTPS, sin clave),
-     se actualiza cada minuto y mueve la ISS sobre el globo.
-   - Personas en el espacio: dato fijo de junio 2026 (editable a mano,
-     p. ej. una vez por semana). No se consulta ninguna API en vivo.
+   - Posición: modelo orbital calculado en el navegador (instantáneo) y
+     anclado con datos reales de api.wheretheiss.at cada minuto.
+   - Personas en el espacio: dato fijo de octubre 2026 (ISS + Tiangong),
+     editable a mano. No se consulta ninguna API en vivo.
    ===================================================================== */
 (function(){
   const $=id=>document.getElementById(id);
-  let issOk=false;
-  const GLOBE_DATA={
-    amer:"images/globe-amer.png",
-    atl:"images/globe-atl.png",
-    afr_eu:"images/globe-afr_eu.png",
-    asia:"images/globe-asia.png",
-    pac:"images/globe-pac.png",
-  };
+  /* 5 fotos reales del globo centradas en distintas longitudes. Se precargan
+     todas para que el cambio de cara sea instantáneo. */
+  const GLOBES=[
+    {lon:-90, src:"images/globe-amer.png"},
+    {lon:-20, src:"images/globe-atl.png"},
+    {lon: 30, src:"images/globe-afr_eu.png"},
+    {lon:100, src:"images/globe-asia.png"},
+    {lon:160, src:"images/globe-pac.png"}
+  ];
+  GLOBES.forEach(g=>{ const i=new Image(); i.src=g.src; });
+  const globeImg=$('issGlobe'), marker=$('issMarker'), win=$('iss-window');
 
-  let issTimer=null, issFails=0;
-  function scheduleISS(ms){ clearTimeout(issTimer); issTimer=setTimeout(updateISS,ms); }
-  async function updateISS(){
-    try{
-      // abort a hung request fast so we can retry instead of waiting a full cycle
-      const ctrl=new AbortController();
-      const to=setTimeout(()=>ctrl.abort(),8000);
-      const r=await fetch('https://api.wheretheiss.at/v1/satellites/25544',{cache:'no-store',signal:ctrl.signal});
-      clearTimeout(to);
-      if(!r.ok)throw 0;
-      const d=await r.json();
-      $('issLat').textContent=d.latitude.toFixed(2)+'°';
-      $('issLon').textContent=d.longitude.toFixed(2)+'°';
-      $('issVel').innerHTML=Math.round(d.velocity).toLocaleString('es')+' <small>km/h</small>';
-      $('issAlt').innerHTML=Math.round(d.altitude)+' <small>km</small>';
-      issLat=d.latitude; issLon=d.longitude; issOk=true; issFails=0;
-      pickGlobe(); placeISS();
-      scheduleISS(15000);              // once located, refresh every 15 s
-    }catch(e){
-      issFails++;
-      if(!issOk){
-        $('issLat').textContent='…';$('issLon').textContent='…';
-        if(issFails>=5) $('issFoot').textContent=t('issOffline');
-      }
-      scheduleISS(issOk?15000:2500);   // retry fast until the first fix lands
+  /* ---- Modelo orbital local ----
+     Con dos posiciones reales (ahora y en los próximos 20 min) se ajusta una órbita circular
+     (inclinación 51,64°, precesión J2 del nodo y rotación terrestre). A partir
+     de ahí la posición se calcula en el navegador cada segundo, sin esperar a
+     la red, y se re-ancla con datos reales cada minuto. La última órbita se
+     guarda en el navegador para que al volver a la web la ISS salga al instante. */
+  const D2R=Math.PI/180, INC=51.64*D2R, MU=398600.4418, RE=6378.137, J2=1.08263e-3;
+  const CACHE_KEY='ins_iss_orbit_v1';
+  let ORB=null, issLat=null, issLon=null, currentGlobe=-999, liveOk=false, fails=0;
+
+  function gmst(ms){ const jd=ms/86400000+2440587.5; return ((280.46061837+360.98564736629*(jd-2451545))%360+360)%360*D2R; }
+  function subpoint(ms){
+    const dt=(ms-ORB.t0)/1000, u=ORB.u0+ORB.du*dt, O=ORB.O0+ORB.dO*dt;
+    const lat=Math.asin(Math.sin(INC)*Math.sin(u));
+    const lonI=O+Math.atan2(Math.cos(INC)*Math.sin(u),Math.cos(u));
+    let lon=(lonI-gmst(ms))/D2R; lon=((lon%360)+540)%360-180;
+    return {lat:lat/D2R, lon:lon};
+  }
+  function fitOrbit(pts){
+    const p1=pts[0], a=RE+(p1.altitude||420), n=Math.sqrt(MU/(a*a*a));
+    const dO=-1.5*n*J2*(RE/a)*(RE/a)*Math.cos(INC);
+    const t1=p1.timestamp*1000;
+    function cost(o){
+      ORB=o; let c=0;
+      for(let k=1;k<pts.length;k++){ const q=subpoint(pts[k].timestamp*1000);
+        const dl=((q.lon-pts[k].longitude)+540)%360-180, dp=q.lat-pts[k].latitude; c+=dl*dl*Math.cos(pts[k].latitude*D2R)**2+dp*dp; }
+      return c;
     }
+    let best=null;
+    [true,false].forEach(asc=>{
+      let s=Math.sin(p1.latitude*D2R)/Math.sin(INC); s=Math.max(-1,Math.min(1,s));
+      const u0=asc?Math.asin(s):Math.PI-Math.asin(s);
+      const O0=p1.longitude*D2R+gmst(t1)-Math.atan2(Math.cos(INC)*Math.sin(u0),Math.cos(u0));
+      const o={t0:t1,u0:u0,O0:O0,du:n,dO:dO,alt:p1.altitude,vel:p1.velocity}, c=cost(o);
+      if(!best||c<best.c) best={c:c,o:o};
+    });
+    // ajuste fino (u0, nodo, velocidad angular) por descenso de coordenadas
+    let o=best.o, c=best.c, steps=[0.01,0.01,n*0.003];
+    const keys=['u0','O0','du'];
+    for(let it=0;it<60;it++){
+      let improved=false;
+      keys.forEach((k,i)=>{ [1,-1].forEach(sg=>{ const t=Object.assign({},o); t[k]+=sg*steps[i]; const ct=cost(t); if(ct<c){ c=ct; o=t; improved=true; } }); });
+      if(!improved) steps=steps.map(x=>x/2);
+    }
+    ORB=o; return o;
+  }
+  function saveOrbit(){ try{ localStorage.setItem(CACHE_KEY,JSON.stringify(ORB)); }catch(e){} }
+  function loadOrbit(){
+    try{
+      const o=JSON.parse(localStorage.getItem(CACHE_KEY)||'null');
+      if(o && typeof o.t0==='number' && Date.now()-o.t0<3*86400000) ORB=o;
+    }catch(e){}
   }
 
-  /* ---- Tierra (foto real) + posición de la ISS ----
-     5 fotos reales del globo centradas en distintas longitudes. Se elige la
-     más cercana a la longitud actual de la ISS (la cara visible del planeta).
-     La ISS se proyecta sobre la superficie según su lat/lon. */
-  let issLat=20, issLon=0;
-  const globeImg=document.getElementById('issGlobe');
-  // Centros de longitud de cada foto del globo
-  const GLOBES=[
-    {lon:-90, src:GLOBE_DATA.amer},
-    {lon:-20, src:GLOBE_DATA.atl},
-    {lon: 30, src:GLOBE_DATA.afr_eu},
-    {lon:100, src:GLOBE_DATA.asia},
-    {lon:160, src:GLOBE_DATA.pac}
-  ];
-  let currentGlobe=-999;
-  function lonDiff(a,b){let d=Math.abs(((a-b)+540)%360-180);return d;}
+  function lonDiff(a,b){ return Math.abs(((a-b)+540)%360-180); }
   function pickGlobe(){
-    // elegir la foto cuyo centro está más cerca de la longitud de la ISS
     let best=GLOBES[0],bd=999;
-    for(const g of GLOBES){const d=lonDiff(g.lon,issLon); if(d<bd){bd=d;best=g;}}
+    for(const g of GLOBES){ const d=lonDiff(g.lon,issLon); if(d<bd){bd=d;best=g;} }
     if(best.lon!==currentGlobe){ currentGlobe=best.lon; globeImg.src=best.src; globeImg.dataset.lon=best.lon; }
   }
   function placeISS(){
-    const marker=document.getElementById('issMarker');
-    if(!marker||!globeImg)return;
-    const wrap=globeImg.parentElement.getBoundingClientRect();
+    if(!marker||!globeImg||issLat===null) return;
     const rect=globeImg.getBoundingClientRect();
+    if(!rect.width) return;                       // ventana plegada: se coloca al abrirla
+    const wrap=globeImg.parentElement.getBoundingClientRect();
     const R=rect.width/2-4;
-    const cx=(rect.left-wrap.left)+rect.width/2;
-    const cy=(rect.top-wrap.top)+rect.height/2;
-    // proyección ortográfica respecto al centro de la foto mostrada
+    const cx=(rect.left-wrap.left)+rect.width/2, cy=(rect.top-wrap.top)+rect.height/2;
     const centerLon=parseFloat(globeImg.dataset.lon||currentGlobe||0);
-    const la=issLat*Math.PI/180, lo=(issLon-centerLon)*Math.PI/180;
-    const x=Math.cos(la)*Math.sin(lo);
-    const y=Math.sin(la);
-    const z=Math.cos(la)*Math.cos(lo);
-    // un poco por encima de la superficie (órbita)
+    const la=issLat*D2R, lo=(issLon-centerLon)*D2R;
+    const x=Math.cos(la)*Math.sin(lo), y=Math.sin(la), z=Math.cos(la)*Math.cos(lo);
     const orbit=1.12;
     marker.style.left=(cx+x*R*orbit)+'px';
     marker.style.top =(cy-y*R*orbit)+'px';
-    marker.style.opacity = z>=-0.05 ? '1':'0.12';   // se atenúa en la cara oculta
+    marker.style.opacity = z>=-0.05 ? '1':'0.12';
   }
-  // inicializar
-  pickGlobe(); 
+  function render(){
+    if(!ORB) return;
+    const p=subpoint(Date.now());
+    issLat=p.lat; issLon=p.lon;
+    $('issLat').textContent=issLat.toFixed(2)+'°';
+    $('issLon').textContent=issLon.toFixed(2)+'°';
+    if(ORB.vel) $('issVel').innerHTML=Math.round(ORB.vel).toLocaleString('es')+' <small>km/h</small>';
+    if(ORB.alt) $('issAlt').innerHTML=Math.round(ORB.alt)+' <small>km</small>';
+    pickGlobe(); placeISS();
+  }
+
+  let liveTimer=null;
+  function scheduleLive(ms){ clearTimeout(liveTimer); liveTimer=setTimeout(updateLive,ms); }
+  async function updateLive(){
+    try{
+      const now=Math.floor(Date.now()/1000);
+      const ctrl=new AbortController(); const to=setTimeout(()=>ctrl.abort(),8000);
+      const r=await fetch('https://api.wheretheiss.at/v1/satellites/25544/positions?timestamps='+now+','+(now+300)+','+(now+600)+','+(now+1200)+'&units=kilometers',{cache:'no-store',signal:ctrl.signal});
+      clearTimeout(to);
+      if(!r.ok) throw 0;
+      const d=await r.json();
+      if(!Array.isArray(d)||d.length<2) throw 0;
+      ORB=fitOrbit(d); saveOrbit();
+      liveOk=true; fails=0;
+      $('issFoot').textContent=t('issData');
+      render();
+      scheduleLive(60000);                     // re-anclar con datos reales cada minuto
+    }catch(e){
+      fails++;
+      if(!ORB){ $('issLat').textContent='…'; $('issLon').textContent='…'; }
+      if(!liveOk && fails>=5) $('issFoot').textContent=t('issOffline');
+      scheduleLive(liveOk?60000:3000);
+    }
+  }
+
+  function updatePeople(){
+    // Datos fijos (31 oct 2026). Para actualizarlos tras un relevo de
+    // tripulación, edita las dos listas de abajo; el total se calcula solo.
+    // ISS · Expedición 75: Soyuz MS-29 (3) + SpaceX Crew-13 (4)
+    // Tiangong: Shenzhou 23 (3). Próximo relevo chino: Shenzhou 24 (nov 2026).
+    const STATIONS=[
+      {name:"ISS", people:["Pyotr Dubrov","Anna Kikina","Anil Menon","Jessica Watkins","Luke Delaney","Joshua Kutryk","Sergey Teteryatnikov"]},
+      {name:"Tiangong", people:["Zhu Yangzhu","Zhang Zhiyuan","Lai Ka-ying"]}
+    ];
+    $('peopleCount').textContent=STATIONS.reduce((n,s)=>n+s.people.length,0);
+    $('peopleNames').innerHTML=STATIONS.map(s=>'<span class="st">'+s.name+' · '+s.people.length+'</span> '+s.people.join(' · ')).join('<br>');
+  }
+
   globeImg.addEventListener('load',placeISS);
   window.addEventListener('resize',placeISS);
-  function updatePeople(){
-    // Datos fijos de junio 2026 — no se consulta ninguna API en vivo.
-    // Para actualizarlos (p. ej. semanalmente o tras un relevo de tripulación),
-    // edita el número y la lista de nombres de abajo.
-    // ISS · Expedición 74 (7) + Tiangong · Shenzhou 23 (3) = 10 humanos en el espacio.
-    const CREW={
-      number:10,
-      people:[
-        "Sergey Kud-Sverchkov","Sergey Mikayev","Christopher Williams",
-        "Jessica Meir","Jack Hathaway","Sophie Adenot","Andrey Fedyaev",
-        "Lai Ka-ying","Zhang Zhiyuan","Zhu Yang-zhu"
-      ]
-    };
-    $('peopleCount').textContent=CREW.number;
-    $('peopleNames').textContent=CREW.people.join(' · ');
-  }
-  $('closeIss').onclick=()=>$('iss-window').classList.add('min');
-  $('pillIss').onclick=()=>$('iss-window').classList.remove('min');
-  updateISS();updatePeople();     // self-scheduling: fast retries until located, then every 15 s
+  $('closeIss').onclick=()=>win.classList.add('min');
+  $('pillIss').onclick=()=>{ win.classList.remove('min'); render(); requestAnimationFrame(render); };
+
+  loadOrbit();
+  if(ORB){ issLon=subpoint(Date.now()).lon; }
+  else { issLon=0; }
+  pickGlobe();
+  render();
+  setInterval(render,1000);                  // movimiento continuo, calculado en local
+  updateLive(); updatePeople();
 })();
 
 /* =====================================================================
@@ -2674,24 +3026,144 @@ const ASTRO_BIO={
     return buildBody(state.view);
   }
 
-  /* -------- solar system (real-ish current positions, orbits, spin) -------- */
+  /* -------- solar system: real current positions, static; planets rendered in 3D --------
+     Positions are the planets' real heliocentric longitudes for today and do NOT
+     drift, so Earth and the Moon are always easy to click. Each body is drawn as a
+     real 3D sphere (WebGL2): equirectangular texture, slow axial rotation, axial
+     tilt and lighting from the Sun (phases). If WebGL2 is not available the
+     previous flat images are shown instead.
+     Planet textures: Solar System Scope (solarsystemscope.com) · CC BY 4.0. */
   const PLANETS=[
-    {id:'mercury',img:'images/mercury.png',au:0.39,size:11,L0:252.25,n:4.09233445, spin:24},
-    {id:'venus',  img:'images/venus.webp', au:0.72,size:16,L0:181.98,n:1.60213034, spin:30},
-    {id:'earth',  img:'images/earth.jpg',  au:1.00,size:18,L0:100.46,n:0.98560912, spin:16, body:'earth', moon:true},
-    {id:'mars',   img:'images/mars.png',   au:1.52,size:14,L0:355.43,n:0.52402068, spin:18},
-    {id:'jupiter',img:'images/jupiter.png',au:5.20,size:38,L0:34.35, n:0.08308529, spin:10},
-    {id:'saturn', img:'images/saturn.png', au:9.55,size:48,L0:50.08, n:0.03344414, spin:12, ring:true},
-    {id:'uranus', img:'images/uranus.png', au:19.2,size:26,L0:314.05,n:0.011725806,spin:16},
-    {id:'neptune',img:'images/neptune.png',au:30.1,size:25,L0:304.35,n:0.005995147,spin:16}
+    {id:'mercury',img:'images/mercury.png',tex:'images/planets/mercury.jpg',au:0.39,size:11,L0:252.25,n:4.09233445, rot:70,  tilt:0.03},
+    {id:'venus',  img:'images/venus.webp', tex:'images/planets/venus.jpg',  au:0.72,size:16,L0:181.98,n:1.60213034, rot:-240,tilt:-0.05},
+    {id:'earth',  img:'images/earth.jpg',  tex:'images/planets/earth.jpg',  au:1.00,size:18,L0:100.46,n:0.98560912, rot:60,  tilt:0.41, body:'earth', moon:true, atmo:true},
+    {id:'mars',   img:'images/mars.png',   tex:'images/planets/mars.jpg',   au:1.52,size:14,L0:355.43,n:0.52402068, rot:62,  tilt:0.44},
+    {id:'jupiter',img:'images/jupiter.png',tex:'images/planets/jupiter.jpg',au:5.20,size:38,L0:34.35, n:0.08308529, rot:30,  tilt:0.05},
+    {id:'saturn', img:'images/saturn.png', tex:'images/planets/saturn.jpg', au:9.55,size:48,L0:50.08, n:0.03344414, rot:32,  tilt:0.47, ring:true},
+    {id:'uranus', img:'images/uranus.png', tex:'images/planets/uranus.jpg', au:19.2,size:26,L0:314.05,n:0.011725806,rot:-45, tilt:1.71},
+    {id:'neptune',img:'images/neptune.png',tex:'images/planets/neptune.jpg',au:30.1,size:25,L0:304.35,n:0.005995147,rot:44,  tilt:0.49}
   ];
+  const MOON_BODY={id:'moon',tex:'images/planets/moon.jpg',rot:0,tilt:0.12};
+  const SUN_BODY={id:'sun',tex:'images/planets/sun.jpg',rot:150,tilt:0.12};
   const PNAME={mercury:{en:'Mercury',es:'Mercurio'},venus:{en:'Venus',es:'Venus'},earth:{en:'Earth',es:'Tierra'},
     mars:{en:'Mars',es:'Marte'},jupiter:{en:'Jupiter',es:'Júpiter'},saturn:{en:'Saturn',es:'Saturno'},
     uranus:{en:'Uranus',es:'Urano'},neptune:{en:'Neptune',es:'Neptuno'},moon:{en:'Moon',es:'Luna'}};
   let SOLAR=null;
-  function stopSolar(){ if(SOLAR){ cancelAnimationFrame(SOLAR.raf); window.removeEventListener('resize',SOLAR.onResize); if(SOLAR.ro)SOLAR.ro.disconnect(); SOLAR=null; } }
+  function stopSolar(){ if(SOLAR){ cancelAnimationFrame(SOLAR.raf); window.removeEventListener('resize',SOLAR.onResize); if(SOLAR.ro)SOLAR.ro.disconnect(); if(SOLAR.gl)SOLAR.gl.destroy(); SOLAR=null; } }
   const TILT=0.34;          // vertical squash -> oblique "edge-on" perspective
   const SIZE=3;             // planet display scale
+  const SAT_BODY=0.62;      // Saturn's globe relative to its box (the rest is rings)
+
+  /* ---- tiny WebGL2 sphere renderer (one canvas for the whole system) ---- */
+  function makeSolarGL(stage){
+    const cv=document.createElement('canvas'); cv.className='solar-gl'; cv.setAttribute('aria-hidden','true');
+    const gl=cv.getContext('webgl2',{alpha:true,premultipliedAlpha:true,antialias:true});
+    if(!gl) return null;
+    const VS=`#version 300 es
+in vec2 a; uniform vec2 uC; uniform float uH; uniform vec2 uR; out vec2 vP;
+void main(){ vP=a; vec2 px=uC+a*vec2(uH,-uH); gl_Position=vec4(px/uR*2.0-1.0,0.0,1.0); gl_Position.y*=-1.0; }`;
+    const FS=`#version 300 es
+precision highp float;
+in vec2 vP; out vec4 o;
+uniform sampler2D uT; uniform sampler2D uRing;
+uniform float uQ, uSpin, uTilt, uAmb, uRingRatio; uniform vec3 uL; uniform int uK;
+const float PI=3.14159265;
+vec3 surf(vec3 n){
+  float c=cos(uTilt), s=sin(uTilt);
+  vec3 b=vec3(c*n.x-s*n.y, s*n.x+c*n.y, n.z);
+  float u=(atan(b.x,b.z)+uSpin)/(2.0*PI)+0.5, v=0.5-asin(clamp(b.y,-1.0,1.0))/PI;
+  float u1=fract(u), u2=fract(u+0.5)-0.5;
+  bool A=fwidth(u1)<=fwidth(u2);
+  vec2 dx=vec2(A?dFdx(u1):dFdx(u2),dFdx(v)), dy=vec2(A?dFdy(u1):dFdy(u2),dFdy(v));
+  return textureGrad(uT,vec2(A?u1:fract(u2),v),dx,dy).rgb;
+}
+void main(){
+  vec2 p=vP*uQ;                       // units of planet radius
+  float r=length(p), aa=fwidth(r)*1.2;
+  vec4 col=vec4(0.0);
+  float disc=1.0-smoothstep(1.0-aa,1.0,r);
+  if(disc>0.0){
+    vec3 n=vec3(p,sqrt(max(0.0,1.0-r*r)));
+    vec3 c=surf(n);
+    if(uK==2){ c*=(0.62+0.38*n.z)*1.18; }            // Sun: emissive, limb darkening
+    else{
+      float d=dot(n,uL);
+      float lit=clamp((d+0.06)/1.06,0.0,1.0);
+      c*=uAmb+(1.0-uAmb)*lit+0.22*n.z*(1.0-lit);      // sunlight + soft fill so the night side keeps its shape
+      if(uK==3){ c+=vec3(0.30,0.55,1.0)*pow(1.0-n.z,2.6)*(0.15+0.85*clamp(d+0.35,0.0,1.0))*0.75; }
+    }
+    col=vec4(c*disc,disc);
+  }
+  if(uK==3 && r>1.0-aa){                              // thin atmosphere halo
+    float h=(1.0-smoothstep(1.0,1.085,r))*0.55*clamp(dot(normalize(vec3(p,0.0)),uL)+0.5,0.0,1.0);
+    col=col+vec4(vec3(0.35,0.62,1.0)*h,h)*(1.0-col.a);
+  }
+  if(uK==1){                                          // Saturn's rings
+    float c=cos(uTilt), s=sin(uTilt);
+    vec2 q=vec2(c*p.x-s*p.y, s*p.x+c*p.y);
+    float rr=length(vec2(q.x,q.y/uRingRatio));
+    float t=(rr-1.24)/(2.27-1.24);
+    if(t>0.0&&t<1.0){
+      vec4 rg=texture(uRing,vec2(t,0.5));
+      float ra=rg.a*0.9;
+      vec3 rc=rg.rgb*vec3(1.0,0.92,0.78)*(0.55+0.45*clamp(1.0-max(0.0,-uL.z),0.0,1.0));
+      bool front=q.y<0.0;
+      if(front||col.a<0.01){ col=vec4(rc*ra,ra)+col*(1.0-ra); }
+      else{ col=col+vec4(rc*ra,ra)*(1.0-col.a); }
+    }
+  }
+  o=col;
+}`;
+    function sh(type,src){ const s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s); if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; }
+    let prog;
+    try{ prog=gl.createProgram(); gl.attachShader(prog,sh(gl.VERTEX_SHADER,VS)); gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FS)); gl.linkProgram(prog);
+      if(!gl.getProgramParameter(prog,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog)); }
+    catch(e){ console.warn('[INS] solar GL',e); return null; }
+    const U={}; ['uC','uH','uR','uT','uRing','uQ','uSpin','uTilt','uAmb','uRingRatio','uL','uK'].forEach(k=>U[k]=gl.getUniformLocation(prog,k));
+    const vao=gl.createVertexArray(); gl.bindVertexArray(vao);
+    const buf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    const loc=gl.getAttribLocation(prog,'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+    const aniso=gl.getExtension('EXT_texture_filter_anisotropic');
+    function loadTex(src){
+      return new Promise((res,rej)=>{ const im=new Image(); im.onload=()=>{
+        const t=gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D,t);
+        gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
+        gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);
+        gl.generateMipmap(gl.TEXTURE_2D);
+        gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);
+        gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+        if(aniso) gl.texParameterf(gl.TEXTURE_2D,aniso.TEXTURE_MAX_ANISOTROPY_EXT,4);
+        res(t); }; im.onerror=()=>rej(src); im.src=src; });
+    }
+    stage.appendChild(cv);
+    let W=0,H=0,dpr=1, alive=true;
+    function resize(){ dpr=Math.min(window.devicePixelRatio||1,2); W=stage.clientWidth; H=stage.clientHeight;
+      cv.width=Math.max(1,Math.round(W*dpr)); cv.height=Math.max(1,Math.round(H*dpr)); }
+    function draw(items){
+      if(!alive) return;
+      if(cv.width!==Math.round(W*dpr)||!W) resize();
+      gl.viewport(0,0,cv.width,cv.height); gl.clearColor(0,0,0,0); gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.useProgram(prog); gl.bindVertexArray(vao);
+      gl.enable(gl.BLEND); gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
+      gl.uniform2f(U.uR,cv.width,cv.height); gl.uniform1i(U.uT,0); gl.uniform1i(U.uRing,1);
+      items.forEach(it=>{
+        if(!it.tex) return;
+        const q=it.kind===1?2.3:(it.kind===3?1.1:1.0);
+        gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,it.tex);
+        gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D,it.ring||it.tex);
+        gl.uniform2f(U.uC,it.x*dpr,it.y*dpr); gl.uniform1f(U.uH,it.R*q*dpr); gl.uniform1f(U.uQ,q);
+        gl.uniform1f(U.uSpin,it.spin); gl.uniform1f(U.uTilt,it.tilt); gl.uniform1f(U.uAmb,it.amb);
+        gl.uniform1f(U.uRingRatio,0.34); gl.uniform3f(U.uL,it.L[0],it.L[1],it.L[2]); gl.uniform1i(U.uK,it.kind);
+        gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+      });
+    }
+    function destroy(){ alive=false; const ext=gl.getExtension('WEBGL_lose_context'); if(ext) ext.loseContext(); cv.remove(); }
+    return {cv,loadTex,draw,resize,destroy};
+  }
+
   function buildSolar(){
     const hint=LG()==='es'?'Toca la Tierra o la Luna':'Tap Earth or the Moon';
     const TX=(typeof INS_TEX!=='undefined')?INS_TEX:null;
@@ -2707,37 +3179,111 @@ const ASTRO_BIO={
         +'<span class="pbody"><img src="'+moonImg+'" alt="'+esc(PNAME.moon[LG()])+'"></span>'
         +'<span class="plabel">'+esc(PNAME.moon[LG()])+'</span></div>'; }
     });
-    html+='<div class="solar-hint">'+hint+'</div></div>';
+    html+='<div class="solar-hint">'+hint+'</div>'
+      +'<div class="solar-credit">'+(LG()==='es'?'Texturas':'Textures')+': <a href="https://www.solarsystemscope.com/textures/" target="_blank" rel="noopener">Solar System Scope</a> · CC BY 4.0</div></div>';
     root.innerHTML=html;
     const stage=root.querySelector('#solar');
     const els={}; root.querySelectorAll('[data-planet]').forEach(el=>els[el.getAttribute('data-planet')]=el);
     const orbits={}; root.querySelectorAll('[data-orbit]').forEach(el=>orbits[el.getAttribute('data-orbit')]=el);
+    const sunEl=stage.querySelector('.sun');
     const days=(Date.now()/86400000)-10957.5;   // days since J2000
-    SOLAR={raf:0,t0:performance.now(),geo:{cx:0,cy:0}};
+    let TL=TILT, SIN_E=TILT, COS_E=Math.sqrt(1-TILT*TILT), K=1, MR=13.5;
+    SOLAR={raf:0,t0:performance.now(),geo:{cx:0,cy:0},gl:null,items:[]};
+    const GLR=makeSolarGL(stage); SOLAR.gl=GLR;
+    const reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    // items to render in 3D (positions filled in by layout)
+    const items=[];
+    const sunItem={id:'sun',kind:2,tilt:SUN_BODY.tilt,rot:SUN_BODY.rot,amb:1,L:[0,0,1],x:0,y:0,R:10,spin:0,tex:null,src:SUN_BODY.tex,ph:0};
+    items.push(sunItem);
+    PLANETS.forEach(p=>items.push({id:p.id,kind:p.ring?1:(p.atmo?3:0),tilt:p.tilt,rot:p.rot,amb:0.2,L:[0,0,1],x:0,y:0,R:10,spin:0,tex:null,
+      src:p.tex,ringSrc:p.ring?'images/planets/saturn_ring.png':null,ph:(p.L0%360)/57.3}));
+    const moonItem={id:'moon',kind:0,tilt:MOON_BODY.tilt,rot:0,amb:0.2,L:[0,0,1],x:0,y:0,R:10,spin:2.6,tex:null,src:MOON_BODY.tex,ph:0};
+    items.push(moonItem);
+    const byIdIt={}; items.forEach(it=>byIdIt[it.id]=it);
+
     function layout(){
       const W=stage.clientWidth,H=stage.clientHeight; SOLAR.geo={cx:W/2,cy:H/2};
-      const Rmax=Math.max(120, Math.min(W/2-70, (H/2-40)/TILT));
-      PLANETS.forEach(p=>{ p._r=95+(Math.sqrt(p.au)/Math.sqrt(30.1))*(Rmax-100);
-        const o=orbits[p.id]; if(o){ o.style.width=(p._r*2)+'px'; o.style.height=(p._r*2*TILT)+'px'; }
-        const el=els[p.id]; if(el){ el.style.width=el.style.height=(p.size*SIZE)+'px'; } });
-      if(els.moon){ els.moon.style.width=els.moon.style.height='27px'; }
+      const cx=W/2, cy=H/2;
+      // narrow screens: look from higher up (less squash) and shrink the planets
+      TL=W<700?0.82:TILT; SIN_E=TL; COS_E=Math.sqrt(1-TL*TL);
+      K=Math.max(0.42,Math.min(1,W/1250)); MR=Math.max(10,13.5*K);
+      const Rmax=W<700?Math.max(110,Math.min(W/2-26,(H/2-46)/TL)):Math.max(120, Math.min(W/2-70, (H/2-40)/TL));
+      const R0=W<700?Math.max(sunEl.clientWidth*0.39+20,Rmax*0.2):95;
+      const boxOf=p=>p.moon?Math.max(30,p.size*SIZE*K):p.size*SIZE*K;
+      sunItem.x=cx; sunItem.y=cy; sunItem.R=(sunEl.clientWidth||100)/2*0.78;
+      PLANETS.forEach(p=>{
+        p._r=R0+(Math.sqrt(p.au)/Math.sqrt(30.1))*(Rmax-R0-5);
+        p._ang=(p.L0+p.n*days)*Math.PI/180;          // real heliocentric longitude for today
+        const box=boxOf(p); p._hit=p.ring?box/2*SAT_BODY*1.9:box/2;
+      });
+      const posOf=p=>({x:cx+Math.cos(p._ang)*p._r, y:cy+Math.sin(p._ang)*p._r*TL});
+      // Keep every body visually separate. Planets are placed one by one (Earth first, at its
+      // exact position); if one would overlap an already placed body it slides along its
+      // orbit to the nearest free spot, so Earth and the Moon are always easy to click.
+      const earthP=PLANETS.find(p=>p.moon);
+      const placed=[];
+      const earthPos=posOf(earthP), side0=(earthPos.x<cx)?-1:1;
+      placed.push({x:earthPos.x,y:earthPos.y,r:earthP._hit});
+      placed.push({x:earthPos.x+side0*(earthP._hit+MR+12),y:earthPos.y-10,r:MR});   // the Moon
+      ['jupiter','saturn','mars','venus','mercury','uranus','neptune'].forEach(id=>{
+        const p=PLANETS.find(q=>q.id===id), a0=p._ang;
+        const gap=ang=>{ p._ang=ang; const q=posOf(p); return Math.min(...placed.map(o=>Math.hypot(o.x-q.x,o.y-q.y)-o.r-p._hit)); };
+        let ok=false, bestA=a0, bestG=-1e9;
+        for(let k=0;k<=105&&!ok;k++){ for(const sg of (k?[1,-1]:[1])){ const an=a0+sg*k*0.03, g=gap(an);
+          if(g>=10){ bestA=an; ok=true; break; } if(g>bestG){ bestG=g; bestA=an; } } }
+        p._ang=bestA;
+        const q=posOf(p); placed.push({x:q.x,y:q.y,r:p._hit});
+      });
+      PLANETS.forEach(p=>{
+        const o=orbits[p.id]; if(o){ o.style.width=(p._r*2)+'px'; o.style.height=(p._r*2*TL)+'px'; }
+        const el=els[p.id], box=boxOf(p);
+        if(el){ el.style.width=el.style.height=box+'px'; }
+        const c=Math.cos(p._ang), s=Math.sin(p._ang);
+        const x=cx+c*p._r, y=cy+s*p._r*TL;
+        if(el){ el.style.left=x+'px'; el.style.top=y+'px'; el.style.zIndex=Math.round((s*0.5+0.5)*80)+5; }
+        const it=byIdIt[p.id]; it.x=x; it.y=y; it.depth=s;
+        it.R=p.ring?box/2*SAT_BODY:box/2;
+        // direction to the Sun in view space (x right, y up, z toward viewer)
+        const Lx=-c, Ly=s*SIN_E, Lz=-s*COS_E, Ln=Math.hypot(Lx,Ly,Lz)||1;
+        it.L=[Lx/Ln,Ly/Ln,Lz/Ln];
+        if(p.moon&&els.moon){
+          const mR=MR, side=(x<cx)?-1:1;            // Moon sits on the outer side of Earth: never overlaps it
+          const mx=x+side*(box/2+mR+12), my=y-10;
+          els.moon.style.width=els.moon.style.height=(mR*2)+'px';
+          els.moon.style.left=mx+'px'; els.moon.style.top=my+'px'; els.moon.style.zIndex=Math.round((s*0.5+0.5)*80)+7;
+          moonItem.x=mx; moonItem.y=my; moonItem.R=mR; moonItem.depth=s+0.001; moonItem.L=it.L;
+        }
+      });
+      sunItem.depth=0;
+      if(GLR) GLR.resize();
+      draw(performance.now());
+    }
+    let last=0;
+    function draw(now){
+      if(!GLR||!SOLAR||!SOLAR.glReady) return;
+      const t=(now-SOLAR.t0)/1000;
+      items.forEach(it=>{ it.spin=it.ph+(reduce||!it.rot?0:t*2*Math.PI/it.rot); });
+      const order=items.slice().sort((a,b)=>(a.depth||0)-(b.depth||0));
+      GLR.draw(order);
     }
     function tick(now){
-      const {cx,cy}=SOLAR.geo, el2=(now-SOLAR.t0)/1000;
-      PLANETS.forEach(p=>{
-        const ang=(p.L0+p.n*days)*Math.PI/180 - el2*(0.006+p.n*0.0015);   // start at real position, drift slowly
-        const s=Math.sin(ang), x=cx+Math.cos(ang)*p._r, y=cy+s*p._r*TILT;
-        const el=els[p.id]; if(el){ el.style.left=x+'px'; el.style.top=y+'px'; el.style.zIndex=Math.round((s*0.5+0.5)*80)+5; }
-        if(p.moon&&els.moon){ const ma=-el2*0.5, sm=Math.sin(ma), mr=(p.size*SIZE)/2+16;
-          els.moon.style.left=(x+Math.cos(ma)*mr)+'px'; els.moon.style.top=(y+sm*mr*TILT)+'px';
-          els.moon.style.zIndex=(Math.round((s*0.5+0.5)*80)+5)+(sm>0?2:-2); }
-      });
+      if(!SOLAR) return;
+      if(now-last>33 && !document.hidden){ last=now; draw(now); }
       SOLAR.raf=requestAnimationFrame(tick);
     }
     SOLAR.onResize=layout; window.addEventListener('resize',layout);
     // The section starts hidden (display:none → 0px). Re-layout once it gets a real size.
     if('ResizeObserver' in window){ SOLAR.ro=new ResizeObserver(()=>layout()); SOLAR.ro.observe(stage); }
-    layout(); tick(performance.now());
+    layout();
+    if(GLR){
+      const jobs=items.map(it=>GLR.loadTex(it.src).then(t=>{it.tex=t;}));
+      items.forEach(it=>{ if(it.ringSrc) jobs.push(GLR.loadTex(it.ringSrc).then(t=>{it.ring=t;})); });
+      Promise.all(jobs).then(()=>{
+        if(!SOLAR||SOLAR.gl!==GLR) return;
+        SOLAR.glReady=true; stage.classList.add('gl-on'); draw(performance.now());
+        if(!reduce) SOLAR.raf=requestAnimationFrame(tick);
+      }).catch(e=>{ console.warn('[INS] planet textures',e); });   // keep flat images
+    }
     root.querySelectorAll('[data-body]').forEach(el=>el.addEventListener('click',()=>openBody(el.getAttribute('data-body'))));
   }
 
