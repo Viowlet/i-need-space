@@ -1088,6 +1088,8 @@ body.sectioned #recorrido.page-section.active .sv-frame #svIframe{
 .solar-credit a{ color:inherit }
 @media(max-width:640px){ .solar-credit{ top:8px; bottom:auto } .solar .planet[data-planet="moon"] .plabel{ white-space:normal; width:96px; text-align:center; line-height:1.4 } }
 /* ---- Mars ---- */
+.kb-body .kb-bodygrid{ align-items:start }
+.kb-body .kb-globe{ height:clamp(360px,64vh,620px); min-height:0; overflow:hidden }
 .kb-mars .kb-body-top{ justify-content:flex-start }
 .kb-bodygrid.mars-grid{ align-items:start }
 .kb-mars .kb-globe{ height:clamp(360px,64vh,620px); min-height:0; overflow:hidden }
@@ -1100,12 +1102,12 @@ body.sectioned #recorrido.page-section.active .sv-frame #svIframe{
 .mars-filters{ display:flex; flex-wrap:wrap; gap:6px }
 .mars-f{ font:inherit; font-size:.68rem; letter-spacing:.06em; cursor:pointer; color:var(--ink-soft); background:rgba(255,255,255,.04);
   border:1px solid var(--line); border-radius:99px; padding:5px 10px }
-.mars-f[aria-pressed="true"]{ background:rgba(255,155,107,.18); border-color:#ff9b6b; color:#fff }
+.mars-f[aria-pressed="true"]{ background:rgba(255,255,255,.08); border-color:var(--ms-acc,#ff9b6b); color:#fff }
 .mars-list{ display:flex; flex-direction:column; gap:4px; overflow-y:auto; max-height:min(62vh,560px); padding-right:4px }
 .mars-item{ font:inherit; text-align:left; cursor:pointer; display:flex; gap:10px; align-items:flex-start; color:var(--ink-soft);
   background:transparent; border:1px solid transparent; border-radius:10px; padding:7px 9px; font-size:.8rem }
 .mars-item:hover{ background:rgba(255,255,255,.05); color:#fff }
-.mars-item[aria-selected="true"]{ background:rgba(255,155,107,.14); border-color:rgba(255,155,107,.55); color:#fff }
+.mars-item[aria-selected="true"]{ background:rgba(255,255,255,.07); border-color:var(--ms-acc,#ff9b6b); color:#fff }
 .mars-item .dot{ width:8px; height:8px; border-radius:50%; margin-top:5px; flex:none; box-shadow:0 0 8px 1px currentColor }
 .mars-item .nm small{ display:block; font-size:.64rem; color:var(--ink-faint); margin-top:2px }
 .mars-legend{ position:absolute; left:12px; bottom:12px; z-index:3; display:flex; flex-wrap:wrap; gap:12px; font-size:.62rem; color:var(--ink-soft);
@@ -1118,12 +1120,14 @@ body.sectioned #recorrido.page-section.active .sv-frame #svIframe{
 .mars-chips span{ font-size:.62rem; letter-spacing:.06em; border:1px solid var(--line); border-radius:99px; padding:3px 8px; color:var(--ink-soft) }
 .mars-chips .st{ font-weight:600 }
 .mars-loc{ font-size:.7rem; color:var(--ink-faint); margin-bottom:6px }
-.mars-card h5{ font-size:.62rem; letter-spacing:.16em; text-transform:uppercase; color:#ff9b6b; margin:12px 0 5px; font-weight:600 }
+.mars-card h5{ font-size:.62rem; letter-spacing:.16em; text-transform:uppercase; color:var(--ms-acc,#ff9b6b); margin:12px 0 5px; font-weight:600 }
 .mars-card p{ font-size:.82rem; line-height:1.55; color:var(--ink-soft); margin:0 0 6px }
+.mars-crew{ font-size:.74rem; color:#fff; margin:2px 0 4px; line-height:1.45 }
+.mars-crew span{ display:block; font-size:.58rem; letter-spacing:.16em; text-transform:uppercase; color:#ffd166; margin-bottom:2px }
 .mars-credit{ font-size:.62rem; color:var(--ink-faint); margin-top:10px; opacity:.8 }
 .mars-credit a{ color:inherit }
 .mars-tip{ font-size:.72rem; background:rgba(4,12,26,.85); border:1px solid var(--line); border-radius:8px; padding:5px 8px; color:#fff }
-@media(max-width:980px){ .kb-bodygrid.mars-grid{ grid-template-columns:1fr } .kb-mars .kb-globe{ height:52vh } .kb-mars .mars-list{ max-height:40vh } .kb-mars .mars-detail{ max-height:none } .mars-stats{ margin-left:0 } }
+@media(max-width:980px){ .kb-body .kb-globe{ height:52vh } .kb-bodygrid.mars-grid{ grid-template-columns:1fr } .kb-mars .kb-globe{ height:52vh } .kb-mars .mars-list{ max-height:40vh } .kb-mars .mars-detail{ max-height:none } .mars-stats{ margin-left:0 } }
 /* ---- navigable body (Earth / Moon) ---- */
 .kb-body-top{ display:flex; align-items:center; gap:14px; margin-bottom:12px; flex-wrap:wrap }
 .kb-back{ font:inherit; font-size:.8rem; cursor:pointer; color:var(--sky);
@@ -3061,7 +3065,7 @@ const ASTRO_BIO={
   function buildShell(){
     destroyGlobe(); stopSolar();
     if(state.view==='solar') return buildSolar();
-    if(state.view==='mars') return buildMars();
+    if(state.view==='mars'||state.view==='moon') return buildMissions(state.view);
     return buildBody(state.view);
   }
 
@@ -3468,76 +3472,321 @@ void main(){
       u:{en:'They will continue MAVEN\'s work and improve space-weather forecasts for future crews.',es:'Continuarán el trabajo de MAVEN y mejorarán las previsiones de clima espacial para futuras tripulaciones.'}}
   ];
 
-  /* -------- navigable Mars: missions, robots and beacons -------- */
-  function buildMars(){
-    const L=LG(), es=L==='es';
+  /* -------- MOON: every major mission, robots and human landings (data: Oct 2026) -------- */
+  const MOON_KIND={
+    flyby:{en:'Flyby',es:'Sobrevuelo'}, impactor:{en:'Impactor',es:'Impactador'}, lander:{en:'Lander',es:'Módulo de aterrizaje'},
+    rover:{en:'Rover',es:'Rover'}, sample:{en:'Sample return',es:'Retorno de muestras'}, orbiter:{en:'Orbiter',es:'Orbitador'},
+    crew:{en:'Crewed landing',es:'Alunizaje tripulado'}, crewfly:{en:'Crewed flight around the Moon',es:'Vuelo tripulado alrededor de la Luna'},
+    test:{en:'Uncrewed test flight',es:'Vuelo de prueba sin tripulación'} };
+  const MOON_MISSIONS=[
+    {id:'luna1',name:'Luna 1',ag:'USSR',yrs:'1959',kind:'flyby',st:'ended',
+      p:{en:'Hit the Moon — it missed, becoming the first spacecraft to escape Earth\'s gravity.',es:'Impactar en la Luna: falló y se convirtió en la primera nave en escapar de la gravedad terrestre.'},
+      d:{en:'Passed about 6,000 km from the Moon and discovered the solar wind, the stream of particles flowing from the Sun.',es:'Pasó a unos 6000 km de la Luna y descubrió el viento solar, el flujo de partículas que sale del Sol.'},
+      u:{en:'The solar wind it detected is today a key factor in radiation forecasts for astronauts.',es:'El viento solar que detectó es hoy un factor clave en las previsiones de radiación para los astronautas.'}},
+    {id:'luna2',name:'Luna 2',ag:'USSR',yrs:'1959',kind:'impactor',st:'ended',lat:29.1,lng:0,
+      p:{en:'Reach the surface of another world for the first time.',es:'Llegar por primera vez a la superficie de otro mundo.'},
+      d:{en:'Impacted the Moon on 14 September 1959 and showed that the Moon has no significant global magnetic field.',es:'Impactó en la Luna el 14 de septiembre de 1959 y demostró que la Luna no tiene un campo magnético global significativo.'},
+      u:{en:'Without a magnetic shield, the lunar surface is exposed to solar and cosmic radiation — a basic constraint for any future base.',es:'Sin escudo magnético, la superficie lunar está expuesta a la radiación solar y cósmica: un condicionante básico para cualquier base futura.'}},
+    {id:'luna3',name:'Luna 3',ag:'USSR',yrs:'1959',kind:'flyby',st:'ended',
+      p:{en:'Photograph the side of the Moon that never faces Earth.',es:'Fotografiar la cara de la Luna que nunca mira a la Tierra.'},
+      d:{en:'The first images of the far side, showing it has almost none of the dark lava plains (maria) of the near side.',es:'Las primeras imágenes de la cara oculta, que mostraron que casi no tiene las llanuras oscuras de lava (mares) de la cara visible.'},
+      u:{en:'That asymmetry is still being studied to understand how the Moon\'s crust formed; Chang\'e 6 brought back far-side samples in 2024 to test it.',es:'Esa asimetría se sigue estudiando para entender cómo se formó la corteza lunar; la Chang\'e 6 trajo muestras de la cara oculta en 2024 para comprobarlo.'}},
+    {id:'ranger7',name:'Ranger 7',ag:'NASA',yrs:'1964',kind:'impactor',st:'ended',lat:-10.35,lng:-20.58,
+      p:{en:'Take close-up pictures right until impact, to see whether a spacecraft could land.',es:'Tomar imágenes cercanas hasta el impacto, para ver si una nave podría aterrizar.'},
+      d:{en:'More than 4,300 images, the last ones from a few hundred metres up, showing craters down to about one metre across.',es:'Más de 4300 imágenes, las últimas a pocos cientos de metros, con cráteres de hasta un metro.'},
+      u:{en:'They showed the surface was rough but not impossible, and helped design the Surveyor and Apollo landers.',es:'Mostraron que la superficie era irregular pero no imposible, y ayudaron a diseñar los aterrizadores Surveyor y Apolo.'}},
+    {id:'luna9',name:'Luna 9',ag:'USSR',yrs:'1966',kind:'lander',st:'ended',lat:7.08,lng:-64.37,
+      p:{en:'Achieve the first soft landing on another world.',es:'Lograr el primer aterrizaje suave en otro mundo.'},
+      d:{en:'Sent the first panoramic photos from the lunar surface on 3–4 February 1966.',es:'Envió las primeras fotos panorámicas desde la superficie lunar el 3 y 4 de febrero de 1966.'},
+      u:{en:'It proved the surface was firm and would not swallow a spacecraft in deep dust — a fear that worried Apollo engineers.',es:'Demostró que la superficie era firme y no se tragaría una nave en polvo profundo, un temor de los ingenieros del Apolo.'}},
+    {id:'luna10',name:'Luna 10',ag:'USSR',yrs:'1966',kind:'orbiter',st:'ended',
+      p:{en:'Become the first artificial satellite of the Moon.',es:'Convertirse en el primer satélite artificial de la Luna.'},
+      d:{en:'Measured radiation, micrometeorites and the Moon\'s gravity from orbit for almost two months.',es:'Midió desde la órbita la radiación, los micrometeoritos y la gravedad lunar durante casi dos meses.'},
+      u:{en:'Its gravity data were the first hints that the Moon\'s mass is unevenly distributed, which affects how spacecraft orbit it.',es:'Sus datos de gravedad fueron los primeros indicios de que la masa de la Luna está repartida de forma irregular, lo que afecta a las órbitas de las naves.'}},
+    {id:'surveyor1',name:'Surveyor 1',ag:'NASA',yrs:'1966',kind:'lander',st:'ended',lat:-2.47,lng:-43.34,
+      p:{en:'First U.S. soft landing, to test the technology and the ground for Apollo.',es:'Primer aterrizaje suave de EE. UU., para probar la tecnología y el terreno de cara al Apolo.'},
+      d:{en:'More than 11,000 photos and measurements of how firm and cold the lunar soil is.',es:'Más de 11 000 fotos y medidas de la firmeza y la temperatura del suelo lunar.'},
+      u:{en:'Its data on the soil\'s strength were used to size the footpads of the Apollo lunar module.',es:'Sus datos sobre la resistencia del suelo se usaron para dimensionar las patas del módulo lunar del Apolo.'}},
+    {id:'lunarorbiter',name:'Lunar Orbiter 1–5',ag:'NASA',yrs:'1966–1967',kind:'orbiter',st:'ended',
+      p:{en:'Five orbiters to map the Moon and choose safe landing sites for Apollo.',es:'Cinco orbitadores para cartografiar la Luna y elegir lugares de aterrizaje seguros para el Apolo.'},
+      d:{en:'Photographed about 99% of the surface and took the first picture of Earth seen from near the Moon (1966).',es:'Fotografiaron cerca del 99 % de la superficie y tomaron la primera imagen de la Tierra vista desde cerca de la Luna (1966).'},
+      u:{en:'Their maps chose the Apollo landing sites; tracking their orbits revealed "mascons", dense patches under the lava plains.',es:'Sus mapas sirvieron para elegir los lugares del Apolo; el seguimiento de sus órbitas reveló los "mascones", zonas densas bajo los mares.'}},
+    {id:'surveyor3',name:'Surveyor 3',ag:'NASA',yrs:'1967',kind:'lander',st:'ended',lat:-3.02,lng:-23.42,
+      p:{en:'Study the soil with a mechanical scoop.',es:'Estudiar el suelo con una pala mecánica.'},
+      d:{en:'Dug trenches and photographed how the soil behaved. Two and a half years later the Apollo 12 crew walked to it.',es:'Excavó zanjas y fotografió cómo se comportaba el suelo. Dos años y medio después, la tripulación del Apolo 12 llegó caminando hasta él.'},
+      u:{en:'Apollo 12 brought its camera back to Earth, letting engineers study how materials age after years on the Moon.',es:'El Apolo 12 trajo su cámara a la Tierra, lo que permitió estudiar cómo envejecen los materiales tras años en la Luna.'}},
+    {id:'apollo8',name:'Apollo 8',ag:'NASA',yrs:'1968',kind:'crewfly',st:'ended',crewNames:'Frank Borman · Jim Lovell · Bill Anders',
+      p:{en:'First humans to leave Earth orbit and circle the Moon (ten orbits).',es:'Primeros humanos en salir de la órbita terrestre y dar vueltas a la Luna (diez órbitas).'},
+      d:{en:'The first human view of the far side and the "Earthrise" photograph, taken on 24 December 1968.',es:'La primera mirada humana a la cara oculta y la fotografía "Salida de la Tierra", tomada el 24 de diciembre de 1968.'},
+      u:{en:'It proved navigation and communications to the Moon. "Earthrise" became an icon of the environmental movement and of the overview effect.',es:'Demostró la navegación y las comunicaciones hasta la Luna. "Salida de la Tierra" se convirtió en un icono del ecologismo y del efecto perspectiva.'}},
+    {id:'apollo11',name:'Apollo 11',ag:'NASA',yrs:'1969',kind:'crew',st:'ended',lat:0.6741,lng:23.4730,crewNames:'Neil Armstrong · Buzz Aldrin (surface) · Michael Collins (orbit)',
+      p:{en:'Land humans on the Moon and bring them back safely.',es:'Llevar seres humanos a la Luna y traerlos de vuelta sanos y salvos.'},
+      d:{en:'On 20 July 1969 Armstrong and Aldrin walked for about two and a half hours, collected 21.5 kg of rock and left a seismometer and a laser reflector.',es:'El 20 de julio de 1969 Armstrong y Aldrin caminaron unas dos horas y media, recogieron 21,5 kg de roca y dejaron un sismómetro y un reflector láser.'},
+      u:{en:'The reflector is still used: lasers fired from Earth show the Moon moves away about 3.8 cm a year and test Einstein\'s gravity. The rocks supported the theory that the Moon formed from a giant impact.',es:'El reflector se sigue usando: los láseres disparados desde la Tierra muestran que la Luna se aleja unos 3,8 cm al año y ponen a prueba la gravedad de Einstein. Las rocas apoyaron la teoría de que la Luna nació de un gran impacto.'}},
+    {id:'apollo12',name:'Apollo 12',ag:'NASA',yrs:'1969',kind:'crew',st:'ended',lat:-3.0124,lng:-23.4216,crewNames:'Pete Conrad · Alan Bean (surface) · Richard Gordon (orbit)',
+      p:{en:'Prove a pinpoint landing, next to the Surveyor 3 probe.',es:'Demostrar un aterrizaje de precisión, junto a la sonda Surveyor 3.'},
+      d:{en:'Landed about 160 m from Surveyor 3, made two moonwalks, set up a science station and collected 34 kg of samples.',es:'Aterrizó a unos 160 m de la Surveyor 3, hizo dos paseos lunares, instaló una estación científica y recogió 34 kg de muestras.'},
+      u:{en:'Precision landing made the later, more ambitious geological sites possible. Its seismometer recorded moonquakes for years.',es:'El aterrizaje de precisión hizo posibles los lugares geológicos más ambiciosos de las misiones siguientes. Su sismómetro registró lunamotos durante años.'}},
+    {id:'luna16',name:'Luna 16',ag:'USSR',yrs:'1970',kind:'sample',st:'ended',lat:-0.68,lng:56.30,
+      p:{en:'First robotic mission to bring lunar soil back to Earth.',es:'Primera misión robótica en traer suelo lunar a la Tierra.'},
+      d:{en:'Drilled and returned 101 g of soil from Mare Fecunditatis.',es:'Perforó y trajo 101 g de suelo del Mar de la Fecundidad.'},
+      u:{en:'It showed that robots can return samples without risking a crew — the model followed by China\'s Chang\'e 5 and 6.',es:'Demostró que los robots pueden traer muestras sin arriesgar a una tripulación, el modelo que siguen las Chang\'e 5 y 6 chinas.'}},
+    {id:'lunokhod1',name:'Luna 17 · Lunokhod 1',ag:'USSR',yrs:'1970–1971',kind:'rover',st:'ended',lat:38.32,lng:-35.0,
+      p:{en:'Drive the first remote-controlled rover on another world.',es:'Conducir el primer rover teledirigido en otro mundo.'},
+      d:{en:'Drove about 10.5 km over eleven lunar days, sending thousands of images and soil analyses.',es:'Recorrió unos 10,5 km durante once días lunares, enviando miles de imágenes y análisis del suelo.'},
+      u:{en:'Its drivers on Earth had to cope with a signal delay of several seconds — an early lesson in teleoperation and workload. Its laser reflector, found again in 2010, is still used.',es:'Sus conductores en la Tierra tenían que lidiar con un retraso de varios segundos en la señal: una lección temprana sobre teleoperación y carga de trabajo. Su reflector láser, reencontrado en 2010, se sigue usando.'}},
+    {id:'apollo13',name:'Apollo 13',ag:'NASA',yrs:'1970',kind:'crewfly',st:'ended',crewNames:'Jim Lovell · Jack Swigert · Fred Haise',
+      p:{en:'Third Moon landing — aborted after an oxygen tank exploded on the way.',es:'Tercer alunizaje, abortado tras la explosión de un tanque de oxígeno durante el viaje.'},
+      d:{en:'The crew swung around the Moon using the lunar module as a lifeboat and returned safely, setting a distance record from Earth that stood until 2026.',es:'La tripulación rodeó la Luna usando el módulo lunar como bote salvavidas y volvió a salvo, con un récord de distancia a la Tierra que duró hasta 2026.'},
+      u:{en:'It is a classic case study in crisis management, teamwork and decision-making under stress, taught in human-factors and psychology courses.',es:'Es un caso clásico de gestión de crisis, trabajo en equipo y toma de decisiones bajo estrés, que se enseña en cursos de factores humanos y psicología.'}},
+    {id:'apollo14',name:'Apollo 14',ag:'NASA',yrs:'1971',kind:'crew',st:'ended',lat:-3.6453,lng:-17.4714,crewNames:'Alan Shepard · Edgar Mitchell (surface) · Stuart Roosa (orbit)',
+      p:{en:'Explore the Fra Mauro highlands, the original target of Apollo 13.',es:'Explorar las tierras altas de Fra Mauro, el destino original del Apolo 13.'},
+      d:{en:'Two moonwalks with a hand-pulled cart, 42 kg of samples and, famously, two golf shots by Shepard.',es:'Dos paseos lunares con un carrito de mano, 42 kg de muestras y, famosamente, dos golpes de golf de Shepard.'},
+      u:{en:'Its rocks helped date the giant Imbrium impact, a reference point for the history of the inner Solar System.',es:'Sus rocas ayudaron a fechar el gran impacto de Imbrium, un punto de referencia para la historia del Sistema Solar interior.'}},
+    {id:'apollo15',name:'Apollo 15',ag:'NASA',yrs:'1971',kind:'crew',st:'ended',lat:26.1322,lng:3.6339,crewNames:'David Scott · James Irwin (surface) · Alfred Worden (orbit)',
+      p:{en:'First long-stay "science" mission, with the first Lunar Roving Vehicle.',es:'Primera misión "científica" de larga estancia, con el primer vehículo lunar (rover).'},
+      d:{en:'Three days on the surface at Hadley Rille, 28 km driven and 77 kg of samples, including the "Genesis Rock", a piece of the Moon\'s ancient crust.',es:'Tres días en la superficie junto al surco Hadley, 28 km en rover y 77 kg de muestras, entre ellas la "Roca Génesis", un trozo de la corteza primitiva.'},
+      u:{en:'The Genesis Rock supported the idea that the young Moon was covered by an ocean of magma.',es:'La Roca Génesis apoyó la idea de que la Luna joven estuvo cubierta por un océano de magma.'}},
+    {id:'luna20',name:'Luna 20',ag:'USSR',yrs:'1972',kind:'sample',st:'ended',lat:3.57,lng:56.50,
+      p:{en:'Return samples from the lunar highlands.',es:'Traer muestras de las tierras altas lunares.'},
+      d:{en:'Brought back 55 g of highland soil near the Apollonius crater.',es:'Trajo 55 g de suelo de las tierras altas cerca del cráter Apolonio.'},
+      u:{en:'Compared with Apollo samples, it helped map how the composition of the crust varies.',es:'Comparadas con las del Apolo, sus muestras ayudaron a cartografiar cómo varía la composición de la corteza.'}},
+    {id:'apollo16',name:'Apollo 16',ag:'NASA',yrs:'1972',kind:'crew',st:'ended',lat:-8.9730,lng:15.5002,crewNames:'John Young · Charles Duke (surface) · Ken Mattingly (orbit)',
+      p:{en:'Explore the Descartes highlands, thought to be volcanic.',es:'Explorar las tierras altas de Descartes, que se creían volcánicas.'},
+      d:{en:'96 kg of samples — which turned out to be impact breccias, not volcanic rock — and the first telescope operated on the Moon (ultraviolet).',es:'96 kg de muestras, que resultaron ser brechas de impacto y no roca volcánica, y el primer telescopio usado en la Luna (ultravioleta).'},
+      u:{en:'It taught scientists to be humble about interpreting terrain from orbit and showed how violent the Moon\'s impact history was.',es:'Enseñó a los científicos a ser prudentes al interpretar el terreno desde órbita y mostró lo violenta que fue la historia de impactos de la Luna.'}},
+    {id:'apollo17',name:'Apollo 17',ag:'NASA',yrs:'1972',kind:'crew',st:'ended',lat:20.1908,lng:30.7717,crewNames:'Eugene Cernan · Harrison Schmitt (surface) · Ronald Evans (orbit)',
+      p:{en:'Last Apollo landing, with the first scientist on the Moon, geologist Harrison Schmitt.',es:'Último alunizaje del Apolo, con el primer científico en la Luna, el geólogo Harrison Schmitt.'},
+      d:{en:'Three days in the Taurus-Littrow valley, 111 kg of samples including orange volcanic glass, and the "Blue Marble" photo of Earth taken on the way.',es:'Tres días en el valle Taurus-Littrow, 111 kg de muestras con vidrio volcánico naranja, y la foto "La canica azul" de la Tierra tomada durante el viaje.'},
+      u:{en:'Its orange glass later revealed traces of water from the Moon\'s interior. Samples sealed since 1972 were opened in 2019–2022 to train scientists for Artemis.',es:'Su vidrio naranja reveló más tarde restos de agua del interior lunar. Muestras selladas desde 1972 se abrieron en 2019-2022 para preparar a los científicos de Artemis.'}},
+    {id:'lunokhod2',name:'Luna 21 · Lunokhod 2',ag:'USSR',yrs:'1973',kind:'rover',st:'ended',lat:25.85,lng:30.45,
+      p:{en:'Second Soviet rover, exploring the edge of Mare Serenitatis.',es:'Segundo rover soviético, explorando el borde del Mar de la Serenidad.'},
+      d:{en:'Drove about 39 km in four months, a record for an off-world drive that stood until 2014.',es:'Recorrió unos 39 km en cuatro meses, un récord de conducción fuera de la Tierra que duró hasta 2014.'},
+      u:{en:'Its images and soil measurements, and its laser reflector still in use today, add to our long-term record of the Moon.',es:'Sus imágenes y medidas del suelo, y su reflector láser que aún se usa, se suman al registro a largo plazo de la Luna.'}},
+    {id:'luna24',name:'Luna 24',ag:'USSR',yrs:'1976',kind:'sample',st:'ended',lat:12.71,lng:62.21,
+      p:{en:'Drill a deep core from Mare Crisium and return it.',es:'Perforar un testigo profundo en el Mar de las Crisis y traerlo.'},
+      d:{en:'Returned 170 g from a 2-metre-deep core. Soviet scientists reported a small amount of water in it in 1978.',es:'Trajo 170 g de un testigo de 2 metros. Los científicos soviéticos informaron en 1978 de una pequeña cantidad de agua en él.'},
+      u:{en:'It was the last landing on the Moon for 37 years; the water report was largely ignored until orbiters confirmed lunar water decades later.',es:'Fue el último aterrizaje en la Luna durante 37 años; el dato del agua se ignoró en gran medida hasta que los orbitadores confirmaron el agua lunar décadas después.'}},
+    {id:'clementine',name:'Clementine',ag:'NASA · U.S. DoD',yrs:'1994',kind:'orbiter',st:'ended',
+      p:{en:'Test new lightweight sensors while mapping the whole Moon.',es:'Probar sensores ligeros nuevos mientras cartografiaba toda la Luna.'},
+      d:{en:'About 1.8 million images in several colours and a radar experiment that hinted at ice in shadowed polar craters.',es:'Cerca de 1,8 millones de imágenes en varios colores y un experimento de radar que apuntó a hielo en cráteres polares en sombra.'},
+      u:{en:'Its global mineral maps and the ice hint revived interest in the Moon and pointed later missions to the poles.',es:'Sus mapas globales de minerales y el indicio de hielo reavivaron el interés por la Luna y dirigieron las misiones posteriores hacia los polos.'}},
+    {id:'prospector',name:'Lunar Prospector',ag:'NASA',yrs:'1998–1999',kind:'orbiter',st:'ended',
+      p:{en:'Map the Moon\'s composition, gravity and magnetic field from a low polar orbit.',es:'Cartografiar la composición, la gravedad y el campo magnético de la Luna desde una órbita polar baja.'},
+      d:{en:'Found excess hydrogen at both poles, a likely sign of water ice. It ended with a deliberate impact carrying the ashes of geologist Gene Shoemaker.',es:'Encontró exceso de hidrógeno en ambos polos, probable señal de hielo de agua. Terminó con un impacto deliberado que llevaba las cenizas del geólogo Gene Shoemaker.'},
+      u:{en:'Its hydrogen maps are one reason Artemis targets the lunar south pole.',es:'Sus mapas de hidrógeno son una de las razones por las que Artemis apunta al polo sur lunar.'}},
+    {id:'smart1',name:'SMART-1',ag:'ESA',yrs:'2003–2006',kind:'orbiter',st:'ended',
+      p:{en:'Europe\'s first lunar mission: test solar-electric (ion) propulsion on the way to the Moon.',es:'Primera misión lunar europea: probar la propulsión eléctrica solar (iónica) en el viaje a la Luna.'},
+      d:{en:'Mapped chemical elements with an X-ray spectrometer and imaged the poles before a planned impact in 2006.',es:'Cartografió elementos químicos con un espectrómetro de rayos X y fotografió los polos antes de un impacto previsto en 2006.'},
+      u:{en:'Its ion engine experience fed into later European missions such as BepiColombo to Mercury.',es:'Su experiencia con el motor iónico se aplicó en misiones europeas posteriores como BepiColombo a Mercurio.'}},
+    {id:'kaguya',name:'SELENE · Kaguya',ag:'JAXA',yrs:'2007–2009',kind:'orbiter',st:'ended',
+      p:{en:'Japan\'s large orbiter to study the Moon\'s origin and evolution.',es:'Gran orbitador japonés para estudiar el origen y la evolución de la Luna.'},
+      d:{en:'The first gravity map of the far side, detailed topography, HD video of Earth rising — and a deep pit in the Marius Hills, an opening into a lava tube.',es:'El primer mapa de gravedad de la cara oculta, una topografía detallada, vídeo en HD de la Tierra saliendo y un pozo profundo en las colinas Marius, entrada a un tubo de lava.'},
+      u:{en:'Lava tubes are now studied as natural shelters that could protect astronauts from radiation and temperature extremes.',es:'Los tubos de lava se estudian hoy como refugios naturales que podrían proteger a los astronautas de la radiación y las temperaturas extremas.'}},
+    {id:'change12',name:'Chang\'e 1 · Chang\'e 2',ag:'CNSA',yrs:'2007–2011',kind:'orbiter',st:'ended',
+      p:{en:'China\'s first lunar orbiters: map the Moon in 3D and scout landing sites.',es:'Primeros orbitadores lunares de China: cartografiar la Luna en 3D y explorar lugares de aterrizaje.'},
+      d:{en:'A complete 3D map of the surface; Chang\'e 2 imaged it at high resolution and then left to fly past an asteroid.',es:'Un mapa 3D completo de la superficie; la Chang\'e 2 lo fotografió en alta resolución y después se marchó a sobrevolar un asteroide.'},
+      u:{en:'Their maps were used to choose the Chang\'e 3 landing site and began the step-by-step programme that now aims at crewed landings.',es:'Sus mapas sirvieron para elegir el lugar de la Chang\'e 3 e iniciaron el programa por etapas que hoy apunta a alunizajes tripulados.'}},
+    {id:'chandrayaan1',name:'Chandrayaan-1',ag:'ISRO',yrs:'2008–2009',kind:'orbiter',st:'ended',
+      p:{en:'India\'s first lunar mission: map minerals and look for water.',es:'Primera misión lunar de la India: cartografiar minerales y buscar agua.'},
+      d:{en:'NASA\'s M3 instrument on board found water and hydroxyl molecules spread across the surface; an impact probe also struck near the south pole.',es:'El instrumento M3 de la NASA a bordo encontró moléculas de agua e hidroxilo repartidas por la superficie; una sonda de impacto chocó además cerca del polo sur.'},
+      u:{en:'It overturned the idea of a bone-dry Moon. In 2018 its data confirmed exposed water ice in polar craters.',es:'Derribó la idea de una Luna completamente seca. En 2018 sus datos confirmaron hielo de agua expuesto en cráteres polares.'}},
+    {id:'lro',name:'Lunar Reconnaissance Orbiter',ag:'NASA',yrs:'2009–',kind:'orbiter',st:'active',
+      p:{en:'Map the Moon in detail to prepare for a human return.',es:'Cartografiar la Luna en detalle para preparar el regreso humano.'},
+      d:{en:'Images sharp enough to see Apollo footpaths, the most precise topographic map of the Moon, the coldest temperatures measured in the Solar System and radiation doses.',es:'Imágenes tan nítidas que se ven las huellas del Apolo, el mapa topográfico más preciso de la Luna, las temperaturas más frías medidas en el Sistema Solar y dosis de radiación.'},
+      u:{en:'Every modern landing site, including those for Artemis, is planned with its maps; its radiation data feed models of astronaut exposure.',es:'Todos los lugares de aterrizaje modernos, incluidos los de Artemis, se planifican con sus mapas; sus datos de radiación alimentan los modelos de exposición de los astronautas.'}},
+    {id:'lcross',name:'LCROSS',ag:'NASA',yrs:'2009',kind:'impactor',st:'ended',lat:-84.72,lng:-49.62,
+      p:{en:'Crash a rocket stage into a permanently shadowed crater and analyse the plume.',es:'Estrellar una etapa de cohete en un cráter en sombra permanente y analizar la nube levantada.'},
+      d:{en:'Found water ice in the plume from Cabeus crater — around 5% of the material thrown up.',es:'Encontró hielo de agua en la nube del cráter Cabeus, en torno al 5 % del material levantado.'},
+      u:{en:'Ice at the poles could provide drinking water, oxygen and rocket fuel — the main reason future bases are planned there.',es:'El hielo de los polos podría dar agua potable, oxígeno y combustible: la principal razón para planificar allí las futuras bases.'}},
+    {id:'grail',name:'GRAIL',ag:'NASA',yrs:'2011–2012',kind:'orbiter',st:'ended',
+      p:{en:'Twin probes flying in formation to map the Moon\'s gravity.',es:'Dos sondas gemelas volando en formación para cartografiar la gravedad lunar.'},
+      d:{en:'One of the most precise gravity maps of any world: the crust is thinner than thought and heavily fractured by impacts.',es:'Uno de los mapas de gravedad más precisos de cualquier mundo: la corteza es más fina de lo que se pensaba y está muy fracturada por impactos.'},
+      u:{en:'Its maps improve navigation for spacecraft in low lunar orbit and models of how the Moon formed.',es:'Sus mapas mejoran la navegación de las naves en órbita lunar baja y los modelos de formación de la Luna.'}},
+    {id:'ladee',name:'LADEE',ag:'NASA',yrs:'2013–2014',kind:'orbiter',st:'ended',
+      p:{en:'Study the Moon\'s extremely thin atmosphere and floating dust.',es:'Estudiar la tenuísima atmósfera lunar y el polvo suspendido.'},
+      d:{en:'Measured the exosphere and dust kicked up by micrometeorites, and tested laser communications at 622 megabits per second.',es:'Midió la exosfera y el polvo levantado por micrometeoritos, y probó comunicaciones láser a 622 megabits por segundo.'},
+      u:{en:'Laser communications are now being used to send high-definition video from Artemis crews.',es:'Las comunicaciones láser se usan ahora para enviar vídeo en alta definición de las tripulaciones de Artemis.'}},
+    {id:'change3',name:'Chang\'e 3 · Yutu',ag:'CNSA',yrs:'2013–2016',kind:'rover',st:'ended',lat:44.12,lng:-19.51,
+      p:{en:'China\'s first soft landing and first rover, in Mare Imbrium.',es:'Primer aterrizaje suave y primer rover de China, en el Mar de las Lluvias.'},
+      d:{en:'The first soft landing on the Moon in 37 years. Yutu\'s radar revealed layers of ancient lava; the lander carried the first telescope working from the Moon for years.',es:'El primer aterrizaje suave en la Luna en 37 años. El radar del Yutu reveló capas de lava antigua; el módulo llevaba el primer telescopio que funcionó desde la Luna durante años.'},
+      u:{en:'It proved the landing technology later used for the far side and sample-return missions.',es:'Validó la tecnología de aterrizaje que después se usó en la cara oculta y en las misiones de retorno de muestras.'}},
+    {id:'change4',name:'Chang\'e 4 · Yutu-2',ag:'CNSA',yrs:'2019–',kind:'rover',st:'active',lat:-45.4446,lng:177.5991,
+      p:{en:'First landing on the far side, in Von Kármán crater, linked to Earth through the Queqiao relay satellite.',es:'Primer aterrizaje en la cara oculta, en el cráter Von Kármán, comunicado con la Tierra mediante el satélite repetidor Queqiao.'},
+      d:{en:'Radar images of layers hundreds of metres deep and the first seeds to sprout on the Moon (cotton, in a sealed mini-biosphere). Yutu-2 became the longest-lived lunar rover; the lander was still reported active in 2025.',es:'Imágenes de radar de capas a cientos de metros de profundidad y las primeras semillas germinadas en la Luna (algodón, en una minibiosfera sellada). El Yutu-2 es el rover lunar más longevo; el módulo seguía activo en 2025.'},
+      u:{en:'It opened the radio-quiet far side for science and showed how a relay makes it reachable.',es:'Abrió la cara oculta, sin interferencias de radio, a la ciencia, y demostró cómo un repetidor la hace accesible.'}},
+    {id:'beresheet',name:'Beresheet',ag:'SpaceIL · Israel',yrs:'2019',kind:'lander',st:'lost',lat:32.5956,lng:19.3496,
+      p:{en:'First privately funded attempt to land on the Moon.',es:'Primer intento de aterrizaje en la Luna financiado con fondos privados.'},
+      d:{en:'It reached lunar orbit, but an engine and sensor failure during descent caused it to crash in Mare Serenitatis.',es:'Llegó a la órbita lunar, pero un fallo de motor y de un sensor durante el descenso hizo que se estrellara en el Mar de la Serenidad.'},
+      u:{en:'It showed a small team could reach the Moon on a modest budget and opened the way for the commercial landers that followed.',es:'Demostró que un equipo pequeño podía llegar a la Luna con un presupuesto modesto y abrió el camino a los aterrizadores comerciales posteriores.'}},
+    {id:'chandrayaan2',name:'Chandrayaan-2',ag:'ISRO',yrs:'2019–',kind:'orbiter',st:'active',
+      p:{en:'Orbiter, lander (Vikram) and rover to study the south polar region.',es:'Orbitador, módulo de aterrizaje (Vikram) y rover para estudiar la región polar sur.'},
+      d:{en:'The Vikram lander crashed in 2019, but the orbiter keeps returning high-resolution images and water-ice data.',es:'El módulo Vikram se estrelló en 2019, pero el orbitador sigue enviando imágenes de alta resolución y datos de hielo.'},
+      u:{en:'Its orbiter images were used to choose and support the successful Chandrayaan-3 landing in 2023.',es:'Sus imágenes sirvieron para elegir y apoyar el exitoso aterrizaje de la Chandrayaan-3 en 2023.'}},
+    {id:'change5',name:'Chang\'e 5',ag:'CNSA',yrs:'2020',kind:'sample',st:'ended',lat:43.06,lng:-51.92,
+      p:{en:'Return the first lunar samples in 44 years, from a young lava region.',es:'Traer las primeras muestras lunares en 44 años, de una región de lava joven.'},
+      d:{en:'1,731 g of samples, including lava only about 2 billion years old — much younger than any Apollo rock.',es:'1731 g de muestras, incluida lava de solo unos 2000 millones de años, mucho más joven que cualquier roca del Apolo.'},
+      u:{en:'Those ages recalibrate the crater-counting clock used to date surfaces across the Solar System.',es:'Esas edades recalibran el "reloj" de recuento de cráteres que se usa para fechar superficies en todo el Sistema Solar.'}},
+    {id:'danuri',name:'Danuri (KPLO)',ag:'KARI · South Korea',yrs:'2022–',kind:'orbiter',st:'active',
+      p:{en:'South Korea\'s first lunar mission: map resources and test deep-space internet.',es:'Primera misión lunar de Corea del Sur: cartografiar recursos y probar internet en el espacio profundo.'},
+      d:{en:'Carries NASA\'s ShadowCam, which sees inside permanently shadowed craters using faint reflected light.',es:'Lleva la ShadowCam de la NASA, que ve dentro de los cráteres en sombra permanente gracias a la tenue luz reflejada.'},
+      u:{en:'Its images of shadowed craters help plan where landers and astronauts could search for ice.',es:'Sus imágenes de cráteres en sombra ayudan a planificar dónde podrían buscar hielo los aterrizadores y los astronautas.'}},
+    {id:'artemis1',name:'Artemis I',ag:'NASA',yrs:'2022',kind:'test',st:'ended',
+      p:{en:'Uncrewed test of the SLS rocket and the Orion capsule around the Moon.',es:'Prueba sin tripulación del cohete SLS y la cápsula Orion alrededor de la Luna.'},
+      d:{en:'A 25-day flight with mannequins full of radiation sensors. On return, the heat shield lost more material than expected.',es:'Un vuelo de 25 días con maniquíes llenos de sensores de radiación. Al regresar, el escudo térmico perdió más material del previsto.'},
+      u:{en:'The heat-shield findings changed the re-entry profile used by Artemis II; the radiation data refined crew protection.',es:'Lo aprendido con el escudo térmico cambió el perfil de reentrada del Artemis II; los datos de radiación mejoraron la protección de la tripulación.'}},
+    {id:'hakuto1',name:'Hakuto-R M1',ag:'ispace · Japan',yrs:'2023',kind:'lander',st:'lost',lat:47.58,lng:44.09,
+      p:{en:'First Japanese commercial lander, carrying the UAE\'s Rashid rover.',es:'Primer aterrizador comercial japonés, con el rover Rashid de los Emiratos.'},
+      d:{en:'Its software misjudged its altitude over the rim of Atlas crater; it ran out of fuel and crashed.',es:'Su software calculó mal la altitud sobre el borde del cráter Atlas; se quedó sin combustible y se estrelló.'},
+      u:{en:'The lesson about terrain-relative navigation was applied to later commercial landers.',es:'La lección sobre navegación relativa al terreno se aplicó a aterrizadores comerciales posteriores.'}},
+    {id:'chandrayaan3',name:'Chandrayaan-3 · Vikram · Pragyan',ag:'ISRO',yrs:'2023',kind:'rover',st:'ended',lat:-69.373,lng:32.319,
+      p:{en:'Land near the lunar south pole and drive a small rover.',es:'Aterrizar cerca del polo sur lunar y conducir un pequeño rover.'},
+      d:{en:'First landing in the south polar region (23 August 2023). Pragyan confirmed sulphur in the soil and Vikram even performed a short "hop".',es:'Primer aterrizaje en la región polar sur (23 de agosto de 2023). Pragyan confirmó azufre en el suelo y Vikram llegó a dar un pequeño "salto".'},
+      u:{en:'It gave the first ground-truth chemistry of polar soil, where future bases are planned, and made India the fourth nation to land softly.',es:'Aportó la primera química sobre el terreno del suelo polar, donde se planean futuras bases, y convirtió a la India en el cuarto país en aterrizar con suavidad.'}},
+    {id:'luna25',name:'Luna 25',ag:'Roscosmos',yrs:'2023',kind:'lander',st:'lost',lat:-57.86,lng:61.36,
+      p:{en:'Russia\'s first lunar mission in 47 years, aiming for the south polar region.',es:'Primera misión lunar rusa en 47 años, con destino a la región polar sur.'},
+      d:{en:'An orbital manoeuvre burned for too long and the probe crashed; NASA\'s LRO later imaged the new crater it made.',es:'Una maniobra orbital duró demasiado y la sonda se estrelló; el LRO de la NASA fotografió después el cráter nuevo que dejó.'},
+      u:{en:'Its loss is a reminder of how hard lunar landing remains, even for experienced space agencies.',es:'Su pérdida recuerda lo difícil que sigue siendo aterrizar en la Luna, incluso para agencias con experiencia.'}},
+    {id:'slim',name:'SLIM',ag:'JAXA',yrs:'2024',kind:'lander',st:'ended',lat:-13.316,lng:25.251,
+      p:{en:'Demonstrate a "pinpoint" landing within 100 m of the target.',es:'Demostrar un aterrizaje "de precisión" a menos de 100 m del objetivo.'},
+      d:{en:'Landed within about 100 m — but upside down. It still worked, survived three lunar nights and was photographed by its own mini-rover.',es:'Aterrizó a unos 100 m del objetivo, pero boca abajo. Aun así funcionó, sobrevivió a tres noches lunares y fue fotografiado por su propio minirrover.'},
+      u:{en:'Precision landing lets missions target small, high-value sites such as crater rims near ice. Japan became the fifth nation to land on the Moon.',es:'El aterrizaje de precisión permite apuntar a lugares pequeños y valiosos, como bordes de cráteres junto al hielo. Japón fue el quinto país en aterrizar en la Luna.'}},
+    {id:'im1',name:'IM-1 · Odysseus',ag:'Intuitive Machines',yrs:'2024',kind:'lander',st:'ended',lat:-80.13,lng:1.44,
+      p:{en:'First commercial soft landing, carrying NASA instruments to the south polar region.',es:'Primer aterrizaje suave comercial, con instrumentos de la NASA para la región polar sur.'},
+      d:{en:'Landed on 22 February 2024 — the first U.S. landing since 1972 — but tipped onto its side; it still sent data for about a week.',es:'Aterrizó el 22 de febrero de 2024, el primer aterrizaje de EE. UU. desde 1972, pero volcó de lado; aun así envió datos durante una semana.'},
+      u:{en:'It started NASA\'s commercial delivery model, in which companies carry science to the Moon on a fixed price.',es:'Inauguró el modelo de entregas comerciales de la NASA, en el que empresas llevan ciencia a la Luna a precio cerrado.'}},
+    {id:'change6',name:'Chang\'e 6',ag:'CNSA',yrs:'2024',kind:'sample',st:'ended',lat:-41.64,lng:-153.99,
+      p:{en:'Bring back the first samples from the far side, from the giant South Pole–Aitken basin.',es:'Traer las primeras muestras de la cara oculta, de la gigantesca cuenca Polo Sur-Aitken.'},
+      d:{en:'1,935 g of far-side material, with lava about 2.8 billion years old and older fragments; it also carried instruments from Europe and Pakistan.',es:'1935 g de material de la cara oculta, con lava de unos 2800 millones de años y fragmentos más antiguos; llevaba también instrumentos de Europa y Pakistán.'},
+      u:{en:'These samples are testing why the near and far sides of the Moon are so different.',es:'Estas muestras están poniendo a prueba por qué las dos caras de la Luna son tan distintas.'}},
+    {id:'blueghost1',name:'Blue Ghost Mission 1',ag:'Firefly Aerospace',yrs:'2025',kind:'lander',st:'ended',lat:18.56,lng:61.81,
+      p:{en:'Deliver ten NASA experiments to Mare Crisium.',es:'Llevar diez experimentos de la NASA al Mar de las Crisis.'},
+      d:{en:'The first fully successful commercial landing (2 March 2025). It worked for a whole lunar day, filmed the sunset and received GPS signals at the Moon.',es:'El primer aterrizaje comercial plenamente exitoso (2 de marzo de 2025). Funcionó un día lunar completo, filmó la puesta de sol y recibió señales de GPS en la Luna.'},
+      u:{en:'Receiving GPS so far from Earth could simplify navigation for future lunar missions.',es:'Recibir GPS tan lejos de la Tierra podría simplificar la navegación de futuras misiones lunares.'}},
+    {id:'im2',name:'IM-2 · Athena',ag:'Intuitive Machines',yrs:'2025',kind:'lander',st:'lost',lat:-84.79,lng:29.20,
+      p:{en:'Drill for ice near the south pole and deploy a hopper.',es:'Perforar en busca de hielo cerca del polo sur y desplegar un saltador.'},
+      d:{en:'Landed on Mons Mouton in March 2025 but tipped over in a crater, ending the mission within hours.',es:'Aterrizó en el monte Mouton en marzo de 2025 pero volcó dentro de un cráter, y la misión terminó en horas.'},
+      u:{en:'Its problems with altitude sensors fed into the design of later landers working in the harsh polar lighting.',es:'Sus problemas con los sensores de altitud se tuvieron en cuenta en el diseño de aterrizadores posteriores para la dura iluminación polar.'}},
+    {id:'artemis2',name:'Artemis II',ag:'NASA · CSA',yrs:'2026',kind:'crewfly',st:'ended',crewNames:'Reid Wiseman · Victor Glover · Christina Koch · Jeremy Hansen',
+      p:{en:'First crewed flight around the Moon since 1972, testing Orion with people on board.',es:'Primer vuelo tripulado alrededor de la Luna desde 1972, para probar la Orion con personas a bordo.'},
+      d:{en:'From 1 to 10 April 2026 the crew flew around the Moon, broke Apollo 13\'s distance record and observed the far side with their own eyes.',es:'Del 1 al 10 de abril de 2026 la tripulación rodeó la Luna, batió el récord de distancia del Apolo 13 y observó la cara oculta con sus propios ojos.'},
+      u:{en:'It validated Orion\'s life support with a crew, and the astronauts\' health and behaviour data are input for longer missions to the lunar surface.',es:'Validó el soporte vital de la Orion con tripulación, y los datos de salud y comportamiento de los astronautas sirven para preparar misiones más largas a la superficie.'}},
+    {id:'change7',name:'Chang\'e 7',ag:'CNSA',yrs:'2027 (planned)',kind:'lander',st:'planned',
+      p:{en:'Orbiter, lander, rover and a hopping probe to explore the south pole near Shackleton crater.',es:'Orbitador, módulo de aterrizaje, rover y una sonda saltadora para explorar el polo sur junto al cráter Shackleton.'},
+      d:{en:'It will look for water ice directly inside permanently shadowed craters. Its launch slipped from 2026 to 2027.',es:'Buscará hielo de agua directamente dentro de cráteres en sombra permanente. Su lanzamiento se ha retrasado de 2026 a 2027.'},
+      u:{en:'It is a step towards the International Lunar Research Station that China plans with partner countries.',es:'Es un paso hacia la Estación Internacional de Investigación Lunar que China planea con países socios.'}}
+  ];
+
+  /* -------- navigable Moon / Mars: missions, robots and beacons -------- */
+  MARS_STATUS.planned={en:'Planned',es:'Prevista',col:'#c79bff'};
+  const CREW_COL='#ffd166';
+  const MS_CFG={
+    mars:{list:()=>MARS_MISSIONS, kinds:MARS_KIND, title:{en:'Mars',es:'Marte'},
+      sub:{en:'The only planet inhabited solely by robots',es:'El único planeta habitado únicamente por robots'},
+      accent:'#ff9b6b', def:'perseverance', filters:['all','surface','orbit','active'],
+      credit:{en:'Mars texture: <a href="https://www.solarsystemscope.com/textures/" target="_blank" rel="noopener">Solar System Scope</a> (CC BY 4.0) · Data: NASA, ESA, CNSA, ISRO, MBRSC · updated Oct 2026',
+              es:'Textura de Marte: <a href="https://www.solarsystemscope.com/textures/" target="_blank" rel="noopener">Solar System Scope</a> (CC BY 4.0) · Datos: NASA, ESA, CNSA, ISRO, MBRSC · actualizado oct 2026'},
+      legend:['active','ended','lost']},
+    moon:{list:()=>MOON_MISSIONS, kinds:MOON_KIND, title:{en:'Moon',es:'Luna'},
+      sub:{en:'The first world beyond Earth to bear human footprints',es:'El primer mundo, más allá de la Tierra, que pisó el ser humano'},
+      accent:'#cfd8e6', def:'apollo11', filters:['all','humans','surface','orbit','active'],
+      credit:{en:'Data: NASA, Roscosmos/USSR, CNSA, ISRO, JAXA, ESA, KARI and commercial operators · updated Oct 2026',
+              es:'Datos: NASA, Roscosmos/URSS, CNSA, ISRO, JAXA, ESA, KARI y operadores comerciales · actualizado oct 2026'},
+      legend:['crew','active','ended','lost']}
+  };
+  const MS_FILTER={all:{en:'All',es:'Todas'},surface:{en:'On the surface',es:'En la superficie'},orbit:{en:'Orbit & flybys',es:'Órbita y sobrevuelos'},
+    active:{en:'Active today',es:'Activas hoy'},humans:{en:'👣 Humans on the Moon',es:'👣 Humanos en la Luna'}};
+  const msCol=m=>(m.kind==='crew'?CREW_COL:MARS_STATUS[m.st].col);
+  if(!state.ms) state.ms={};
+  // altitude that makes the globe fill `fill` of the smaller side of its box (camera fov 50°)
+  function fitAltitude(el,fill){
+    const W=el.clientWidth||600, H=el.clientHeight||500, t=Math.tan(25*Math.PI/180);
+    const d=100*H/(fill*Math.min(W,H)*t);
+    return Math.max(0.6, d/100-1);
+  }
+  function buildMissions(body){
+    const C=MS_CFG[body], L=LG(), es=L==='es', list=C.list();
+    const S=state.ms[body]||(state.ms[body]={f:'all',sel:C.def});
     const backTxt=es?'Sistema solar':'Solar system';
     const gh=es?'Arrastra para rotar · rueda para acercar · toca un punto':'Drag to rotate · scroll to zoom · tap a beacon';
-    const F=[['all',es?'Todas':'All'],['surface',es?'En la superficie':'On the surface'],['orbit',es?'En órbita':'In orbit'],['active',es?'Activas hoy':'Active today']];
-    if(!state.marsF) state.marsF='all';
-    if(!state.marsSel) state.marsSel='perseverance';
-    const nSurf=MARS_MISSIONS.filter(m=>m.lat!=null).length, nAct=MARS_MISSIONS.filter(m=>m.st==='active').length;
-    root.innerHTML='<div class="kb-body kb-mars"><div class="kb-body-top">'
+    const nSurf=list.filter(m=>m.lat!=null).length, nAct=list.filter(m=>m.st==='active').length, nCrew=list.filter(m=>m.kind==='crew').length;
+    const stats='<span><b>'+list.length+'</b>'+(es?'misiones':'missions')+'</span><span><b>'+nSurf+'</b>'+(es?'en la superficie':'on the surface')+'</span>'
+      +(nCrew?'<span><b>'+nCrew+'</b>'+(es?'con humanos':'with humans')+'</span>':'')+'<span><b>'+nAct+'</b>'+(es?'activas':'active')+'</span>';
+    const legend=C.legend.map(k=>k==='crew'?'<span><i style="background:'+CREW_COL+'"></i>'+(es?'Alunizaje tripulado':'Crewed landing')+'</span>'
+      :'<span><i style="background:'+MARS_STATUS[k].col+'"></i>'+esc(MARS_STATUS[k][L])+'</span>').join('');
+    root.innerHTML='<div class="kb-body kb-mars" style="--ms-acc:'+C.accent+'"><div class="kb-body-top">'
       +'<button class="kb-back" id="kbBack">‹ '+esc(backTxt)+'</button>'
-      +'<div class="kb-body-title">'+(es?'Marte':'Mars')+'<small>'+(es?'El único planeta habitado solo por robots':'The only planet inhabited only by robots')+'</small></div>'
-      +'<div class="mars-stats"><span><b>'+MARS_MISSIONS.length+'</b>'+(es?'misiones':'missions')+'</span><span><b>'+nSurf+'</b>'+(es?'en la superficie':'on the surface')+'</span><span><b>'+nAct+'</b>'+(es?'activas':'active')+'</span></div></div>'
+      +'<div class="kb-body-title">'+esc(C.title[L])+'<small>'+esc(C.sub[L])+'</small></div>'
+      +'<div class="mars-stats">'+stats+'</div></div>'
       +'<div class="kb-bodygrid mars-grid">'
-        +'<div class="kb-col mars-listcol"><div class="mars-filters">'+F.map(f=>'<button class="mars-f" data-f="'+f[0]+'" aria-pressed="'+(state.marsF===f[0])+'">'+esc(f[1])+'</button>').join('')+'</div>'
+        +'<div class="kb-col mars-listcol"><div class="mars-filters">'+C.filters.map(f=>'<button class="mars-f" data-f="'+f+'" aria-pressed="'+(S.f===f)+'">'+esc(MS_FILTER[f][L])+'</button>').join('')+'</div>'
           +'<div class="mars-list" id="marsList"></div></div>'
-        +'<div class="kb-globe" id="kbGlobe"><span class="kb-globe-hint">'+esc(gh)+'</span>'
-          +'<div class="mars-legend">'+['active','ended','lost'].map(k=>'<span><i style="background:'+MARS_STATUS[k].col+'"></i>'+esc(MARS_STATUS[k][L])+'</span>').join('')+'</div></div>'
+        +'<div class="kb-globe" id="kbGlobe"><span class="kb-globe-hint">'+esc(gh)+'</span><div class="mars-legend">'+legend+'</div></div>'
         +'<div class="kb-col mars-detail" id="marsDetail"></div>'
-      +'</div><p class="mars-credit">'+(es?'Textura de Marte':'Mars texture')+': <a href="https://www.solarsystemscope.com/textures/" target="_blank" rel="noopener">Solar System Scope</a> (CC BY 4.0) · '+(es?'Datos':'Data')+': NASA, ESA, CNSA, ISRO, MBRSC · '+(es?'actualizado oct 2026':'updated Oct 2026')+'</p></div>';
+      +'</div><p class="mars-credit">'+C.credit[L]+'</p></div>';
     root.querySelector('#kbBack').addEventListener('click',backToSolar);
-    root.querySelectorAll('.mars-f').forEach(b=>b.addEventListener('click',()=>{ state.marsF=b.getAttribute('data-f');
-      root.querySelectorAll('.mars-f').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false')); drawMarsList(); }));
-    initGlobe('mars');
+    root.querySelectorAll('.mars-f').forEach(b=>b.addEventListener('click',()=>{ S.f=b.getAttribute('data-f');
+      root.querySelectorAll('.mars-f').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false')); drawMsList(body);
+      if(S.f==='humans'){ const first=list.find(m=>m.kind==='crew'&&m.id===S.sel)||list.find(m=>m.kind==='crew'); if(first) selectMs(body,first.id,true); } }));
+    initGlobe(body);
     if(GLOBE){
-      const surf=MARS_MISSIONS.filter(m=>m.lat!=null);
-      GLOBE.labelsData(surf).labelLat('lat').labelLng('lng').labelText(d=>d.name.split(' · ')[0])
-        .labelSize(1.7).labelDotRadius(1.0).labelColor(d=>MARS_STATUS[d.st].col).labelResolution(2).labelAltitude(0.012)
+      const surf=list.filter(m=>m.lat!=null);
+      GLOBE.labelsData(surf).labelLat('lat').labelLng('lng').labelText(d=>d.id==='ingenuity'?'':d.name.split(' · ')[0])
+        .labelSize(1.7).labelDotRadius(1.0).labelColor(msCol).labelResolution(2).labelAltitude(0.012)
         .labelLabel(d=>'<div class="mars-tip"><b>'+esc(d.name)+'</b><br>'+esc(d.ag)+' · '+esc(d.yrs)+'</div>')
-        .onLabelClick(d=>selectMars(d.id,true));
-      GLOBE.ringsData(surf.filter(m=>m.st==='active')).ringLat('lat').ringLng('lng').ringMaxRadius(4)
-        .ringColor(()=>(t=>'rgba(62,224,138,'+(1-t).toFixed(2)+')')).ringPropagationSpeed(2.4).ringRepeatPeriod(1100);
+        .onLabelClick(d=>selectMs(body,d.id,true));
+      GLOBE.ringsData(surf.filter(m=>m.st==='active'||m.kind==='crew')).ringLat('lat').ringLng('lng').ringMaxRadius(4)
+        .ringColor(d=>{ const c=d.kind==='crew'?'255,209,102':'62,224,138'; return t=>'rgba('+c+','+(1-t).toFixed(2)+')'; })
+        .ringPropagationSpeed(2.4).ringRepeatPeriod(1100);
     }
-    drawMarsList(); selectMars(state.marsSel,false);
+    drawMsList(body); selectMs(body,S.sel,false);
   }
-  function marsVisible(m){
-    const f=state.marsF;
+  function msVisible(m,f){
     if(f==='surface') return m.lat!=null;
     if(f==='orbit') return m.lat==null;
     if(f==='active') return m.st==='active';
+    if(f==='humans') return m.kind==='crew';
     return true;
   }
-  function drawMarsList(){
-    const L=LG(), box=root.querySelector('#marsList'); if(!box) return;
-    box.innerHTML=MARS_MISSIONS.filter(marsVisible).map(m=>'<button class="mars-item" data-id="'+m.id+'" aria-selected="'+(m.id===state.marsSel)+'">'
-      +'<span class="dot" style="color:'+MARS_STATUS[m.st].col+';background:'+MARS_STATUS[m.st].col+'"></span>'
-      +'<span class="nm">'+esc(m.name)+'<small>'+esc(m.ag)+' · '+esc(m.yrs)+' · '+esc(MARS_KIND[m.kind][L])+'</small></span></button>').join('');
-    box.querySelectorAll('.mars-item').forEach(b=>b.addEventListener('click',()=>selectMars(b.getAttribute('data-id'),true)));
+  function drawMsList(body){
+    const C=MS_CFG[body], L=LG(), S=state.ms[body], box=root.querySelector('#marsList'); if(!box) return;
+    box.innerHTML=C.list().filter(m=>msVisible(m,S.f)).map(m=>'<button class="mars-item" data-id="'+m.id+'" aria-selected="'+(m.id===S.sel)+'">'
+      +'<span class="dot" style="color:'+msCol(m)+';background:'+msCol(m)+'"></span>'
+      +'<span class="nm">'+(m.kind==='crew'?'👣 ':'')+esc(m.name)+'<small>'+esc(m.ag)+' · '+esc(m.yrs)+' · '+esc(C.kinds[m.kind][L])+'</small></span></button>').join('');
+    box.querySelectorAll('.mars-item').forEach(b=>b.addEventListener('click',()=>selectMs(body,b.getAttribute('data-id'),true)));
   }
-  function selectMars(id,fly){
-    const m=MARS_MISSIONS.find(x=>x.id===id)||MARS_MISSIONS[0], L=LG(), es=L==='es';
-    state.marsSel=m.id;
+  function selectMs(body,id,fly){
+    const C=MS_CFG[body], list=C.list(), S=state.ms[body];
+    const m=list.find(x=>x.id===id)||list[0], L=LG(), es=L==='es';
+    S.sel=m.id;
     root.querySelectorAll('.mars-item').forEach(b=>b.setAttribute('aria-selected',b.getAttribute('data-id')===m.id?'true':'false'));
     const st=MARS_STATUS[m.st];
+    const inOrbit=m.kind==='flyby'?(es?'Sobrevoló '+(body==='moon'?'la Luna':'el planeta'):'Flew past '+(body==='moon'?'the Moon':'the planet'))
+      :m.kind==='crewfly'?(es?'Rodeó la Luna sin aterrizar':'Flew around the Moon without landing')
+      :m.kind==='test'?(es?'Vuelo alrededor de la Luna':'Flight around the Moon')
+      :m.kind==='cruise'?(es?'Rumbo a Marte':'Heading to Mars')
+      :m.st==='planned'?(es?'Aún no ha despegado':'Not launched yet'):(es?'En órbita, sin punto en el mapa':'In orbit, no point on the map');
     const loc=m.lat!=null?'<div class="mars-loc">📍 '+Math.abs(m.lat).toFixed(2)+'°'+(m.lat>=0?'N':'S')+' · '+Math.abs(m.lng).toFixed(2)+'°'+(m.lng>=0?'E':(es?'O':'W'))+'</div>'
-      :'<div class="mars-loc">🛰 '+(m.kind==='flyby'?(es?'Sobrevoló el planeta':'Flew past the planet'):m.kind==='cruise'?(es?'Rumbo a Marte':'Heading to Mars'):(es?'En órbita, sin punto en el mapa':'In orbit, no point on the map'))+'</div>';
+      :'<div class="mars-loc">🛰 '+inOrbit+'</div>';
+    const crew=m.crewNames?'<div class="mars-crew"><span>'+(es?'Tripulación':'Crew')+'</span>'+esc(m.crewNames.replace('(surface)',es?'(superficie)':'(surface)').replace('(orbit)',es?'(órbita)':'(orbit)'))+'</div>':'';
     const sec=(t,txt)=>'<h5>'+esc(t)+'</h5><p>'+esc(txt[L])+'</p>';
     const d=root.querySelector('#marsDetail');
-    if(d) d.innerHTML='<div class="mars-card"><div class="mars-head"><h4>'+esc(m.name)+'</h4>'
-      +'<div class="mars-chips"><span>'+esc(m.ag)+'</span><span>'+esc(m.yrs)+'</span><span>'+esc(MARS_KIND[m.kind][L])+'</span>'
-      +'<span class="st" style="color:'+st.col+';border-color:'+st.col+'">'+esc(st[L])+'</span></div>'+loc+'</div>'
+    if(d) d.innerHTML='<div class="mars-card"><div class="mars-head"><h4>'+(m.kind==='crew'?'👣 ':'')+esc(m.name)+'</h4>'
+      +'<div class="mars-chips"><span>'+esc(m.ag)+'</span><span>'+esc(m.yrs)+'</span><span>'+esc(C.kinds[m.kind][L])+'</span>'
+      +'<span class="st" style="color:'+st.col+';border-color:'+st.col+'">'+esc(st[L])+'</span></div>'+loc+crew+'</div>'
       +sec(es?'Para qué se hizo':'Why it was sent',m.p)
       +sec(es?'Qué datos recopiló':'What it found',m.d)
       +sec(es?'Cómo se han usado':'How the data are used',m.u)+'</div>';
     if(GLOBE){
+      const el=root.querySelector('#kbGlobe'), base=fitAltitude(el,0.86);
       if(fly){ const c=GLOBE.controls(); if(c) c.autoRotate=false; }
       if(m.lat!=null){
-        GLOBE.pointOfView({lat:m.lat,lng:m.lng,altitude:fly?1.9:2.4},fly?900:0);
-        GLOBE.labelColor(x=>x.id===m.id?'#ffffff':MARS_STATUS[x.st].col).labelSize(x=>x.id===m.id?2.3:1.7).labelDotRadius(x=>x.id===m.id?1.4:1.0);
-      } else if(fly){ GLOBE.labelColor(x=>MARS_STATUS[x.st].col).labelSize(1.7).labelDotRadius(1.0); }
+        GLOBE.pointOfView({lat:m.lat,lng:m.lng,altitude:base},fly?900:0);
+        GLOBE.labelColor(x=>x.id===m.id?'#ffffff':msCol(x)).labelSize(x=>x.id===m.id?2.3:1.7).labelDotRadius(x=>x.id===m.id?1.4:1.0);
+      } else {
+        if(!fly) GLOBE.pointOfView({lat:12,lng:body==='mars'?100:0,altitude:base},0);
+        GLOBE.labelColor(msCol).labelSize(1.7).labelDotRadius(1.0);
+      }
     }
   }
 
@@ -3605,7 +3854,7 @@ void main(){
       .showGraticules(body!=='earth');
     function size(){ g.width(el.clientWidth).height(el.clientHeight||460); }
     size();
-    g.pointOfView({lat:12,lng:body==='earth'?-30:body==='mars'?100:0,altitude:2.3});
+    g.pointOfView({lat:12,lng:body==='earth'?-30:body==='mars'?100:0,altitude:fitAltitude(el,0.86)});
     const c=g.controls(); c.autoRotate=true; c.autoRotateSpeed=0.5; c.enableZoom=true; c.minDistance=140; c.maxDistance=520;
     GLOBE=g; GLOBE._body=body;
     if('ResizeObserver' in window){ GLOBE_RO=new ResizeObserver(size); GLOBE_RO.observe(el); }
