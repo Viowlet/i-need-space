@@ -1052,7 +1052,7 @@ body.sectioned #recorrido.page-section.active .sv-frame #svIframe{
 
 /* ===================== TO KNOW · SOLAR SYSTEM ===================== */
 #saber.page-section.active{ padding:clamp(10px,2vw,26px) 0 50px }
-.solar{ position:relative; width:100%; height:clamp(460px,76vh,780px); margin:0 auto; overflow:hidden; }
+.solar{ position:relative; width:100%; height:clamp(520px,84vh,900px); margin:0 auto; overflow:hidden; }
 .solar .sun{ position:absolute; left:50%; top:50%; width:clamp(78px,9vw,132px); height:clamp(78px,9vw,132px);
   transform:translate(-50%,-50%); z-index:40; }
 .solar .sun img{ width:100%; height:100%; object-fit:contain; display:block;
@@ -1080,12 +1080,50 @@ body.sectioned #recorrido.page-section.active .sv-frame #svIframe{
   font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--sky);
   background:rgba(4,12,26,.5); border:1px solid var(--line); border-radius:99px; padding:7px 16px; backdrop-filter:blur(4px); }
 
+.solar .planet[data-planet="moon"] .plabel{ top:auto; bottom:100%; margin:0 0 6px }
 .solar-gl{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:2 }
 .solar.gl-on .planet .pbody img, .solar.gl-on .sun img{ opacity:0 }
 .solar.gl-on .sun{ z-index:1 }
 .solar-credit{ position:absolute; right:12px; bottom:10px; z-index:6; font-size:.56rem; letter-spacing:.04em; color:var(--ink-faint); opacity:.75 }
 .solar-credit a{ color:inherit }
-@media(max-width:640px){ .solar-credit{ top:8px; bottom:auto } }
+@media(max-width:640px){ .solar-credit{ top:8px; bottom:auto } .solar .planet[data-planet="moon"] .plabel{ white-space:normal; width:96px; text-align:center; line-height:1.4 } }
+/* ---- Mars ---- */
+.kb-mars .kb-body-top{ justify-content:flex-start }
+.kb-bodygrid.mars-grid{ align-items:start }
+.kb-mars .kb-globe{ height:clamp(360px,64vh,620px); min-height:0; overflow:hidden }
+.kb-mars .mars-list{ max-height:clamp(300px,calc(64vh - 70px),550px) }
+.kb-mars .mars-detail{ max-height:clamp(360px,64vh,620px) }
+.mars-stats{ margin-left:28px; display:flex; gap:18px; font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint) }
+.mars-stats b{ display:block; font-size:1.15rem; letter-spacing:0; color:#fff; font-weight:600 }
+.kb-bodygrid.mars-grid{ grid-template-columns:250px minmax(0,1fr) 330px }
+.mars-listcol{ display:flex; flex-direction:column; gap:8px; min-height:0 }
+.mars-filters{ display:flex; flex-wrap:wrap; gap:6px }
+.mars-f{ font:inherit; font-size:.68rem; letter-spacing:.06em; cursor:pointer; color:var(--ink-soft); background:rgba(255,255,255,.04);
+  border:1px solid var(--line); border-radius:99px; padding:5px 10px }
+.mars-f[aria-pressed="true"]{ background:rgba(255,155,107,.18); border-color:#ff9b6b; color:#fff }
+.mars-list{ display:flex; flex-direction:column; gap:4px; overflow-y:auto; max-height:min(62vh,560px); padding-right:4px }
+.mars-item{ font:inherit; text-align:left; cursor:pointer; display:flex; gap:10px; align-items:flex-start; color:var(--ink-soft);
+  background:transparent; border:1px solid transparent; border-radius:10px; padding:7px 9px; font-size:.8rem }
+.mars-item:hover{ background:rgba(255,255,255,.05); color:#fff }
+.mars-item[aria-selected="true"]{ background:rgba(255,155,107,.14); border-color:rgba(255,155,107,.55); color:#fff }
+.mars-item .dot{ width:8px; height:8px; border-radius:50%; margin-top:5px; flex:none; box-shadow:0 0 8px 1px currentColor }
+.mars-item .nm small{ display:block; font-size:.64rem; color:var(--ink-faint); margin-top:2px }
+.mars-legend{ position:absolute; left:12px; bottom:12px; z-index:3; display:flex; flex-wrap:wrap; gap:12px; font-size:.62rem; color:var(--ink-soft);
+  background:rgba(4,12,26,.55); border:1px solid var(--line); border-radius:10px; padding:6px 10px; pointer-events:none }
+.mars-legend i{ display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:5px; vertical-align:middle }
+.mars-detail{ overflow-y:auto; max-height:min(70vh,640px) }
+.mars-card{ background:rgba(255,255,255,.035); border:1px solid var(--line); border-radius:14px; padding:16px 16px 6px }
+.mars-card h4{ font-size:1.05rem; color:#fff; font-weight:600; margin:0 0 8px }
+.mars-chips{ display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px }
+.mars-chips span{ font-size:.62rem; letter-spacing:.06em; border:1px solid var(--line); border-radius:99px; padding:3px 8px; color:var(--ink-soft) }
+.mars-chips .st{ font-weight:600 }
+.mars-loc{ font-size:.7rem; color:var(--ink-faint); margin-bottom:6px }
+.mars-card h5{ font-size:.62rem; letter-spacing:.16em; text-transform:uppercase; color:#ff9b6b; margin:12px 0 5px; font-weight:600 }
+.mars-card p{ font-size:.82rem; line-height:1.55; color:var(--ink-soft); margin:0 0 6px }
+.mars-credit{ font-size:.62rem; color:var(--ink-faint); margin-top:10px; opacity:.8 }
+.mars-credit a{ color:inherit }
+.mars-tip{ font-size:.72rem; background:rgba(4,12,26,.85); border:1px solid var(--line); border-radius:8px; padding:5px 8px; color:#fff }
+@media(max-width:980px){ .kb-bodygrid.mars-grid{ grid-template-columns:1fr } .kb-mars .kb-globe{ height:52vh } .kb-mars .mars-list{ max-height:40vh } .kb-mars .mars-detail{ max-height:none } .mars-stats{ margin-left:0 } }
 /* ---- navigable body (Earth / Moon) ---- */
 .kb-body-top{ display:flex; align-items:center; gap:14px; margin-bottom:12px; flex-wrap:wrap }
 .kb-back{ font:inherit; font-size:.8rem; cursor:pointer; color:var(--sky);
@@ -3023,6 +3061,7 @@ const ASTRO_BIO={
   function buildShell(){
     destroyGlobe(); stopSolar();
     if(state.view==='solar') return buildSolar();
+    if(state.view==='mars') return buildMars();
     return buildBody(state.view);
   }
 
@@ -3037,7 +3076,7 @@ const ASTRO_BIO={
     {id:'mercury',img:'images/mercury.png',tex:'images/planets/mercury.jpg',au:0.39,size:11,L0:252.25,n:4.09233445, rot:70,  tilt:0.03},
     {id:'venus',  img:'images/venus.webp', tex:'images/planets/venus.jpg',  au:0.72,size:16,L0:181.98,n:1.60213034, rot:-240,tilt:-0.05},
     {id:'earth',  img:'images/earth.jpg',  tex:'images/planets/earth.jpg',  au:1.00,size:18,L0:100.46,n:0.98560912, rot:60,  tilt:0.41, body:'earth', moon:true, atmo:true},
-    {id:'mars',   img:'images/mars.png',   tex:'images/planets/mars.jpg',   au:1.52,size:14,L0:355.43,n:0.52402068, rot:62,  tilt:0.44},
+    {id:'mars',   img:'images/mars.png',   tex:'images/planets/mars.jpg',   au:1.52,size:14,L0:355.43,n:0.52402068, rot:62,  tilt:0.44, body:'mars'},
     {id:'jupiter',img:'images/jupiter.png',tex:'images/planets/jupiter.jpg',au:5.20,size:38,L0:34.35, n:0.08308529, rot:30,  tilt:0.05},
     {id:'saturn', img:'images/saturn.png', tex:'images/planets/saturn.jpg', au:9.55,size:48,L0:50.08, n:0.03344414, rot:32,  tilt:0.47, ring:true},
     {id:'uranus', img:'images/uranus.png', tex:'images/planets/uranus.jpg', au:19.2,size:26,L0:314.05,n:0.011725806,rot:-45, tilt:1.71},
@@ -3050,9 +3089,21 @@ const ASTRO_BIO={
     uranus:{en:'Uranus',es:'Urano'},neptune:{en:'Neptune',es:'Neptuno'},moon:{en:'Moon',es:'Luna'}};
   let SOLAR=null;
   function stopSolar(){ if(SOLAR){ cancelAnimationFrame(SOLAR.raf); window.removeEventListener('resize',SOLAR.onResize); if(SOLAR.ro)SOLAR.ro.disconnect(); if(SOLAR.gl)SOLAR.gl.destroy(); SOLAR=null; } }
-  const TILT=0.34;          // vertical squash -> oblique "edge-on" perspective
+  const TILT=0.5;           // vertical squash -> oblique perspective (seen from ~30° above the plane)
   const SIZE=3;             // planet display scale
   const SAT_BODY=0.62;      // Saturn's globe relative to its box (the rest is rings)
+  /* Current Moon phase as seen from Earth (Meeus, ch. 48 — accurate to ~1%). */
+  function moonPhase(ms){
+    const d=ms/86400000-10957.5, R=Math.PI/180;
+    const D=((297.8501921+12.19074912*d)%360+360)%360, M=(357.5291092+0.98560028*d)%360, Mp=(134.9633964+13.06499295*d)%360;
+    const i=180-D-6.289*Math.sin(Mp*R)+2.100*Math.sin(M*R)-1.274*Math.sin((2*D-Mp)*R)-0.658*Math.sin(2*D*R)-0.214*Math.sin(2*Mp*R)-0.110*Math.sin(D*R);
+    const ia=Math.abs(((i+540)%360)-180)*R, k=(1+Math.cos(ia))/2, waxing=D<180;
+    const names={en:['New Moon','Waxing crescent','First quarter','Waxing gibbous','Full Moon','Waning gibbous','Last quarter','Waning crescent'],
+                 es:['Luna nueva','Creciente','Cuarto creciente','Gibosa creciente','Luna llena','Gibosa menguante','Cuarto menguante','Menguante']};
+    let idx; if(k<0.03) idx=0; else if(k>0.97) idx=4; else if(Math.abs(k-0.5)<0.06) idx=waxing?2:6; else if(k<0.5) idx=waxing?1:7; else idx=waxing?3:5;
+    // light direction for a disc seen from Earth: x>0 lights the right-hand side (waxing, northern sky)
+    return {k:k, idx:idx, names:names, L:[(waxing?1:-1)*Math.sin(ia),0,Math.cos(ia)]};
+  }
 
   /* ---- tiny WebGL2 sphere renderer (one canvas for the whole system) ---- */
   function makeSolarGL(stage){
@@ -3066,7 +3117,7 @@ void main(){ vP=a; vec2 px=uC+a*vec2(uH,-uH); gl_Position=vec4(px/uR*2.0-1.0,0.0
 precision highp float;
 in vec2 vP; out vec4 o;
 uniform sampler2D uT; uniform sampler2D uRing;
-uniform float uQ, uSpin, uTilt, uAmb, uRingRatio; uniform vec3 uL; uniform int uK;
+uniform float uQ, uSpin, uTilt, uAmb, uRingRatio, uG; uniform vec3 uL; uniform int uK;
 const float PI=3.14159265;
 vec3 surf(vec3 n){
   float c=cos(uTilt), s=sin(uTilt);
@@ -3089,10 +3140,20 @@ void main(){
     else{
       float d=dot(n,uL);
       float lit=clamp((d+0.06)/1.06,0.0,1.0);
-      c*=uAmb+(1.0-uAmb)*lit+0.22*n.z*(1.0-lit);      // sunlight + soft fill so the night side keeps its shape
+      if(uK==4){ c*=0.07+0.93*lit; }                    // Moon: crisp phase, faint earthshine
+      else{ c*=uAmb+(1.0-uAmb)*lit+0.30*n.z*(1.0-lit); } // sunlight + soft fill so the night side keeps its shape
+      c*=uG;
       if(uK==3){ c+=vec3(0.30,0.55,1.0)*pow(1.0-n.z,2.6)*(0.15+0.85*clamp(d+0.35,0.0,1.0))*0.75; }
     }
     col=vec4(c*disc,disc);
+  }
+  if(uK==4 && r>1.0-aa){                              // soft glow: the Moon is clickable
+    float h=(1.0-smoothstep(1.0,1.1,r))*0.45;
+    col=col+vec4(vec3(0.85,0.9,1.0)*h,h)*(1.0-col.a);
+  }
+  if(uK==5 && r>1.0-aa){                              // faint dusty halo for Mars
+    float h=(1.0-smoothstep(1.0,1.07,r))*0.35*clamp(dot(normalize(vec3(p,0.0)),uL)+0.6,0.0,1.0);
+    col=col+vec4(vec3(1.0,0.6,0.4)*h,h)*(1.0-col.a);
   }
   if(uK==3 && r>1.0-aa){                              // thin atmosphere halo
     float h=(1.0-smoothstep(1.0,1.085,r))*0.55*clamp(dot(normalize(vec3(p,0.0)),uL)+0.5,0.0,1.0);
@@ -3119,7 +3180,7 @@ void main(){
     try{ prog=gl.createProgram(); gl.attachShader(prog,sh(gl.VERTEX_SHADER,VS)); gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FS)); gl.linkProgram(prog);
       if(!gl.getProgramParameter(prog,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog)); }
     catch(e){ console.warn('[INS] solar GL',e); return null; }
-    const U={}; ['uC','uH','uR','uT','uRing','uQ','uSpin','uTilt','uAmb','uRingRatio','uL','uK'].forEach(k=>U[k]=gl.getUniformLocation(prog,k));
+    const U={}; ['uC','uH','uR','uT','uRing','uQ','uSpin','uTilt','uAmb','uRingRatio','uG','uL','uK'].forEach(k=>U[k]=gl.getUniformLocation(prog,k));
     const vao=gl.createVertexArray(); gl.bindVertexArray(vao);
     const buf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,buf);
     gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
@@ -3151,12 +3212,12 @@ void main(){
       gl.uniform2f(U.uR,cv.width,cv.height); gl.uniform1i(U.uT,0); gl.uniform1i(U.uRing,1);
       items.forEach(it=>{
         if(!it.tex) return;
-        const q=it.kind===1?2.3:(it.kind===3?1.1:1.0);
+        const q=it.kind===1?2.3:(it.kind>=3?1.12:1.0);
         gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,it.tex);
         gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D,it.ring||it.tex);
         gl.uniform2f(U.uC,it.x*dpr,it.y*dpr); gl.uniform1f(U.uH,it.R*q*dpr); gl.uniform1f(U.uQ,q);
         gl.uniform1f(U.uSpin,it.spin); gl.uniform1f(U.uTilt,it.tilt); gl.uniform1f(U.uAmb,it.amb);
-        gl.uniform1f(U.uRingRatio,0.34); gl.uniform3f(U.uL,it.L[0],it.L[1],it.L[2]); gl.uniform1i(U.uK,it.kind);
+        gl.uniform1f(U.uRingRatio,it.ringRatio||0.34); gl.uniform1f(U.uG,it.gain||1); gl.uniform3f(U.uL,it.L[0],it.L[1],it.L[2]); gl.uniform1i(U.uK,it.kind);
         gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
       });
     }
@@ -3165,7 +3226,8 @@ void main(){
   }
 
   function buildSolar(){
-    const hint=LG()==='es'?'Toca la Tierra o la Luna':'Tap Earth or the Moon';
+    const hint=LG()==='es'?'Toca la Tierra, la Luna o Marte':'Tap Earth, the Moon or Mars';
+    const MP=moonPhase(Date.now());
     const TX=(typeof INS_TEX!=='undefined')?INS_TEX:null;
     const earthImg=TX?TX.earth:'images/earth.jpg', moonImg=TX?TX.moon:'images/moon_surface.jpg';
     let html='<div class="solar" id="solar"><div class="sun"><img src="images/sun.png" alt=""></div>';
@@ -3177,7 +3239,7 @@ void main(){
         +'<span class="plabel">'+nm+'</span></div>';
       if(p.moon){ html+='<div class="planet clickable" data-planet="moon" data-body="moon"><span class="halo"></span>'
         +'<span class="pbody"><img src="'+moonImg+'" alt="'+esc(PNAME.moon[LG()])+'"></span>'
-        +'<span class="plabel">'+esc(PNAME.moon[LG()])+'</span></div>'; }
+        +'<span class="plabel">'+esc(PNAME.moon[LG()])+' · '+esc(MP.names[LG()][MP.idx])+' '+Math.round(MP.k*100)+'%</span></div>'; }
     });
     html+='<div class="solar-hint">'+hint+'</div>'
       +'<div class="solar-credit">'+(LG()==='es'?'Texturas':'Textures')+': <a href="https://www.solarsystemscope.com/textures/" target="_blank" rel="noopener">Solar System Scope</a> · CC BY 4.0</div></div>';
@@ -3193,11 +3255,11 @@ void main(){
     const reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
     // items to render in 3D (positions filled in by layout)
     const items=[];
-    const sunItem={id:'sun',kind:2,tilt:SUN_BODY.tilt,rot:SUN_BODY.rot,amb:1,L:[0,0,1],x:0,y:0,R:10,spin:0,tex:null,src:SUN_BODY.tex,ph:0};
+    const sunItem={id:'sun',kind:2,gain:1,tilt:SUN_BODY.tilt,rot:SUN_BODY.rot,amb:1,L:[0,0,1],x:0,y:0,R:10,spin:0,tex:null,src:SUN_BODY.tex,ph:0};
     items.push(sunItem);
-    PLANETS.forEach(p=>items.push({id:p.id,kind:p.ring?1:(p.atmo?3:0),tilt:p.tilt,rot:p.rot,amb:0.2,L:[0,0,1],x:0,y:0,R:10,spin:0,tex:null,
+    PLANETS.forEach(p=>items.push({id:p.id,kind:p.ring?1:(p.atmo?3:(p.id==='mars'?5:0)),gain:p.id==='mars'?1.3:(p.atmo?1.18:1.12),tilt:p.tilt,rot:p.rot,amb:0.34,L:[0,0,1],x:0,y:0,R:10,spin:0,tex:null,
       src:p.tex,ringSrc:p.ring?'images/planets/saturn_ring.png':null,ph:(p.L0%360)/57.3}));
-    const moonItem={id:'moon',kind:0,tilt:MOON_BODY.tilt,rot:0,amb:0.2,L:[0,0,1],x:0,y:0,R:10,spin:2.6,tex:null,src:MOON_BODY.tex,ph:0};
+    const moonItem={id:'moon',kind:4,gain:1.55,tilt:MOON_BODY.tilt,rot:0,amb:0.07,L:[0,0,1],x:0,y:0,R:10,spin:2.6,tex:null,src:MOON_BODY.tex,ph:0};
     items.push(moonItem);
     const byIdIt={}; items.forEach(it=>byIdIt[it.id]=it);
 
@@ -3205,14 +3267,18 @@ void main(){
       const W=stage.clientWidth,H=stage.clientHeight; SOLAR.geo={cx:W/2,cy:H/2};
       const cx=W/2, cy=H/2;
       // narrow screens: look from higher up (less squash) and shrink the planets
-      TL=W<700?0.82:TILT; SIN_E=TL; COS_E=Math.sqrt(1-TL*TL);
+      TL=W<700?0.85:TILT; SIN_E=TL; COS_E=Math.sqrt(1-TL*TL);
       K=Math.max(0.42,Math.min(1,W/1250)); MR=Math.max(10,13.5*K);
-      const Rmax=W<700?Math.max(110,Math.min(W/2-26,(H/2-46)/TL)):Math.max(120, Math.min(W/2-70, (H/2-40)/TL));
-      const R0=W<700?Math.max(sunEl.clientWidth*0.39+20,Rmax*0.2):95;
+      const Rmax=W<700?Math.max(110,Math.min(W/2-22,(H/2-40)/TL)):Math.max(160, Math.min(W/2-80, (H/2-46)/TL));
       const boxOf=p=>p.moon?Math.max(30,p.size*SIZE*K):p.size*SIZE*K;
-      sunItem.x=cx; sunItem.y=cy; sunItem.R=(sunEl.clientWidth||100)/2*0.78;
+      // the Sun is drawn larger than Jupiter
+      const jupBox=PLANETS.find(q=>q.id==='jupiter').size*SIZE*K;
+      sunItem.x=cx; sunItem.y=cy; sunItem.R=jupBox/2*1.32;
+      sunEl.style.width=sunEl.style.height=(sunItem.R*2/0.78)+'px';
+      const R0=sunItem.R+(W<700?16:34);
       PLANETS.forEach(p=>{
-        p._r=R0+(Math.sqrt(p.au)/Math.sqrt(30.1))*(Rmax-R0-5);
+        const idx=PLANETS.indexOf(p), frac=0.55*idx/(PLANETS.length-1)+0.45*Math.sqrt(p.au/30.1);   // even-ish spacing so inner planets don't crowd
+        p._r=R0+frac*(Rmax-R0-5);
         p._ang=(p.L0+p.n*days)*Math.PI/180;          // real heliocentric longitude for today
         const box=boxOf(p); p._hit=p.ring?box/2*SAT_BODY*1.9:box/2;
       });
@@ -3251,10 +3317,11 @@ void main(){
           const mx=x+side*(box/2+mR+12), my=y-10;
           els.moon.style.width=els.moon.style.height=(mR*2)+'px';
           els.moon.style.left=mx+'px'; els.moon.style.top=my+'px'; els.moon.style.zIndex=Math.round((s*0.5+0.5)*80)+7;
-          moonItem.x=mx; moonItem.y=my; moonItem.R=mR; moonItem.depth=s+0.001; moonItem.L=it.L;
+          moonItem.x=mx; moonItem.y=my; moonItem.R=mR; moonItem.depth=s+0.001; moonItem.L=MP.L;   // real phase
         }
       });
       sunItem.depth=0;
+      const sat=byIdIt.saturn; if(sat) sat.ringRatio=Math.min(0.62,TL*0.78+0.06);
       if(GLR) GLR.resize();
       draw(performance.now());
     }
@@ -3285,6 +3352,193 @@ void main(){
       }).catch(e=>{ console.warn('[INS] planet textures',e); });   // keep flat images
     }
     root.querySelectorAll('[data-body]').forEach(el=>el.addEventListener('click',()=>openBody(el.getAttribute('data-body'))));
+  }
+
+  /* -------- MARS: missions, robots on the surface and what we learned (data: Oct 2026) -------- */
+  const MARS_KIND={
+    rover:{en:'Rover',es:'Rover'}, lander:{en:'Lander',es:'Módulo de aterrizaje'}, heli:{en:'Helicopter',es:'Helicóptero'},
+    orbiter:{en:'Orbiter',es:'Orbitador'}, flyby:{en:'Flyby',es:'Sobrevuelo'}, cruise:{en:'Orbiters (en route)',es:'Orbitadores (en camino)'} };
+  const MARS_STATUS={
+    active:{en:'Active',es:'Activa',col:'#3ee08a'}, ended:{en:'Mission ended',es:'Misión finalizada',col:'#9fd4ff'},
+    lost:{en:'Lost / crashed',es:'Perdida / estrellada',col:'#ff9d3c'}, cruise:{en:'On its way',es:'En camino',col:'#ffd166'} };
+  const MARS_MISSIONS=[
+    {id:'mariner4',name:'Mariner 4',ag:'NASA',yrs:'1964–1965',kind:'flyby',st:'ended',
+      p:{en:'First successful flyby of Mars: get the first close-up pictures of another planet.',es:'Primer sobrevuelo con éxito de Marte: obtener las primeras imágenes cercanas de otro planeta.'},
+      d:{en:'21 photos showing a cratered, Moon-like surface and a radio measurement of a very thin atmosphere (under 1% of Earth\'s pressure).',es:'21 fotos que mostraban una superficie llena de cráteres, parecida a la Luna, y una medición por radio de una atmósfera muy tenue (menos del 1 % de la presión terrestre).'},
+      u:{en:'It ended the idea of canals and a lush Mars, and the thin-air measurement forced later landers to combine heat shields, parachutes and rockets.',es:'Acabó con la idea de los canales y de un Marte frondoso, y la medida del aire tan tenue obligó a que los siguientes aterrizadores combinaran escudo térmico, paracaídas y retrocohetes.'}},
+    {id:'mars3',name:'Mars 3',ag:'USSR',yrs:'1971',kind:'lander',st:'lost',lat:-45,lng:-158,
+      p:{en:'Orbiter plus lander with a tiny tethered rover (PrOP-M), aiming for the first soft landing on Mars.',es:'Orbitador más módulo de aterrizaje con un pequeño rover atado por cable (PrOP-M), para lograr el primer aterrizaje suave en Marte.'},
+      d:{en:'The lander touched down on 2 December 1971 — the first soft landing — but fell silent after about 20 seconds, during a global dust storm. The orbiter returned temperature and atmosphere data.',es:'El módulo se posó el 2 de diciembre de 1971 —el primer aterrizaje suave— pero enmudeció a los 20 segundos, en plena tormenta de polvo global. El orbitador envió datos de temperatura y atmósfera.'},
+      u:{en:'It proved that landing on Mars was possible and showed how dangerous global dust storms are for surface operations.',es:'Demostró que aterrizar en Marte era posible y lo peligrosas que son las tormentas de polvo globales para las operaciones en superficie.'}},
+    {id:'mariner9',name:'Mariner 9',ag:'NASA',yrs:'1971–1972',kind:'orbiter',st:'ended',
+      p:{en:'First spacecraft to orbit another planet: map Mars globally.',es:'Primera nave en orbitar otro planeta: cartografiar Marte entero.'},
+      d:{en:'7,329 images covering most of the planet: giant volcanoes such as Olympus Mons, the Valles Marineris canyon (named after the probe) and dry river channels.',es:'7329 imágenes de casi todo el planeta: volcanes gigantes como el Olympus Mons, el cañón Valles Marineris (bautizado en su honor) y antiguos cauces secos.'},
+      u:{en:'Its maps were used to choose the Viking landing sites and revealed that water once flowed on Mars.',es:'Sus mapas sirvieron para elegir dónde aterrizarían las Viking y revelaron que en Marte había corrido agua.'}},
+    {id:'viking1',name:'Viking 1',ag:'NASA',yrs:'1976–1982',kind:'lander',st:'ended',lat:22.27,lng:-47.95,
+      p:{en:'Look for life in the soil and study the surface and weather, with an orbiter mapping from above.',es:'Buscar vida en el suelo y estudiar la superficie y el clima, con un orbitador cartografiando desde arriba.'},
+      d:{en:'First colour images from the surface, six years of weather records and three biology experiments whose results were mostly negative (one, Labeled Release, is still debated).',es:'Primeras imágenes en color desde la superficie, seis años de registros meteorológicos y tres experimentos biológicos con resultados mayoritariamente negativos (uno, Labeled Release, sigue en debate).'},
+      u:{en:'Its analysis of the air matched gases trapped in certain meteorites, proving they came from Mars. It is still the reference for Martian climate and for life-detection design.',es:'Su análisis del aire coincidió con los gases atrapados en ciertos meteoritos y demostró que venían de Marte. Sigue siendo la referencia del clima marciano y del diseño de experimentos de detección de vida.'}},
+    {id:'viking2',name:'Viking 2',ag:'NASA',yrs:'1976–1980',kind:'lander',st:'ended',lat:48.27,lng:134.01,
+      p:{en:'Second Viking lander, sent farther north to Utopia Planitia to compare with Viking 1.',es:'Segundo aterrizador Viking, enviado más al norte, a Utopia Planitia, para compararlo con el Viking 1.'},
+      d:{en:'Photographed water frost on the ground in winter and recorded more than three Martian years of local weather.',es:'Fotografió escarcha de agua en el suelo durante el invierno y registró más de tres años marcianos de clima local.'},
+      u:{en:'The frost observations were key evidence for Mars\' present-day water cycle between poles, atmosphere and ground.',es:'La escarcha fue una prueba clave del ciclo actual del agua entre los polos, la atmósfera y el suelo.'}},
+    {id:'pathfinder',name:'Mars Pathfinder · Sojourner',ag:'NASA',yrs:'1997',kind:'rover',st:'ended',lat:19.13,lng:-33.22,
+      p:{en:'Low-cost technology demo: land with airbags and drive the first rover on Mars.',es:'Demostración tecnológica de bajo coste: aterrizar con airbags y conducir el primer rover en Marte.'},
+      d:{en:'More than 16,000 lander and 550 rover images, chemistry of rocks and soil, and evidence of ancient floods in Ares Vallis.',es:'Más de 16 000 imágenes del módulo y 550 del rover, química de rocas y suelo, y pruebas de antiguas inundaciones en Ares Vallis.'},
+      u:{en:'The airbag landing and the rover concept were reused for Spirit and Opportunity. Its live web coverage was one of the first viral science events.',es:'El aterrizaje con airbags y el concepto de rover se reutilizaron en Spirit y Opportunity. Su cobertura en directo por internet fue uno de los primeros fenómenos virales de la ciencia.'}},
+    {id:'mgs',name:'Mars Global Surveyor',ag:'NASA',yrs:'1997–2006',kind:'orbiter',st:'ended',
+      p:{en:'Map the whole planet in detail: topography, magnetism and surface.',es:'Cartografiar el planeta en detalle: relieve, magnetismo y superficie.'},
+      d:{en:'The MOLA laser altimeter produced the first precise topographic map of Mars; the magnetometer found stripes of ancient crustal magnetism; cameras spotted young gullies.',es:'El altímetro láser MOLA hizo el primer mapa topográfico preciso de Marte; el magnetómetro halló franjas de magnetismo antiguo en la corteza; las cámaras detectaron barrancos jóvenes.'},
+      u:{en:'MOLA topography is still the base map used to plan landings and to model Martian winds and water flow.',es:'El relieve de MOLA sigue siendo el mapa base para planificar aterrizajes y modelizar vientos y flujos de agua.'}},
+    {id:'odyssey',name:'2001 Mars Odyssey',ag:'NASA',yrs:'2001–',kind:'orbiter',st:'active',
+      p:{en:'Map the chemistry and minerals of the surface and search for water.',es:'Cartografiar la química y los minerales de la superficie y buscar agua.'},
+      d:{en:'Detected large amounts of hydrogen just below the surface — buried water ice — and made thermal maps of the whole planet.',es:'Detectó grandes cantidades de hidrógeno justo bajo la superficie —hielo de agua enterrado— e hizo mapas térmicos de todo el planeta.'},
+      u:{en:'Its ice map sent Phoenix to dig at high northern latitudes. It is the longest-working spacecraft at another planet and relays rover data to Earth.',es:'Su mapa de hielo llevó a Phoenix a excavar en latitudes altas del norte. Es la nave que más tiempo lleva funcionando en otro planeta y retransmite datos de los rovers a la Tierra.'}},
+    {id:'marsexpress',name:'Mars Express',ag:'ESA',yrs:'2003–',kind:'orbiter',st:'active',
+      p:{en:'Europe\'s first Mars mission: study the surface, subsurface and atmosphere from orbit.',es:'Primera misión europea a Marte: estudiar la superficie, el subsuelo y la atmósfera desde órbita.'},
+      d:{en:'3D stereo images of the surface, maps of clays and sulphates formed in water, and radar soundings of the polar ice caps.',es:'Imágenes estereoscópicas en 3D, mapas de arcillas y sulfatos formados en agua, y sondeos por radar de los casquetes polares.'},
+      u:{en:'Its mineral maps showed that early Mars had long-lasting liquid water and helped choose landing sites for later rovers.',es:'Sus mapas de minerales demostraron que el Marte primitivo tuvo agua líquida duradera y ayudaron a elegir dónde aterrizar a rovers posteriores.'}},
+    {id:'beagle2',name:'Beagle 2',ag:'UK · ESA',yrs:'2003',kind:'lander',st:'lost',lat:11.53,lng:90.43,
+      p:{en:'Small British lander carried by Mars Express to search for chemical signs of life.',es:'Pequeño aterrizador británico, llevado por Mars Express, para buscar señales químicas de vida.'},
+      d:{en:'It never called home. In 2015 NASA\'s MRO found it on the surface: it had landed, but not all of its solar panels opened, blocking its antenna.',es:'Nunca llegó a comunicarse. En 2015 el MRO de la NASA lo encontró en la superficie: había aterrizado, pero no todos sus paneles se abrieron y le tapaban la antena.'},
+      u:{en:'Its story became a lesson in testing deployments and having communication during landing.',es:'Su historia se convirtió en una lección sobre probar los despliegues y tener comunicación durante el aterrizaje.'}},
+    {id:'spirit',name:'Spirit',ag:'NASA',yrs:'2004–2010',kind:'rover',st:'ended',lat:-14.57,lng:175.47,
+      p:{en:'Twin rover of Opportunity: "follow the water" in Gusev crater.',es:'Rover gemelo de Opportunity: "seguir el rastro del agua" en el cráter Gusev.'},
+      d:{en:'Found almost pure silica in the soil — dug up by its own broken wheel — and carbonate rocks: signs of ancient hot springs or steam vents.',es:'Encontró sílice casi pura en el suelo —desenterrada por su propia rueda averiada— y rocas con carbonatos: señales de antiguas fuentes termales o fumarolas.'},
+      u:{en:'Hot-spring environments are among the best places to look for traces of life, so these finds shaped astrobiology targets. Planned for 90 days, it worked for six years.',es:'Los entornos de fuentes termales están entre los mejores lugares para buscar rastros de vida, así que estos hallazgos orientaron la astrobiología. Diseñado para 90 días, funcionó seis años.'}},
+    {id:'opportunity',name:'Opportunity',ag:'NASA',yrs:'2004–2018',kind:'rover',st:'ended',lat:-1.95,lng:-5.53,
+      p:{en:'Search Meridiani Planum for evidence of past water.',es:'Buscar en Meridiani Planum pruebas de agua en el pasado.'},
+      d:{en:'Hematite "blueberries" and sulphate minerals that only form in water, then gypsum veins at Endeavour crater. It drove 45 km over 14 years.',es:'"Arándanos" de hematita y minerales de sulfato que solo se forman en agua, y después vetas de yeso en el cráter Endeavour. Recorrió 45 km en 14 años.'},
+      u:{en:'It gave the first ground proof that liquid water once soaked the surface. A global dust storm ended it in 2018, a reminder of the risk for future crews.',es:'Fue la primera prueba sobre el terreno de que el agua líquida empapó la superficie. Una tormenta de polvo global acabó con él en 2018, un aviso del riesgo para futuras tripulaciones.'}},
+    {id:'mro',name:'Mars Reconnaissance Orbiter',ag:'NASA',yrs:'2006–',kind:'orbiter',st:'active',
+      p:{en:'Study Mars in high resolution, look for water and act as a relay for surface missions.',es:'Estudiar Marte en alta resolución, buscar agua y servir de repetidor para las misiones en superficie.'},
+      d:{en:'HiRISE photos sharp enough to see rovers and parachutes, mineral maps, radar soundings of buried ice and daily weather maps.',es:'Fotos de HiRISE tan nítidas que se ven rovers y paracaídas, mapas de minerales, sondeos por radar de hielo enterrado y mapas diarios del tiempo.'},
+      u:{en:'Every recent landing site was certified with its images. Its maps of shallow ice are used to choose where the first astronauts could land.',es:'Todos los lugares de aterrizaje recientes se certificaron con sus imágenes. Sus mapas de hielo poco profundo se usan para elegir dónde podrían aterrizar los primeros astronautas.'}},
+    {id:'phoenix',name:'Phoenix',ag:'NASA',yrs:'2008',kind:'lander',st:'ended',lat:68.22,lng:-125.75,
+      p:{en:'Dig into the arctic plains to touch the ice detected by Odyssey.',es:'Excavar en las llanuras árticas para tocar el hielo detectado por Odyssey.'},
+      d:{en:'Confirmed water ice just centimetres below the surface, found perchlorate salts in the soil and saw snow falling from clouds.',es:'Confirmó hielo de agua a pocos centímetros bajo la superficie, encontró sales de perclorato en el suelo y vio nieve cayendo de las nubes.'},
+      u:{en:'Perchlorate changed how Viking\'s results are read and is a toxicity concern for astronauts — but also a possible oxygen source. The ice is a resource for future bases.',es:'El perclorato cambió la interpretación de los resultados de Viking y es un riesgo tóxico para los astronautas, aunque también una posible fuente de oxígeno. El hielo es un recurso para futuras bases.'}},
+    {id:'curiosity',name:'Curiosity',ag:'NASA',yrs:'2012–',kind:'rover',st:'active',lat:-4.59,lng:137.44,
+      p:{en:'Find out whether Gale crater was ever habitable for microbes.',es:'Averiguar si el cráter Gale fue alguna vez habitable para microbios.'},
+      d:{en:'An ancient freshwater lake with all the chemical ingredients for life, complex organic molecules, seasonal changes in methane, and radiation measured on the way to Mars and on the surface.',es:'Un antiguo lago de agua dulce con todos los ingredientes químicos para la vida, moléculas orgánicas complejas, cambios estacionales de metano y la radiación medida en el viaje y en la superficie.'},
+      u:{en:'Its radiation data (RAD) are used to estimate the dose a crew would receive on a Mars mission and to design shielding — central to astronaut health and mission planning.',es:'Sus datos de radiación (RAD) se usan para estimar la dosis que recibiría una tripulación en una misión a Marte y para diseñar blindajes, algo central para la salud de los astronautas.'}},
+    {id:'maven',name:'MAVEN',ag:'NASA',yrs:'2014–2025',kind:'orbiter',st:'ended',
+      p:{en:'Understand how Mars lost most of its atmosphere to space.',es:'Entender cómo perdió Marte la mayor parte de su atmósfera.'},
+      d:{en:'Measured gas escaping from the upper atmosphere, driven by the solar wind and solar storms, and discovered new types of aurora. Contact was lost in December 2025.',es:'Midió el gas que escapa de la alta atmósfera empujado por el viento solar y las tormentas solares, y descubrió nuevos tipos de auroras. Se perdió el contacto en diciembre de 2025.'},
+      u:{en:'Its results explain how a once warmer, wetter Mars became cold and dry, and help model space weather for future missions.',es:'Sus resultados explican cómo un Marte antes más cálido y húmedo se volvió frío y seco, y ayudan a modelizar el clima espacial para futuras misiones.'}},
+    {id:'mom',name:'Mangalyaan (Mars Orbiter Mission)',ag:'ISRO',yrs:'2014–2022',kind:'orbiter',st:'ended',
+      p:{en:'India\'s first interplanetary mission: demonstrate the technology to reach and orbit Mars.',es:'Primera misión interplanetaria de la India: demostrar la tecnología para llegar a Marte y orbitarlo.'},
+      d:{en:'Colour images of the whole disc of Mars and of its moon Phobos, plus atmospheric measurements, for eight years instead of the planned six months.',es:'Imágenes en color del disco completo de Marte y de su luna Fobos, y medidas atmosféricas, durante ocho años en lugar de los seis meses previstos.'},
+      u:{en:'India became the first country to reach Mars orbit on its first try, at a famously low cost — a model for affordable deep-space missions.',es:'La India fue el primer país en llegar a la órbita marciana al primer intento y con un coste famosamente bajo, un modelo de misión asequible al espacio profundo.'}},
+    {id:'tgo',name:'ExoMars Trace Gas Orbiter',ag:'ESA · Roscosmos',yrs:'2016–',kind:'orbiter',st:'active',
+      p:{en:'Sniff the atmosphere for trace gases such as methane that could hint at geology or life.',es:'Analizar la atmósfera en busca de gases traza como el metano, que podrían indicar actividad geológica o vida.'},
+      d:{en:'Found far less methane high in the atmosphere than expected, and mapped hidden water ice near the surface.',es:'Encontró mucho menos metano en la alta atmósfera de lo esperado y cartografió hielo de agua oculto cerca de la superficie.'},
+      u:{en:'Its methane limits are a key puzzle to compare with Curiosity\'s ground readings; its ice maps help plan human landing sites. It also relays rover data.',es:'Sus límites de metano son un enigma clave frente a las lecturas de Curiosity en el suelo; sus mapas de hielo ayudan a planificar aterrizajes humanos. También retransmite datos de los rovers.'}},
+    {id:'schiaparelli',name:'Schiaparelli',ag:'ESA',yrs:'2016',kind:'lander',st:'lost',lat:-2.05,lng:-6.21,
+      p:{en:'Test European landing technology ahead of the ExoMars rover.',es:'Probar la tecnología europea de aterrizaje antes del rover ExoMars.'},
+      d:{en:'It sent back data during entry and descent, but a sensor saturation confused its software into thinking it had landed: it cut its engines too early and crashed.',es:'Envió datos durante la entrada y el descenso, pero la saturación de un sensor hizo creer al software que ya había aterrizado: apagó los motores antes de tiempo y se estrelló.'},
+      u:{en:'Those descent data were used to fix the software and landing design of the Rosalind Franklin rover.',es:'Esos datos de descenso se usaron para corregir el software y el diseño de aterrizaje del rover Rosalind Franklin.'}},
+    {id:'insight',name:'InSight',ag:'NASA',yrs:'2018–2022',kind:'lander',st:'ended',lat:4.50,lng:135.62,
+      p:{en:'Listen to the inside of Mars with a seismometer and measure its heat.',es:'Escuchar el interior de Marte con un sismómetro y medir su calor.'},
+      d:{en:'Recorded more than 1,300 marsquakes, measured the size of Mars\' liquid core and the layers of its crust, and heard meteorite impacts. Its heat probe could not dig in.',es:'Registró más de 1300 martemotos, midió el tamaño del núcleo líquido y las capas de la corteza, y "oyó" impactos de meteoritos. Su sonda de calor no logró enterrarse.'},
+      u:{en:'Its data rewrote models of how rocky planets form and cool. Fresh impacts it detected exposed buried ice, useful for future bases.',es:'Sus datos reescribieron los modelos de cómo se forman y enfrían los planetas rocosos. Algunos impactos que detectó dejaron al descubierto hielo enterrado, útil para futuras bases.'}},
+    {id:'hope',name:'Hope (Emirates Mars Mission)',ag:'UAE · MBRSC',yrs:'2021–',kind:'orbiter',st:'active',
+      p:{en:'First global view of Martian weather across all times of day and seasons.',es:'Primera visión global del tiempo marciano a todas horas y en todas las estaciones.'},
+      d:{en:'Maps of dust, ice clouds, temperature and the upper atmosphere, plus spectacular discrete auroras on the night side.',es:'Mapas de polvo, nubes de hielo, temperatura y alta atmósfera, y espectaculares auroras discretas en la cara nocturna.'},
+      u:{en:'Its data are released openly every few months and feed weather models — the "forecast" future crews will need.',es:'Sus datos se publican en abierto cada pocos meses y alimentan los modelos meteorológicos, el "pronóstico" que necesitarán las futuras tripulaciones.'}},
+    {id:'tianwen1',name:'Tianwen-1 (orbiter)',ag:'CNSA',yrs:'2021–',kind:'orbiter',st:'active',
+      p:{en:'China\'s first Mars mission: orbit, land and rove in a single attempt.',es:'Primera misión china a Marte: orbitar, aterrizar y recorrer la superficie en un solo intento.'},
+      d:{en:'Global imaging of Mars from orbit and relay for the Zhurong rover.',es:'Imágenes globales de Marte desde órbita y retransmisión de los datos del rover Zhurong.'},
+      u:{en:'Its experience prepares Tianwen-3, which aims to bring Martian samples to Earth around 2031.',es:'Su experiencia prepara la Tianwen-3, que pretende traer muestras marcianas a la Tierra hacia 2031.'}},
+    {id:'zhurong',name:'Zhurong',ag:'CNSA',yrs:'2021–2022',kind:'rover',st:'ended',lat:25.07,lng:109.93,
+      p:{en:'China\'s first Mars rover, exploring southern Utopia Planitia.',es:'Primer rover chino en Marte, explorando el sur de Utopia Planitia.'},
+      d:{en:'Ground-penetrating radar revealed buried layers left by repeated floods, and it found signs of water activity in relatively recent times. It went dormant in May 2022, covered in dust.',es:'Su radar de subsuelo reveló capas enterradas dejadas por inundaciones repetidas y encontró indicios de actividad del agua en tiempos relativamente recientes. Quedó en hibernación en mayo de 2022, cubierto de polvo.'},
+      u:{en:'Its radar profiles help reconstruct the history of the northern lowlands, where some scientists think an ancient ocean existed.',es:'Sus perfiles de radar ayudan a reconstruir la historia de las llanuras del norte, donde algunos científicos creen que existió un antiguo océano.'}},
+    {id:'perseverance',name:'Perseverance',ag:'NASA',yrs:'2021–',kind:'rover',st:'active',lat:18.44,lng:77.45,
+      p:{en:'Look for signs of ancient microbial life in Jezero crater, an old river delta, and collect samples.',es:'Buscar señales de vida microbiana antigua en el cráter Jezero, un antiguo delta, y recoger muestras.'},
+      d:{en:'More than 30 sealed rock and soil samples, including "Cheyava Falls", described as the clearest potential biosignature yet. MOXIE made oxygen from Martian CO₂. In October 2026 it broke the record for distance driven on another world.',es:'Más de 30 muestras selladas de roca y suelo, entre ellas "Cheyava Falls", descrita como la posible biofirma más clara hasta ahora. MOXIE fabricó oxígeno a partir del CO₂ marciano. En octubre de 2026 batió el récord de distancia recorrida en otro mundo.'},
+      u:{en:'MOXIE proved astronauts could make oxygen on Mars. The samples were meant to come to Earth, but NASA\'s sample-return plan was cancelled in 2026, so they wait on the surface.',es:'MOXIE demostró que los astronautas podrían fabricar oxígeno en Marte. Las muestras debían traerse a la Tierra, pero el plan de retorno de la NASA se canceló en 2026 y esperan en la superficie.'}},
+    {id:'ingenuity',name:'Ingenuity',ag:'NASA',yrs:'2021–2024',kind:'heli',st:'ended',lat:18.56,lng:77.33,
+      p:{en:'Test whether a helicopter can fly in air about 1% as dense as Earth\'s.',es:'Comprobar si un helicóptero puede volar en un aire con apenas el 1 % de la densidad del terrestre.'},
+      d:{en:'72 flights instead of the planned 5, about 17 km in total, with aerial images that scouted routes for Perseverance. A damaged rotor ended its flights in January 2024.',es:'72 vuelos en lugar de los 5 previstos, unos 17 km en total, con imágenes aéreas que exploraron rutas para Perseverance. Un rotor dañado puso fin a sus vuelos en enero de 2024.'},
+      u:{en:'It opened aerial exploration of other planets; its design is the basis for larger future Mars helicopters.',es:'Abrió la exploración aérea de otros planetas; su diseño es la base de futuros helicópteros marcianos más grandes.'}},
+    {id:'escapade',name:'ESCAPADE',ag:'NASA',yrs:'2025–',kind:'cruise',st:'cruise',
+      p:{en:'Twin small orbiters that will study how the solar wind strips Mars\' atmosphere, from two points at once.',es:'Dos pequeños orbitadores gemelos que estudiarán cómo el viento solar arranca la atmósfera de Marte, desde dos puntos a la vez.'},
+      d:{en:'Launched in November 2025; they are due to reach Mars in 2027.',es:'Lanzados en noviembre de 2025; llegarán a Marte en 2027.'},
+      u:{en:'They will continue MAVEN\'s work and improve space-weather forecasts for future crews.',es:'Continuarán el trabajo de MAVEN y mejorarán las previsiones de clima espacial para futuras tripulaciones.'}}
+  ];
+
+  /* -------- navigable Mars: missions, robots and beacons -------- */
+  function buildMars(){
+    const L=LG(), es=L==='es';
+    const backTxt=es?'Sistema solar':'Solar system';
+    const gh=es?'Arrastra para rotar · rueda para acercar · toca un punto':'Drag to rotate · scroll to zoom · tap a beacon';
+    const F=[['all',es?'Todas':'All'],['surface',es?'En la superficie':'On the surface'],['orbit',es?'En órbita':'In orbit'],['active',es?'Activas hoy':'Active today']];
+    if(!state.marsF) state.marsF='all';
+    if(!state.marsSel) state.marsSel='perseverance';
+    const nSurf=MARS_MISSIONS.filter(m=>m.lat!=null).length, nAct=MARS_MISSIONS.filter(m=>m.st==='active').length;
+    root.innerHTML='<div class="kb-body kb-mars"><div class="kb-body-top">'
+      +'<button class="kb-back" id="kbBack">‹ '+esc(backTxt)+'</button>'
+      +'<div class="kb-body-title">'+(es?'Marte':'Mars')+'<small>'+(es?'El único planeta habitado solo por robots':'The only planet inhabited only by robots')+'</small></div>'
+      +'<div class="mars-stats"><span><b>'+MARS_MISSIONS.length+'</b>'+(es?'misiones':'missions')+'</span><span><b>'+nSurf+'</b>'+(es?'en la superficie':'on the surface')+'</span><span><b>'+nAct+'</b>'+(es?'activas':'active')+'</span></div></div>'
+      +'<div class="kb-bodygrid mars-grid">'
+        +'<div class="kb-col mars-listcol"><div class="mars-filters">'+F.map(f=>'<button class="mars-f" data-f="'+f[0]+'" aria-pressed="'+(state.marsF===f[0])+'">'+esc(f[1])+'</button>').join('')+'</div>'
+          +'<div class="mars-list" id="marsList"></div></div>'
+        +'<div class="kb-globe" id="kbGlobe"><span class="kb-globe-hint">'+esc(gh)+'</span>'
+          +'<div class="mars-legend">'+['active','ended','lost'].map(k=>'<span><i style="background:'+MARS_STATUS[k].col+'"></i>'+esc(MARS_STATUS[k][L])+'</span>').join('')+'</div></div>'
+        +'<div class="kb-col mars-detail" id="marsDetail"></div>'
+      +'</div><p class="mars-credit">'+(es?'Textura de Marte':'Mars texture')+': <a href="https://www.solarsystemscope.com/textures/" target="_blank" rel="noopener">Solar System Scope</a> (CC BY 4.0) · '+(es?'Datos':'Data')+': NASA, ESA, CNSA, ISRO, MBRSC · '+(es?'actualizado oct 2026':'updated Oct 2026')+'</p></div>';
+    root.querySelector('#kbBack').addEventListener('click',backToSolar);
+    root.querySelectorAll('.mars-f').forEach(b=>b.addEventListener('click',()=>{ state.marsF=b.getAttribute('data-f');
+      root.querySelectorAll('.mars-f').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false')); drawMarsList(); }));
+    initGlobe('mars');
+    if(GLOBE){
+      const surf=MARS_MISSIONS.filter(m=>m.lat!=null);
+      GLOBE.labelsData(surf).labelLat('lat').labelLng('lng').labelText(d=>d.name.split(' · ')[0])
+        .labelSize(1.7).labelDotRadius(1.0).labelColor(d=>MARS_STATUS[d.st].col).labelResolution(2).labelAltitude(0.012)
+        .labelLabel(d=>'<div class="mars-tip"><b>'+esc(d.name)+'</b><br>'+esc(d.ag)+' · '+esc(d.yrs)+'</div>')
+        .onLabelClick(d=>selectMars(d.id,true));
+      GLOBE.ringsData(surf.filter(m=>m.st==='active')).ringLat('lat').ringLng('lng').ringMaxRadius(4)
+        .ringColor(()=>(t=>'rgba(62,224,138,'+(1-t).toFixed(2)+')')).ringPropagationSpeed(2.4).ringRepeatPeriod(1100);
+    }
+    drawMarsList(); selectMars(state.marsSel,false);
+  }
+  function marsVisible(m){
+    const f=state.marsF;
+    if(f==='surface') return m.lat!=null;
+    if(f==='orbit') return m.lat==null;
+    if(f==='active') return m.st==='active';
+    return true;
+  }
+  function drawMarsList(){
+    const L=LG(), box=root.querySelector('#marsList'); if(!box) return;
+    box.innerHTML=MARS_MISSIONS.filter(marsVisible).map(m=>'<button class="mars-item" data-id="'+m.id+'" aria-selected="'+(m.id===state.marsSel)+'">'
+      +'<span class="dot" style="color:'+MARS_STATUS[m.st].col+';background:'+MARS_STATUS[m.st].col+'"></span>'
+      +'<span class="nm">'+esc(m.name)+'<small>'+esc(m.ag)+' · '+esc(m.yrs)+' · '+esc(MARS_KIND[m.kind][L])+'</small></span></button>').join('');
+    box.querySelectorAll('.mars-item').forEach(b=>b.addEventListener('click',()=>selectMars(b.getAttribute('data-id'),true)));
+  }
+  function selectMars(id,fly){
+    const m=MARS_MISSIONS.find(x=>x.id===id)||MARS_MISSIONS[0], L=LG(), es=L==='es';
+    state.marsSel=m.id;
+    root.querySelectorAll('.mars-item').forEach(b=>b.setAttribute('aria-selected',b.getAttribute('data-id')===m.id?'true':'false'));
+    const st=MARS_STATUS[m.st];
+    const loc=m.lat!=null?'<div class="mars-loc">📍 '+Math.abs(m.lat).toFixed(2)+'°'+(m.lat>=0?'N':'S')+' · '+Math.abs(m.lng).toFixed(2)+'°'+(m.lng>=0?'E':(es?'O':'W'))+'</div>'
+      :'<div class="mars-loc">🛰 '+(m.kind==='flyby'?(es?'Sobrevoló el planeta':'Flew past the planet'):m.kind==='cruise'?(es?'Rumbo a Marte':'Heading to Mars'):(es?'En órbita, sin punto en el mapa':'In orbit, no point on the map'))+'</div>';
+    const sec=(t,txt)=>'<h5>'+esc(t)+'</h5><p>'+esc(txt[L])+'</p>';
+    const d=root.querySelector('#marsDetail');
+    if(d) d.innerHTML='<div class="mars-card"><div class="mars-head"><h4>'+esc(m.name)+'</h4>'
+      +'<div class="mars-chips"><span>'+esc(m.ag)+'</span><span>'+esc(m.yrs)+'</span><span>'+esc(MARS_KIND[m.kind][L])+'</span>'
+      +'<span class="st" style="color:'+st.col+';border-color:'+st.col+'">'+esc(st[L])+'</span></div>'+loc+'</div>'
+      +sec(es?'Para qué se hizo':'Why it was sent',m.p)
+      +sec(es?'Qué datos recopiló':'What it found',m.d)
+      +sec(es?'Cómo se han usado':'How the data are used',m.u)+'</div>';
+    if(GLOBE){
+      if(fly){ const c=GLOBE.controls(); if(c) c.autoRotate=false; }
+      if(m.lat!=null){
+        GLOBE.pointOfView({lat:m.lat,lng:m.lng,altitude:fly?1.9:2.4},fly?900:0);
+        GLOBE.labelColor(x=>x.id===m.id?'#ffffff':MARS_STATUS[x.st].col).labelSize(x=>x.id===m.id?2.3:1.7).labelDotRadius(x=>x.id===m.id?1.4:1.0);
+      } else if(fly){ GLOBE.labelColor(x=>MARS_STATUS[x.st].col).labelSize(1.7).labelDotRadius(1.0); }
+    }
   }
 
   /* -------- navigable Earth / Moon -------- */
@@ -3341,17 +3595,17 @@ void main(){
     if(typeof Globe==='undefined'){ el.insertAdjacentHTML('beforeend','<div style="color:var(--ink-faint);font-size:.82rem;max-width:280px;text-align:center;padding:24px">The 3D globe needs the page to be served (host it or use a local server), not opened directly as a file.</div>'); return; }
     // Prefer embedded data-URI textures (work from file://); fall back to files.
     const TX=(typeof INS_TEX!=='undefined')?INS_TEX:null;
-    const img=body==='earth'?(TX?TX.earth:'images/earth.jpg'):(TX?TX.moon:'images/moon_surface.jpg');
-    const bump=body==='earth'?(TX?TX.earthBump:'images/earth_bump.png'):(TX?TX.moonBump:'images/moon_bump.jpg');
+    const img=body==='earth'?(TX?TX.earth:'images/earth.jpg'):body==='mars'?'images/planets/mars_2k.jpg':(TX?TX.moon:'images/moon_surface.jpg');
+    const bump=body==='earth'?(TX?TX.earthBump:'images/earth_bump.png'):body==='mars'?null:(TX?TX.moonBump:'images/moon_bump.jpg');
     const g=Globe()(el)
       .backgroundColor('rgba(0,0,0,0)')
       .globeImageUrl(img)
       .bumpImageUrl(bump)
-      .showAtmosphere(body==='earth').atmosphereColor('#7ec5ff').atmosphereAltitude(0.16)
-      .showGraticules(body==='moon');
+      .showAtmosphere(body!=='moon').atmosphereColor(body==='mars'?'#ff9b6b':'#7ec5ff').atmosphereAltitude(body==='mars'?0.08:0.16)
+      .showGraticules(body!=='earth');
     function size(){ g.width(el.clientWidth).height(el.clientHeight||460); }
     size();
-    g.pointOfView({lat:12,lng:body==='earth'?-30:0,altitude:2.3});
+    g.pointOfView({lat:12,lng:body==='earth'?-30:body==='mars'?100:0,altitude:2.3});
     const c=g.controls(); c.autoRotate=true; c.autoRotateSpeed=0.5; c.enableZoom=true; c.minDistance=140; c.maxDistance=520;
     GLOBE=g; GLOBE._body=body;
     if('ResizeObserver' in window){ GLOBE_RO=new ResizeObserver(size); GLOBE_RO.observe(el); }
