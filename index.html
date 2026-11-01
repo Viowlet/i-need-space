@@ -3261,7 +3261,7 @@ const ASTRO_BIO={
   }
   // newsletter → Google Sheet (Apps Script web app)
   // ⬇⬇ Pega aquí la URL de tu aplicación web de Apps Script (termina en /exec) ⬇⬇
-  const NL_ENDPOINT='';
+  const NL_ENDPOINT='https://script.google.com/macros/s/AKfycby-r6C1I7685uf6lpZKm5U4E8TfVc0yxhT2jr7JyN9xi3pqvWxkSrM0424tH9RTu4EL/exec';
   const form=document.getElementById('nlForm'), nlNote=document.getElementById('nlNote');
   const nlSay=(txt,cls)=>{ nlNote.textContent=txt; nlNote.className='nl-note'+(cls?' '+cls:''); nlNote.dataset.done='1'; };
   form.onsubmit=async e=>{
