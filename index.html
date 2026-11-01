@@ -376,43 +376,62 @@ section{padding:clamp(48px,8vw,96px) clamp(20px,5vw,64px)}
 
 
 /* ============ MISSION SIMULATOR (To think) ============ */
-.msim-open{ margin-top:22px; display:inline-flex; align-items:center; gap:10px; font:inherit; font-size:.82rem; letter-spacing:.14em; text-transform:uppercase;
+.msim-open{ margin-top:18px; display:flex; width:fit-content; align-items:center; gap:10px; font:inherit; font-size:.82rem; letter-spacing:.14em; text-transform:uppercase;
   color:#fff; background:rgba(95,180,255,.14); border:1px solid var(--sky); border-radius:99px; padding:10px 18px; cursor:pointer; position:relative; z-index:6 }
 .msim-open b{ font-size:.7rem; color:var(--sky) }
 .msim-open:hover{ background:rgba(95,180,255,.26) }
 .hero-copy.sim-on h1,.hero-copy.sim-on .lede,.hero-copy.sim-on .hero-hint,.hero-copy.sim-on .msim-open,.hero-copy.sim-on .eyebrow{ display:none }
-.msim{ position:relative; z-index:6; max-width:560px; max-height:calc(100vh - 120px); overflow-y:auto; padding:16px 18px 10px;
+.msim{ position:relative; z-index:6; max-width:660px; max-height:calc(100vh - 120px); overflow-y:auto; padding:20px 22px 14px;
   background:rgba(6,14,30,.78); border:1px solid var(--line); border-radius:18px; backdrop-filter:blur(8px); scrollbar-width:thin }
 .ms-top{ display:flex; align-items:center; gap:12px; margin-bottom:10px }
-.ms-back{ font:inherit; font-size:.74rem; color:var(--sky); background:transparent; border:1px solid var(--line); border-radius:99px; padding:5px 12px; cursor:pointer }
-.ms-title{ font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:#fff; font-weight:600 }
+.ms-back{ font:inherit; font-size:.86rem; color:var(--sky); background:transparent; border:1px solid var(--line); border-radius:99px; padding:6px 14px; cursor:pointer }
+.ms-title{ font-size:.84rem; letter-spacing:.2em; text-transform:uppercase; color:#fff; font-weight:600 }
 .ms-row{ display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin:6px 0 }
-.ms-row label{ width:88px; font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint) }
-.ms-chip{ font:inherit; font-size:.74rem; color:var(--ink-soft); background:rgba(255,255,255,.05); border:1px solid var(--line); border-radius:99px; padding:4px 11px; cursor:pointer }
+.ms-row label{ width:104px; font-size:.74rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint) }
+.ms-chip{ font:inherit; font-size:.88rem; color:var(--ink-soft); background:rgba(255,255,255,.05); border:1px solid var(--line); border-radius:99px; padding:5px 13px; cursor:pointer }
 .ms-chip[aria-pressed="true"]{ color:#fff; border-color:var(--sky); background:rgba(95,180,255,.18) }
-.ms-unit{ font-size:.66rem; color:var(--ink-faint) }
-.ms-time{ display:grid; grid-template-columns:34px 1fr; gap:4px 10px; align-items:center; margin:12px 0 6px }
-.ms-play{ width:34px; height:34px; border-radius:50%; border:1px solid var(--sky); background:rgba(95,180,255,.16); color:#fff; cursor:pointer; font-size:.72rem }
+.ms-unit{ font-size:.78rem; color:var(--ink-faint) }
+.ms-time{ display:grid; grid-template-columns:40px 1fr; gap:4px 10px; align-items:center; margin:12px 0 6px }
+.ms-play{ width:40px; height:40px; border-radius:50%; border:1px solid var(--sky); background:rgba(95,180,255,.16); color:#fff; cursor:pointer; font-size:.84rem }
 .ms-time input{ width:100%; accent-color:#5fb4ff }
-.ms-daylab{ grid-column:2; font-size:.72rem; color:var(--ink-soft) }
+.ms-daylab{ grid-column:2; font-size:.86rem; color:var(--ink-soft) }
 .ms-daylab b{ color:#fff }
-.ms-facts{ display:flex; flex-wrap:wrap; gap:6px 14px; font-size:.7rem; color:var(--ink-soft); margin:6px 0 4px }
-.msim h6{ font-size:.58rem; letter-spacing:.18em; text-transform:uppercase; color:var(--sky); margin:12px 0 6px; font-weight:600 }
-.ms-cols{ display:grid; grid-template-columns:1fr 1fr; gap:14px }
-.ms-m{ display:grid; grid-template-columns:1fr; font-size:.66rem; color:var(--ink-soft); margin-bottom:6px }
-.ms-m b{ display:block; height:5px; border-radius:9px; background:rgba(255,255,255,.08); overflow:hidden; margin:3px 0 1px }
+.ms-facts{ display:flex; flex-wrap:wrap; gap:6px 16px; font-size:.84rem; color:var(--ink-soft); margin:6px 0 4px }
+.msim h6{ font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:var(--sky); margin:14px 0 7px; font-weight:600 }
+.ms-cols{ display:grid; grid-template-columns:1fr 1fr; gap:18px }
+.ms-m{ display:grid; grid-template-columns:1fr; font-size:.8rem; color:var(--ink-soft); margin-bottom:6px }
+.ms-m b{ display:block; height:6px; border-radius:9px; background:rgba(255,255,255,.08); overflow:hidden; margin:3px 0 1px }
 .ms-m b i{ display:block; height:100%; background:#5fb4ff; border-radius:9px; transition:width .2s }
 .ms-m b.warm i{ background:linear-gradient(90deg,#ffd166,#ff7a59) }
-.ms-m em{ font-style:normal; color:#fff; font-size:.66rem }
-.ms-curve{ width:100%; height:64px; display:block; background:rgba(255,255,255,.03); border-radius:8px }
-.ms-leg{ display:flex; flex-wrap:wrap; gap:4px 10px; font-size:.62rem; margin-top:4px }
+.ms-m em{ font-style:normal; color:#fff; font-size:.8rem }
+.ms-curve{ width:100%; height:78px; display:block; background:rgba(255,255,255,.03); border-radius:8px }
+.ms-leg{ display:flex; flex-wrap:wrap; gap:4px 12px; font-size:.76rem; margin-top:4px }
 .ms-leg .a{ color:#5fb4ff } .ms-leg .b{ color:#c79bff } .ms-leg .c{ color:#ff9d3c }
-.ms-hz{ display:flex; flex-wrap:wrap; gap:5px }
-.ms-hz span{ font-size:.64rem; border-radius:8px; padding:4px 8px; border:1px solid var(--line); color:var(--ink-soft) }
-.ms-hz span b{ margin-right:5px; color:#fff }
+.ms-hz{ display:flex; flex-wrap:wrap; gap:6px }
+.ms-hz button{ font:inherit; font-size:.78rem; border-radius:9px; padding:5px 10px; border:1px solid var(--line); color:var(--ink-soft); background:rgba(255,255,255,.03); cursor:pointer; transition:background .15s,transform .15s }
+.ms-hz button:hover{ background:rgba(255,255,255,.1); color:#fff; transform:translateY(-1px) }
+.ms-hz button i{ font-style:normal; color:var(--sky); margin-left:2px }
+.ms-hz button b{ margin-right:5px; color:#fff }
 .ms-hz .h0{ border-color:rgba(62,224,138,.5) } .ms-hz .h1{ border-color:rgba(255,209,102,.7) } .ms-hz .h2{ border-color:rgba(255,110,90,.8); background:rgba(255,110,90,.1) }
-.ms-cm{ margin:0; padding-left:16px; font-size:.74rem; line-height:1.5; color:var(--ink-soft) }
-.ms-note{ font-size:.6rem; color:var(--ink-faint); margin:10px 0 2px; line-height:1.4 }
+.ms-cm{ margin:0; padding-left:18px; font-size:.88rem; line-height:1.5; color:var(--ink-soft) }
+.ms-m b.str i{ background:linear-gradient(90deg,#3ee08a,#5fb4ff) }
+.msim h6 small{ font-size:.62rem; letter-spacing:.06em; text-transform:none; color:var(--ink-faint); font-weight:400 }
+.hzd-head{ display:flex; align-items:center; gap:14px; margin:4px 0 10px }
+.hzd-ico{ font-size:1.9rem; width:52px; height:52px; display:grid; place-items:center; border-radius:14px; background:rgba(95,180,255,.12); border:1px solid var(--line) }
+.hzd-k{ font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:var(--sky) }
+.hzd h5{ margin:2px 0 0; font-size:1.25rem; font-weight:500; color:#fff; letter-spacing:.01em }
+.hzd-lvl{ font-size:.84rem; line-height:1.5; color:var(--ink-soft); border-left:3px solid; padding:8px 12px; border-radius:0 10px 10px 0; background:rgba(255,255,255,.04); margin:0 0 4px }
+.hzd-lvl b{ color:#fff; font-weight:600 }
+.hzd-lvl.h0{ border-color:#3ee08a } .hzd-lvl.h1{ border-color:#ffd166 } .hzd-lvl.h2{ border-color:#ff6e5a }
+.hzd-p{ font-size:.9rem; line-height:1.6; color:var(--ink-soft); margin:0 }
+.hzd-p b,.hzd-list b{ color:#fff; font-weight:600 }
+.hzd-list{ margin:0; padding-left:18px; font-size:.88rem; line-height:1.55; color:var(--ink-soft) }
+.hzd-list li{ margin-bottom:4px }
+.hzd-refs{ margin:0 0 6px; padding-left:20px; font-size:.8rem; line-height:1.5; color:var(--ink-faint) }
+.hzd-refs li{ margin-bottom:6px }
+.hzd-refs a{ color:var(--sky); text-decoration:none; border-bottom:1px solid rgba(95,180,255,.35) }
+.hzd-refs a:hover{ color:#fff; border-color:#fff }
+.ms-note{ font-size:.72rem; color:var(--ink-faint); margin:10px 0 2px; line-height:1.4 }
 /* astronaut effects (inside #astroBody, so they follow the drag) */
 #astroBody .fx{ position:absolute; inset:0; pointer-events:none; z-index:3 }
 #astroBody .fx i{ position:absolute; border-radius:50%; transition:opacity .4s, box-shadow .4s, background .4s; opacity:0 }
@@ -426,7 +445,7 @@ section{padding:clamp(48px,8vw,96px) clamp(20px,5vw,64px)}
 #astroBody .fx:not([style]) .fx-halo{ opacity:0 }
 #astroBody .fx .fx-rad{ position:absolute; inset:0; width:100%; height:100% }
 .body-point.lv1{ background:#ffd166 } .body-point.lv2{ background:#ff6e5a; transform:translate(-50%,-50%) scale(1.25) }
-@media(max-width:860px){ .msim{ max-height:52vh } .ms-cols{ grid-template-columns:1fr } }
+@media(max-width:860px){ .msim{ max-height:62vh } .ms-cols{ grid-template-columns:1fr } }
 /* ============================================================
    VENTANAS FLOTANTES (tarjeta NASA + ISS)
    ============================================================ */
@@ -826,6 +845,9 @@ body.sectioned #newsletter.page-section.active .nl-helmet{ margin-top:auto !impo
 .nl-form input::placeholder{color:var(--ink-faint)}
 .nl-form input:focus{outline:none;border-color:var(--sky)}
 .nl-note{font-size:.74rem;color:var(--ink-faint);margin-top:16px;font-weight:300}
+.nl-note.ok{color:#3ee08a}.nl-note.err{color:#ff9d7a}
+.nl-hp{position:absolute !important;left:-9999px;width:1px;height:1px;opacity:0}
+.nl-form.busy button{opacity:.6;pointer-events:none}
 
 footer.site{
   padding:40px clamp(20px,5vw,64px);
@@ -1629,9 +1651,11 @@ body.sectioned #recorrido.page-section.active .sv-frame #svIframe{
     <span class="eyebrow" data-i18n="nlEyebrow">One letter a month</span>
     <h2 data-i18n="nlTitle">Space, told from the human mind</h2>
     <form class="nl-form" id="nlForm">
-      <input type="email" id="nlEmail" placeholder="you@email.com" required aria-label="Correo electrónico">
+      <input type="email" id="nlEmail" name="email" placeholder="you@email.com" required autocomplete="email" aria-label="Email">
+      <input type="text" name="website" class="nl-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
       <button class="btn" type="submit" data-i18n="nlBtn">Subscribe</button>
     </form>
+    <p class="nl-note" id="nlNote" data-i18n="nlNote">No spam. Unsubscribe whenever you want.</p>
   </div>
 
   <img class="nl-helmet" alt="Astronaut helmet reflecting Earth" src="images/helmet.png">
@@ -1712,7 +1736,7 @@ const I18N = {
     nlW8:"I want to take one small step towards the future of human space exploration, and to inspire the generations who may one day become wanderers and settlers across the Solar System. You are here to learn, explore, and dream about what comes next.",
     nlW9:"The sky is no longer the limit. I need space.<br><strong>Do you?</strong>",
     nlLede:"Once a month you get a letter about what space exploration teaches us about ourselves. No noise, no filler. Only when there's something worth thinking about.",
-    nlBtn:"Subscribe",nlNote:"No spam. Unsubscribe whenever you want.",
+    nlBtn:"Subscribe",nlNote:"No spam. One letter a month. Unsubscribe whenever you want — just reply to any letter.",nlSending:"Sending…",nlErr:"Something went wrong. Please try again in a moment.",nlSoon:"Subscriptions open very soon — thanks for your patience!",
     nlThanks:(e)=>"Thanks! We'll write to "+e+" once a month.",
     issOffline:"Position: estimated (no connection) · crew: Oct 2026",issData:"Position: wheretheiss.at · crew: Oct 2026",
     kFree:"◆ Free course",
@@ -1818,7 +1842,7 @@ const I18N = {
     nlW8:"Quiero dar un pequeño paso hacia el futuro de la exploración espacial humana e inspirar a las generaciones que quizá algún día recorran y habiten el Sistema Solar. Estás aquí para aprender, explorar y soñar con lo que viene.",
     nlW9:"El cielo ya no es el límite. I need space.<br><strong>¿Y tú?</strong>",
     nlLede:"Una vez al mes recibes una carta sobre lo que la exploración espacial nos enseña sobre nosotros mismos. Sin ruido, sin relleno. Solo cuando hay algo que merece la pena pensar.",
-    nlBtn:"Suscribirme",nlNote:"Sin spam. Te puedes dar de baja cuando quieras.",
+    nlBtn:"Suscribirme",nlNote:"Sin spam. Una carta al mes. Puedes darte de baja cuando quieras respondiendo a cualquier carta.",nlSending:"Enviando…",nlErr:"Algo ha fallado. Inténtalo de nuevo en un momento.",nlSoon:"Las suscripciones se abren muy pronto. ¡Gracias por la paciencia!",
     nlThanks:(e)=>"¡Gracias! Te escribiremos a "+e+" una vez al mes.",
     issOffline:"Posición: estimada (sin conexión) · tripulación: oct 2026",issData:"Posición: wheretheiss.at · tripulación: oct 2026",
     kFree:"◆ Curso gratuito",
@@ -2719,7 +2743,7 @@ const ASTRO_BIO={
     mars:{durs:[900],def:900,ph:()=>[{to:200,k:'transit'},{to:700,k:'surface'},{to:900,k:'ret'}],
       rate:{transit:1.84,surface:0.64,ret:1.84},g:{transit:0,surface:0.38,ret:0},dist:{en:'55–400 million km',es:'55–400 millones de km'},delay:{en:'4–24 min',es:'4–24 min'}}
   };
-  const S={dest:'iss',dur:180,crew:4,day:30,playing:false};
+  const S={dest:'iss',dur:180,crew:4,day:30,playing:false,view:null};
   const durLabel=(d,l)=>d===7?(l==='es'?'1 semana':'1 week'):d===14?(l==='es'?'2 semanas':'2 weeks'):d===60?(l==='es'?'2 meses':'2 months')
     :d===180?(l==='es'?'6 meses':'6 months'):d===365?(l==='es'?'1 año':'1 year'):(l==='es'?'≈ 2,5 años':'≈ 2.5 years');
 
@@ -2813,6 +2837,78 @@ const ASTRO_BIO={
     Object.values(pts).forEach(b=>b.classList.remove('lv0','lv1','lv2'));
   }
 
+  /* ---- hazard detail pages (NASA RIDGE) ---- */
+  const HZ={
+    R:{ico:'☢',refs:[
+        ['George, S. P., Berger, T. et al.','Space radiation measurements during the Artemis I lunar mission','Nature 634, 48–52 (2024)','https://doi.org/10.1038/s41586-024-07927-7'],
+        ['Zhang, S., Wimmer-Schweingruber, R. F. et al.','First measurements of the radiation dose on the lunar surface','Science Advances 6, eaaz1334 (2020)','https://doi.org/10.1126/sciadv.aaz1334']],
+      en:{what:'Beyond Earth’s magnetic field, the body is crossed by <b>galactic cosmic rays</b> — heavy, extremely energetic nuclei that shielding can barely stop — and, now and then, by <b>solar particle events</b>: bursts of protons that can deliver a large dose in a few hours. The concern is long-term: cancer, cataracts and possible effects on the brain and heart.',
+          data:['<b>ISS:</b> ≈ 0.5–0.75 mSv a day — Earth’s magnetosphere still shields it.','<b>Lunar surface:</b> ≈ 1.37 mSv a day measured by China’s Chang’e-4 lander, about 2.6× the cosmic-ray dose inside the ISS.','<b>Deep space:</b> ≈ 1.8 mSv a day (Curiosity’s RAD on the way to Mars). A full Mars mission could approach 1 Sv.','<b>Artemis I:</b> dose rates varied fourfold between shielding locations inside Orion, and turning the capsule during the radiation-belt pass cut them by ~50%.','<b>Limit:</b> NASA allows 600 mSv over a whole career, the same for every astronaut.'],
+          cm:'Shielded “storm shelter” built from water, food and supplies · space-weather forecasting · wearable vests (AstroRad was tested on Artemis I) · faster transits.'},
+      es:{what:'Fuera del campo magnético terrestre, el cuerpo es atravesado por <b>rayos cósmicos galácticos</b> —núcleos pesados y muy energéticos que el blindaje apenas frena— y, de vez en cuando, por <b>eventos de partículas solares</b>: ráfagas de protones capaces de dar una dosis alta en pocas horas. La preocupación es a largo plazo: cáncer, cataratas y posibles efectos en el cerebro y el corazón.',
+          data:['<b>ISS:</b> ≈ 0,5–0,75 mSv al día; la magnetosfera terrestre todavía la protege.','<b>Superficie lunar:</b> ≈ 1,37 mSv al día medidos por el módulo chino Chang’e-4, unas 2,6 veces la dosis de rayos cósmicos dentro de la ISS.','<b>Espacio profundo:</b> ≈ 1,8 mSv al día (instrumento RAD de Curiosity camino a Marte). Una misión completa a Marte podría acercarse a 1 Sv.','<b>Artemis I:</b> la dosis variaba hasta cuatro veces según el punto de la cápsula Orion, y girarla al cruzar los cinturones de radiación la redujo ~50 %.','<b>Límite:</b> la NASA permite 600 mSv en toda la carrera, igual para todos los astronautas.'],
+          cm:'«Refugio de tormentas» blindado con agua, comida y suministros · predicción del clima espacial · chalecos protectores (AstroRad se probó en Artemis I) · tránsitos más rápidos.'}},
+    I:{ico:'🔒',refs:[
+        ['Pagnini, F., Manzey, D., Rosnet, E. et al.','Human behavior and performance in deep space exploration: next challenges and research gaps','npj Microgravity 9, 27 (2023)','https://doi.org/10.1038/s41526-023-00270-7'],
+        ['Basner, M., Dinges, D. F. et al.','Mars 520-d mission simulation reveals protracted crew hypokinesis and alterations of sleep duration and timing','PNAS 110, 2635–2640 (2013)','https://doi.org/10.1073/pnas.1212646110']],
+      en:{what:'Months in a small sealed habitat with the same few people: little privacy, monotony, artificial light and limited contact with family. The effects build slowly — shifts in sleep and mood, irritability, withdrawal, tension in the group. The <b>third-quarter phenomenon</b> describes a dip once the novelty has gone but the end still feels far away.',
+          data:['<b>Mars-500</b> (520 days, 6 crew): the crew grew steadily more sedentary and slept longer; 4 of 6 had sleep or alertness problems.','In the <b>last 20 days</b> of Mars-500 activity rose sharply — anticipation of the end, not extra work.','<b>SIRIUS-19</b> (120 days): crew cohesion increased and communication styles converged, while contact with Mission Control dropped.','Crew size matters: very small crews risk monotony; larger ones can split into subgroups.'],
+          cm:'Careful crew selection and team training · meaningful work and autonomy · private quarters · lighting that mimics daylight · regular psychological support and family contact.'},
+      es:{what:'Meses en un hábitat pequeño y sellado con las mismas pocas personas: poca intimidad, monotonía, luz artificial y contacto limitado con la familia. Los efectos se acumulan despacio: cambios en el sueño y el ánimo, irritabilidad, retraimiento, tensión en el grupo. El <b>fenómeno del tercer cuarto</b> describe un bajón cuando la novedad ha pasado pero el final aún parece lejos.',
+          data:['<b>Mars-500</b> (520 días, 6 personas): la tripulación se volvió cada vez más sedentaria y dormía más; 4 de 6 tuvieron problemas de sueño o de alerta.','En los <b>últimos 20 días</b> de Mars-500 la actividad se disparó: anticipación del final, no más trabajo.','<b>SIRIUS-19</b> (120 días): la cohesión aumentó y los estilos de comunicación se parecieron más, mientras bajaba el contacto con el control de misión.','El tamaño importa: tripulaciones muy pequeñas sufren monotonía; las grandes pueden dividirse en subgrupos.'],
+          cm:'Selección cuidadosa y entrenamiento en equipo · trabajo con sentido y autonomía · espacios privados · luz que imita el día · apoyo psicológico y contacto familiar regulares.'}},
+    D:{ico:'📡',refs:[
+        ['Shved, D., Supolkina, N., Yusupova, A. et al.','Psychological and behavioral changes in crew communication during the SIRIUS-19 isolation study','Frontiers in Physiology 12, 751170 (2021)','https://doi.org/10.3389/fphys.2021.751170'],
+        ['Karasinski, J. A., Shelat, S., Marquez, J. J. et al.','Self-scheduling countermeasures for crew autonomy in HERA Campaign 6','NASA Technical Reports Server 20240015124 (2024)','https://ntrs.nasa.gov/citations/20240015124']],
+      en:{what:'The farther the crew goes, the less Earth can help. Messages take longer, evacuation becomes slow or impossible, and the crew must solve medical, technical and personal problems on its own. Distance also has a psychological side: seeing Earth shrink to a dot.',
+          data:['<b>Signal delay:</b> under 1 s to the ISS, ≈ 1.3 s to the Moon, 4–24 min each way to Mars — a question and its answer can take more than 40 minutes.','<b>Coming home:</b> hours from the ISS, about 3 days from the Moon; from Mars, Earth–Mars launch windows open only every ~26 months.','<b>HERA</b> analog missions ramp delays up to 5 minutes and test tools that let crews plan their own day.','<b>“Detachment”:</b> in Mars-500 and SIRIUS-19, isolated crews shared fewer needs and problems with Mission Control over time.'],
+          cm:'Autonomous procedures and onboard decision tools · asynchronous communication (video, text) · medical training and onboard diagnostics · crews self-scheduling their timelines.'},
+      es:{what:'Cuanto más lejos va la tripulación, menos puede ayudar la Tierra. Los mensajes tardan más, la evacuación se vuelve lenta o imposible y hay que resolver a bordo los problemas médicos, técnicos y personales. La distancia también tiene un lado psicológico: ver cómo la Tierra se reduce a un punto.',
+          data:['<b>Retraso de la señal:</b> menos de 1 s a la ISS, ≈ 1,3 s a la Luna y 4–24 min en cada sentido a Marte: una pregunta y su respuesta pueden tardar más de 40 minutos.','<b>Volver a casa:</b> horas desde la ISS, unos 3 días desde la Luna; desde Marte, las ventanas de lanzamiento Tierra–Marte solo se abren cada ~26 meses.','Las misiones análogas <b>HERA</b> aumentan el retraso hasta 5 minutos y prueban herramientas para que la tripulación planifique su propio día.','<b>«Desapego»:</b> en Mars-500 y SIRIUS-19 las tripulaciones compartían cada vez menos necesidades y problemas con el control de misión.'],
+          cm:'Procedimientos autónomos y herramientas de decisión a bordo · comunicación asíncrona (vídeo, texto) · formación médica y diagnóstico a bordo · tripulaciones que planifican su propia agenda.'}},
+    G:{ico:'🪐',refs:[
+        ['Gabel, L., Liphardt, A.-M., Hulme, P. A. et al.','Incomplete recovery of bone strength and trabecular microarchitecture at the distal tibia 1 year after return from long duration spaceflight','Scientific Reports 12, 9446 (2022)','https://doi.org/10.1038/s41598-022-13461-1'],
+        ['Nguyen, T., Ong, J., Brunstetter, T. et al.','Spaceflight Associated Neuro-ocular Syndrome (SANS) and its countermeasures','Progress in Retinal and Eye Research 106, 101340 (2025)','https://doi.org/10.1016/j.preteyeres.2025.101340']],
+      en:{what:'The body is built for 1 g. In weightlessness, fluids shift towards the head, bones and muscles stop carrying load, the heart works less and the inner ear loses its sense of “down”. Every change of gravity — launch, landing on the Moon or Mars, return to Earth — means readapting, with dizziness and clumsiness for days.',
+          data:['<b>Bone:</b> roughly 1–1.5% of hip bone lost per month in microgravity, even with exercise.','<b>Recovery:</b> a year after 4–7-month missions, tibia strength and density were still 0.9–2.1% below pre-flight — and worse after missions longer than 6 months.','<b>Eyes (SANS):</b> optic-disc swelling, globe flattening and folds behind the eye; around a third of long-duration astronauts are affected.','<b>Partial gravity:</b> Moon 0.17 g, Mars 0.38 g. Nobody knows yet whether that is enough to protect bone, muscle and eyes.'],
+          cm:'About 2 h of daily exercise (treadmill, cycle, resistance device) · nutrition and vitamin D · lower-body negative pressure and thigh cuffs for fluids · artificial gravity is being studied.'},
+      es:{what:'El cuerpo está hecho para 1 g. En ingravidez, los fluidos suben hacia la cabeza, huesos y músculos dejan de soportar carga, el corazón trabaja menos y el oído interno pierde la noción de «abajo». Cada cambio de gravedad —despegue, llegada a la Luna o Marte, regreso a la Tierra— exige readaptarse, con mareos y torpeza durante días.',
+          data:['<b>Hueso:</b> se pierde aproximadamente un 1–1,5 % del hueso de la cadera al mes en microgravedad, incluso haciendo ejercicio.','<b>Recuperación:</b> un año después de misiones de 4–7 meses, la resistencia y densidad de la tibia seguían un 0,9–2,1 % por debajo; peor tras misiones de más de 6 meses.','<b>Ojos (SANS):</b> edema del disco óptico, aplanamiento del globo y pliegues tras el ojo; afecta a cerca de un tercio de los astronautas de larga duración.','<b>Gravedad parcial:</b> Luna 0,17 g, Marte 0,38 g. Aún no se sabe si basta para proteger hueso, músculo y ojos.'],
+          cm:'Unas 2 h de ejercicio diario (cinta, bicicleta, aparato de resistencia) · nutrición y vitamina D · presión negativa en la parte inferior del cuerpo y brazaletes en los muslos · se investiga la gravedad artificial.'}},
+    E:{ico:'🧪',refs:[
+        ['Salido, R. A., Zhao, H. N., McDonald, D. et al.','The International Space Station has a unique and extreme microbial and chemical environment driven by use patterns','Cell (2025)','https://doi.org/10.1016/j.cell.2025.01.039'],
+        ['Law, J., Van Baalen, M., Foy, M. et al.','Relationship between carbon dioxide levels and reported headaches on the International Space Station','J. Occupational and Environmental Medicine 56, 477–483 (2014)','https://doi.org/10.1097/JOM.0000000000000158']],
+      en:{what:'Every breath, sip of water and surface depends on machines. A spacecraft is a sealed, noisy, recycled world: air with more CO₂ than on Earth, constant fan hum, microbes that only come from the crew, and outside, vacuum, extreme temperatures and — on the Moon and Mars — abrasive or toxic dust.',
+          data:['<b>CO₂:</b> kept at ≤ 4 mmHg on the ISS, more than 10× Earth’s air; each +1 mmHg roughly doubled the odds of crew headaches.','<b>Microbes:</b> 803 ISS surfaces swabbed — far less microbial diversity than almost any home on Earth, dominated by human-skin bacteria and disinfectant chemicals.','<b>Immunity:</b> skin rashes and immune changes are common in flight; a too-sterile habitat may play a part.','<b>Outside:</b> lunar regolith is sharp and abrasive; Martian soil contains toxic perchlorates.'],
+          cm:'Life-support monitoring and CO₂ scrubbers · dust control at airlocks · microbial surveillance · plants and “healthy” microbes onboard · noise limits and earplugs.'},
+      es:{what:'Cada respiración, cada trago de agua y cada superficie dependen de máquinas. Una nave es un mundo sellado, ruidoso y reciclado: aire con más CO₂ que en la Tierra, zumbido constante de ventiladores, microbios que solo aporta la tripulación y, fuera, vacío, temperaturas extremas y —en la Luna y Marte— polvo abrasivo o tóxico.',
+          data:['<b>CO₂:</b> se mantiene ≤ 4 mmHg en la ISS, más de 10 veces el del aire terrestre; cada +1 mmHg casi duplicaba la probabilidad de dolor de cabeza.','<b>Microbios:</b> se analizaron 803 superficies de la ISS: mucha menos diversidad microbiana que casi cualquier hogar en la Tierra, dominada por bacterias de la piel y productos desinfectantes.','<b>Inmunidad:</b> erupciones cutáneas y cambios inmunitarios son frecuentes en vuelo; un hábitat demasiado estéril podría influir.','<b>Fuera:</b> el regolito lunar es afilado y abrasivo; el suelo marciano contiene percloratos tóxicos.'],
+          cm:'Vigilancia del soporte vital y filtros de CO₂ · control del polvo en las esclusas · seguimiento microbiano · plantas y microbios «sanos» a bordo · límites de ruido y tapones.'}}
+  };
+  const HZT={en:{lvl:'Level in this mission',what:'What it is',data:'Key data',cm:'How it is mitigated',refs:'Recent references',sim:'Mission simulator',tap:'Tap a hazard for details'},
+             es:{lvl:'Nivel en esta misión',what:'Qué es',data:'Datos clave',cm:'Cómo se mitiga',refs:'Referencias recientes',sim:'Simulador de misión',tap:'Toca un peligro para ver detalles'}};
+  function hzNow(k,st,l){
+    const es=l==='es', D=DEST[S.dest], name=T[l][S.dest], d=Math.round(S.day);
+    if(k==='R'){ const tot=Math.round(exposure(S.dur).dose); return (es?'Día '+d+': '+Math.round(st.dose)+' mSv acumulados · misión completa a '+name+': ≈ '+tot+' mSv ('+Math.round(tot/6)+' % del límite de carrera)':'Day '+d+': '+Math.round(st.dose)+' mSv so far · full '+name+' mission: ≈ '+tot+' mSv ('+Math.round(tot/6)+'% of the career limit)'); }
+    if(k==='I') return es?d+' días encerrados con '+S.crew+' personas · ánimo '+Math.round(st.mood)+' · cohesión '+Math.round(st.coh)+' (modelo)':d+' days sealed in with '+S.crew+' people · mood '+Math.round(st.mood)+' · cohesion '+Math.round(st.coh)+' (model)';
+    if(k==='D') return (es?'Distancia: ':'Distance: ')+D.dist[l]+' · '+(es?'retraso: ':'delay: ')+D.delay[l];
+    if(k==='G') return (es?'Gravedad ahora: ':'Gravity now: ')+(st.g?st.g+' g':'≈ 0 g')+' · '+(es?'hueso ':'bone ')+'−'+st.bone.toFixed(1)+'% · '+(es?'fuerza muscular ':'muscle strength ')+(100-st.muscle).toFixed(0)+'%';
+    return es?d+' días en un hábitat cerrado; '+(S.dest==='iss'?'sin polvo planetario':S.dest==='moon'?'polvo lunar en cada salida':'polvo marciano con percloratos'):d+' days in a closed habitat; '+(S.dest==='iss'?'no planetary dust':S.dest==='moon'?'lunar dust on every EVA':'Martian dust with perchlorates');
+  }
+  function showHz(k){
+    stop(); S.view=k;
+    const l=L(), t=T[l], h=HZT[l], z=HZ[k], c=z[l], st=Object.assign(state(S.day),{day:S.day}), lv=hazards(st)[k], lvT=[t.low,t.mod,t.high][lv];
+    panel.innerHTML='<div class="ms-top"><button class="ms-back" id="msBack">‹ '+h.sim+'</button></div>'
+      +'<div class="hzd"><div class="hzd-head"><span class="hzd-ico">'+z.ico+'</span><div><span class="hzd-k">'+k+' · NASA RIDGE</span><h5>'+t[k]+'</h5></div></div>'
+      +'<p class="hzd-lvl h'+lv+'"><b>'+h.lvl+': '+lvT+'</b><br>'+hzNow(k,st,l)+'</p>'
+      +'<h6>'+h.what+'</h6><p class="hzd-p">'+c.what+'</p>'
+      +'<h6>'+h.data+'</h6><ul class="hzd-list">'+c.data.map(x=>'<li>'+x+'</li>').join('')+'</ul>'
+      +'<h6>'+h.cm+'</h6><p class="hzd-p">'+c.cm+'</p>'
+      +'<h6>'+h.refs+'</h6><ol class="hzd-refs">'+z.refs.map(r=>'<li>'+r[0]+' <a href="'+r[3]+'" target="_blank" rel="noopener">'+r[1]+'</a>. <i>'+r[2]+'</i></li>').join('')+'</ol></div>';
+    $('msBack').onclick=()=>{ S.view=null; build(); };
+    panel.scrollTop=0;
+  }
+
   /* ---- UI ---- */
   function chips(name,opts,cur){ return opts.map(o=>'<button class="ms-chip" data-'+name+'="'+o[0]+'" aria-pressed="'+(String(cur)===String(o[0]))+'">'+o[1]+'</button>').join(''); }
   function meter(label,val,max,txt,cls){ const p=Math.max(2,Math.min(100,val/max*100)); return '<div class="ms-m"><span>'+label+'</span><b class="'+(cls||'')+'"><i style="width:'+p+'%"></i></b><em>'+txt+'</em></div>'; }
@@ -2827,6 +2923,7 @@ const ASTRO_BIO={
       +'<line x1="'+xd+'" x2="'+xd+'" y1="0" y2="'+H+'" stroke="#fff" stroke-width="1.2"/></svg>';
   }
   function build(){
+    S.view=null;
     const l=L(), t=T[l], D=DEST[S.dest];
     panel.innerHTML='<div class="ms-top"><button class="ms-back" id="msBack">‹ '+t.back+'</button><span class="ms-title">'+t.title+'</span></div>'
       +'<div class="ms-row"><label>'+t.dest+'</label>'+chips('dest',[['iss','🛰 '+t.iss],['moon','🌙 '+t.moon],['mars','🔴 '+t.mars]],S.dest)+'</div>'
@@ -2853,13 +2950,14 @@ const ASTRO_BIO={
     $('msDyn').innerHTML='<div class="ms-facts"><span>🌍 '+t.dist+': '+D.dist[l]+'</span><span>📡 '+t.delay+': '+D.delay[l]+'</span><span title="'+t.lim+'">☢ '+t.dose+': '+Math.round(st.dose)+' mSv</span></div>'
       +'<div class="ms-cols"><div><h6>'+t.body+'</h6>'
         +meter(t.bone,st.bone,15,'−'+st.bone.toFixed(1)+'%','warm')
-        +meter(t.muscle,st.muscle,20,'−'+st.muscle.toFixed(0)+'%','warm')
+        +meter(t.muscle,100-st.muscle,100,(100-st.muscle).toFixed(0)+'%','str')
         +meter(t.eyes,st.sans,1,lv[lvl(st.sans)],'warm')
         +meter(t.sleep,st.sleep,8,st.sleep.toFixed(1)+' h','')
         +'</div><div><h6>'+t.mind+'</h6>'+curve()
         +'<div class="ms-leg"><span class="a">— '+t.mood+' '+Math.round(st.mood)+'</span><span class="b">-- '+t.cohesion+' '+Math.round(st.coh)+'</span>'+(S.dur>40?'<span class="c">▮ '+t.tq+'</span>':'')+'</div></div></div>'
-      +'<h6>'+t.hz+'</h6><div class="ms-hz">'+['R','I','D','G','E'].map(k=>'<span class="h'+hz[k]+'" title="'+t[k]+': '+lv[hz[k]]+'"><b>'+k+'</b>'+t[k]+'</span>').join('')+'</div>'
+      +'<h6>'+t.hz+' <small>· '+HZT[l].tap+'</small></h6><div class="ms-hz">'+['R','I','D','G','E'].map(k=>'<button type="button" class="h'+hz[k]+'" data-hz="'+k+'" title="'+t[k]+': '+lv[hz[k]]+'"><b>'+k+'</b>'+t[k]+' <i>›</i></button>').join('')+'</div>'
       +'<h6>'+t.cm+'</h6><ul class="ms-cm">'+counters(st,l).map(c=>'<li>'+c+'</li>').join('')+'</ul>';
+    $('msDyn').querySelectorAll('[data-hz]').forEach(b=>b.onclick=()=>showHz(b.dataset.hz));
     paintAstro(st);
   }
   let playRaf=0, t0=0, d0=0;
@@ -2878,7 +2976,7 @@ const ASTRO_BIO={
   function openSim(){ copy.classList.add('sim-on'); panel.classList.add('on'); panel.hidden=false; build(); requestAnimationFrame(radLoop); }
   function closeSim(){ stop(); copy.classList.remove('sim-on'); panel.classList.remove('on'); panel.hidden=true; clearAstro(); }
   open.onclick=openSim;
-  document.addEventListener('langchange',()=>{ open.querySelector('span').textContent=L()==='es'?'Simula una misión':'Simulate a mission'; if(panel.classList.contains('on')) build(); });
+  document.addEventListener('langchange',()=>{ open.querySelector('span').textContent=L()==='es'?'Simula una misión':'Simulate a mission'; if(panel.classList.contains('on')){ if(S.view) showHz(S.view); else build(); } });
 })();
 
 /* =====================================================================
@@ -3161,14 +3259,22 @@ const ASTRO_BIO={
       applyLang();
     };
   }
-  // newsletter (demo)
-  const form=document.getElementById('nlForm');
-  form.onsubmit=e=>{
+  // newsletter → Google Sheet (Apps Script web app)
+  // ⬇⬇ Pega aquí la URL de tu aplicación web de Apps Script (termina en /exec) ⬇⬇
+  const NL_ENDPOINT='';
+  const form=document.getElementById('nlForm'), nlNote=document.getElementById('nlNote');
+  const nlSay=(txt,cls)=>{ nlNote.textContent=txt; nlNote.className='nl-note'+(cls?' '+cls:''); nlNote.dataset.done='1'; };
+  form.onsubmit=async e=>{
     e.preventDefault();
-    const email=document.getElementById('nlEmail').value;
-    document.getElementById('nlNote').textContent=t('nlThanks')(email);
-    document.getElementById('nlNote').dataset.done='1';
-    form.reset();
+    const email=document.getElementById('nlEmail').value.trim();
+    if(!NL_ENDPOINT){ nlSay(t('nlSoon')); return; }
+    form.classList.add('busy'); nlSay(t('nlSending'));
+    try{
+      const body=new URLSearchParams({email, lang:(typeof LANG!=='undefined'?LANG:'en'), source:location.hostname||'web', website:form.website.value});
+      await fetch(NL_ENDPOINT,{method:'POST',mode:'no-cors',body});
+      nlSay(t('nlThanks')(email),'ok'); form.reset();
+    }catch(err){ nlSay(t('nlErr'),'err'); }
+    form.classList.remove('busy');
   };
   // Las ventanas arrancan plegadas por defecto (en cualquier tamaño)
   document.getElementById('astro-card').classList.add('min');
