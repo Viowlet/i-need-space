@@ -26,6 +26,12 @@
 <meta name="twitter:description" content="The human mind on the way to the Moon, Mars and beyond.">
 <meta name="twitter:image" content="https://ineedspace.violetasarabia.com/images/og-image.jpg">
 <meta name="theme-color" content="#050a16">
+<!-- ===== Icono de la pestaña (favicon) y de acceso directo ===== -->
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="images/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="images/icons/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="images/icons/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
 <style>
 /* ============================================================
    FUENTES — Futura
@@ -1103,12 +1109,21 @@ body.sectioned #recorrido.page-section.active .sv-frame #svIframe{
   background:rgba(4,12,26,.5); border:1px solid var(--line); border-radius:99px; padding:7px 16px; backdrop-filter:blur(4px); }
 
 .solar .planet[data-planet="moon"] .plabel{ top:auto; bottom:100%; margin:0 0 6px }
+.solar{ touch-action:pan-y }
+.solar.zoomed{ touch-action:none; cursor:grab }
+.solar.zoomed:active{ cursor:grabbing }
+.solar-zoom{ position:absolute; right:14px; bottom:34px; z-index:90; display:flex; flex-direction:column; align-items:center; gap:4px;
+  background:rgba(4,12,26,.6); border:1px solid var(--line); border-radius:14px; padding:5px; backdrop-filter:blur(4px) }
+.solar-zoom button{ font:inherit; width:32px; height:32px; border-radius:10px; border:1px solid transparent; background:rgba(255,255,255,.06);
+  color:#fff; font-size:1.1rem; line-height:1; cursor:pointer }
+.solar-zoom button:hover{ border-color:var(--sky); background:rgba(95,180,255,.16) }
+.solar-zoom .zl{ font-size:.56rem; letter-spacing:.06em; color:var(--ink-faint) }
 .solar-gl{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:2 }
 .solar.gl-on .planet .pbody img, .solar.gl-on .sun img{ opacity:0 }
 .solar.gl-on .sun{ z-index:1 }
 .solar-credit{ position:absolute; right:12px; bottom:10px; z-index:6; font-size:.56rem; letter-spacing:.04em; color:var(--ink-faint); opacity:.75 }
 .solar-credit a{ color:inherit }
-@media(max-width:640px){ .solar-credit{ top:8px; bottom:auto } .solar .planet[data-planet="moon"] .plabel{ white-space:normal; width:96px; text-align:center; line-height:1.4 } }
+@media(max-width:640px){ .solar-credit{ top:8px; bottom:auto; right:auto; left:10px } .solar .planet[data-planet="moon"] .plabel{ white-space:normal; width:96px; text-align:center; line-height:1.4 } }
 /* ---- Mars ---- */
 .kb-body .kb-bodygrid{ align-items:start }
 .kb-body .kb-globe{ height:clamp(360px,64vh,620px); min-height:0; overflow:hidden }
@@ -3087,7 +3102,7 @@ const ASTRO_BIO={
   function buildShell(){
     destroyGlobe(); stopSolar();
     if(state.view==='solar') return buildSolar();
-    if(state.view==='mars'||state.view==='moon') return buildMissions(state.view);
+    if(state.view==='mars'||state.view==='moon'||state.view==='earth') return buildMissions(state.view);
     return buildBody(state.view);
   }
 
@@ -3114,7 +3129,7 @@ const ASTRO_BIO={
     mars:{en:'Mars',es:'Marte'},jupiter:{en:'Jupiter',es:'Júpiter'},saturn:{en:'Saturn',es:'Saturno'},
     uranus:{en:'Uranus',es:'Urano'},neptune:{en:'Neptune',es:'Neptuno'},moon:{en:'Moon',es:'Luna'}};
   let SOLAR=null;
-  function stopSolar(){ if(SOLAR){ cancelAnimationFrame(SOLAR.raf); window.removeEventListener('resize',SOLAR.onResize); if(SOLAR.ro)SOLAR.ro.disconnect(); if(SOLAR.gl)SOLAR.gl.destroy(); SOLAR=null; } }
+  function stopSolar(){ if(SOLAR){ if(SOLAR.offs) SOLAR.offs.forEach(f=>f()); cancelAnimationFrame(SOLAR.raf); window.removeEventListener('resize',SOLAR.onResize); if(SOLAR.ro)SOLAR.ro.disconnect(); if(SOLAR.gl)SOLAR.gl.destroy(); SOLAR=null; } }
   const TILT=0.5;           // vertical squash -> oblique perspective (seen from ~30° above the plane)
   const SIZE=3;             // planet display scale
   const SAT_BODY=0.62;      // Saturn's globe relative to its box (the rest is rings)
@@ -3349,8 +3364,59 @@ void main(){
       sunItem.depth=0;
       const sat=byIdIt.saturn; if(sat) sat.ringRatio=Math.min(0.62,TL*0.78+0.06);
       if(GLR) GLR.resize();
+      // remember the un-zoomed geometry, then apply the current zoom/pan on top of it
+      Object.keys(els).forEach(k=>{ const el=els[k]; el._b={x:parseFloat(el.style.left),y:parseFloat(el.style.top),s:parseFloat(el.style.width)}; });
+      Object.keys(orbits).forEach(k=>{ const o=orbits[k]; o._b={w:parseFloat(o.style.width),h:parseFloat(o.style.height)}; });
+      sunEl._b={s:parseFloat(sunEl.style.width)};
+      items.forEach(it=>{ it.bx=it.x; it.by=it.y; it.bR=it.R; });
+      applyView();
+    }
+    /* ---- zoom & pan: wheel, pinch, drag and +/− buttons; orbits scale too ---- */
+    const VIEW={z:1,px:0,py:0}, ZMAX=6;
+    function clampPan(){
+      const {cx,cy}=SOLAR.geo, mx=cx*(VIEW.z-1)+cx*0.25, my=cy*(VIEW.z-1)+cy*0.25;
+      VIEW.px=Math.max(-mx,Math.min(mx,VIEW.px)); VIEW.py=Math.max(-my,Math.min(my,VIEW.py));
+      if(VIEW.z<=1.001){ VIEW.z=1; VIEW.px=0; VIEW.py=0; }
+    }
+    function applyView(){
+      const {cx,cy}=SOLAR.geo, z=VIEW.z, X=v=>cx+(v-cx)*z+VIEW.px, Y=v=>cy+(v-cy)*z+VIEW.py;
+      Object.keys(els).forEach(k=>{ const el=els[k], b=el._b; if(!b) return;
+        el.style.left=X(b.x)+'px'; el.style.top=Y(b.y)+'px'; el.style.width=el.style.height=(b.s*z)+'px'; });
+      Object.keys(orbits).forEach(k=>{ const o=orbits[k], b=o._b; if(!b) return;
+        o.style.left=(cx+VIEW.px)+'px'; o.style.top=(cy+VIEW.py)+'px'; o.style.width=(b.w*z)+'px'; o.style.height=(b.h*z)+'px'; });
+      if(sunEl._b){ sunEl.style.left=(cx+VIEW.px)+'px'; sunEl.style.top=(cy+VIEW.py)+'px'; sunEl.style.width=sunEl.style.height=(sunEl._b.s*z)+'px'; }
+      items.forEach(it=>{ if(it.bx==null) return; it.x=X(it.bx); it.y=Y(it.by); it.R=it.bR*z; });
+      stage.classList.toggle('zoomed',z>1.001);
+      const zl=stage.querySelector('.solar-zoom .zl'); if(zl) zl.textContent=Math.round(z*100)+'%';
       draw(performance.now());
     }
+    function zoomAt(f,mx,my){
+      const {cx,cy}=SOLAR.geo, z0=VIEW.z, z1=Math.max(1,Math.min(ZMAX,z0*f)); if(Math.abs(z1-z0)<1e-4) return;
+      VIEW.px=(mx-cx)-(mx-cx-VIEW.px)*(z1/z0); VIEW.py=(my-cy)-(my-cy-VIEW.py)*(z1/z0); VIEW.z=z1;
+      clampPan(); applyView();
+    }
+    stage.insertAdjacentHTML('beforeend','<div class="solar-zoom" role="group" aria-label="Zoom">'
+      +'<button data-z="in" aria-label="Zoom in">+</button><span class="zl">100%</span><button data-z="out" aria-label="Zoom out">−</button>'
+      +'<button data-z="reset" aria-label="Reset zoom">⟲</button></div>');
+    stage.querySelectorAll('.solar-zoom button').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation();
+      const {cx,cy}=SOLAR.geo, a=b.getAttribute('data-z');
+      if(a==='reset'){ VIEW.z=1; VIEW.px=0; VIEW.py=0; applyView(); } else zoomAt(a==='in'?1.35:1/1.35,cx,cy); }));
+    stage.addEventListener('wheel',e=>{ e.preventDefault(); const r=stage.getBoundingClientRect();
+      zoomAt(Math.exp(-Math.max(-120,Math.min(120,e.deltaY))*0.0016),e.clientX-r.left,e.clientY-r.top); },{passive:false});
+    const ptrs=new Map(); let moved=0, pinch=null;
+    stage.addEventListener('pointerdown',e=>{ if(e.target.closest('.solar-zoom')) return;
+      ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY}); if(ptrs.size===1) moved=0;
+      if(ptrs.size===2){ const [a,b]=[...ptrs.values()]; pinch={d:Math.hypot(a.x-b.x,a.y-b.y)||1,z:VIEW.z}; } });
+    const onMove=e=>{ if(!ptrs.has(e.pointerId)) return; const prev=ptrs.get(e.pointerId), dx=e.clientX-prev.x, dy=e.clientY-prev.y;
+      ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+      if(ptrs.size===2&&pinch){ const [a,b]=[...ptrs.values()], r=stage.getBoundingClientRect();
+        const d=Math.hypot(a.x-b.x,a.y-b.y); zoomAt((pinch.z*d/pinch.d)/VIEW.z,(a.x+b.x)/2-r.left,(a.y+b.y)/2-r.top); moved+=20; }
+      else if(ptrs.size===1&&VIEW.z>1.001){ VIEW.px+=dx; VIEW.py+=dy; clampPan(); applyView(); moved+=Math.abs(dx)+Math.abs(dy); } };
+    const onUp=e=>{ ptrs.delete(e.pointerId); if(ptrs.size<2) pinch=null; };
+    window.addEventListener('pointermove',onMove); window.addEventListener('pointerup',onUp); window.addEventListener('pointercancel',onUp);
+    stage.addEventListener('click',e=>{ if(moved>6){ e.stopPropagation(); e.preventDefault(); } moved=0; },true);
+    stage.addEventListener('dblclick',e=>{ if(e.target.closest('[data-body],.solar-zoom')) return; const r=stage.getBoundingClientRect(); zoomAt(1.6,e.clientX-r.left,e.clientY-r.top); });
+    SOLAR.offs=[()=>window.removeEventListener('pointermove',onMove),()=>window.removeEventListener('pointerup',onUp),()=>window.removeEventListener('pointercancel',onUp)];
     let last=0;
     function draw(now){
       if(!GLR||!SOLAR||!SOLAR.glReady) return;
@@ -3699,6 +3765,190 @@ void main(){
       u:{en:'It is a step towards the International Lunar Research Station that China plans with partner countries.',es:'Es un paso hacia la Estación Internacional de Investigación Lunar que China planea con países socios.'}}
   ];
 
+  /* -------- EARTH: space agencies & centres + analog missions of the last 10 years (Nov 2026) -------- */
+  const EARTH_KIND={
+    agency:{en:'Space agency',es:'Agencia espacial'}, center:{en:'Centre',es:'Centro'}, train:{en:'Astronaut training',es:'Entrenamiento de astronautas'},
+    port:{en:'Spaceport',es:'Puerto espacial'}, control:{en:'Mission control',es:'Control de misiones'},
+    habitat:{en:'Isolation habitat',es:'Hábitat de aislamiento'}, field:{en:'Field analog',es:'Análogo de campo'},
+    polar:{en:'Polar station',es:'Estación polar'}, underwater:{en:'Underwater analog',es:'Análogo submarino'}, cave:{en:'Cave / lava tube',es:'Cueva / tubo de lava'} };
+  const AG=(id,name,ag,yrs,kind,lat,lng,place,p,d,u)=>({id,name,ag,yrs,kind,st:'active',cat:'agency',lat,lng,place,p,d,u});
+  const AN=(id,name,ag,yrs,kind,st,lat,lng,place,p,d,u)=>({id,name,ag,yrs,kind,st,cat:'analog',lat,lng,place,p,d,u});
+  const EARTH_ITEMS=[
+    AG('nasahq','NASA Headquarters','USA','1958–','agency',38.883,-77.016,{en:'Washington, D.C. (USA)',es:'Washington D. C. (EE. UU.)'},
+      {en:'Head office of the U.S. space agency, created in 1958.',es:'Sede de la agencia espacial estadounidense, creada en 1958.'},
+      {en:'Ran Mercury, Gemini, Apollo, the Space Shuttle and the U.S. side of the ISS.',es:'Dirigió Mercury, Gemini, Apolo, el transbordador y la parte estadounidense de la ISS.'},
+      {en:'Leads the Artemis programme to return humans to the Moon.',es:'Lidera el programa Artemis para volver a llevar humanos a la Luna.'}),
+    AG('jsc','Johnson Space Center','NASA','1961–','train',29.559,-95.089,{en:'Houston, Texas (USA)',es:'Houston, Texas (EE. UU.)'},
+      {en:'Home of NASA\'s astronaut corps and of Mission Control.',es:'Casa del cuerpo de astronautas de la NASA y del Control de Misión.'},
+      {en:'"Houston" has guided every U.S. crewed flight since Gemini 4. It hosts the HERA and CHAPEA analog habitats.',es:'"Houston" ha guiado todos los vuelos tripulados de EE. UU. desde el Gemini 4. Alberga los hábitats análogos HERA y CHAPEA.'},
+      {en:'Astronaut selection, training, medicine and behavioural health research are run from here.',es:'Desde aquí se gestionan la selección, el entrenamiento, la medicina y la investigación en salud conductual de los astronautas.'}),
+    AG('ksc','Kennedy Space Center','NASA','1962–','port',28.573,-80.649,{en:'Cape Canaveral, Florida (USA)',es:'Cabo Cañaveral, Florida (EE. UU.)'},
+      {en:'NASA\'s main launch site.',es:'Principal lugar de lanzamiento de la NASA.'},
+      {en:'Launched Apollo 11, the Space Shuttles, Crew Dragon flights to the ISS and Artemis II.',es:'Desde aquí despegaron el Apolo 11, los transbordadores, los Crew Dragon a la ISS y el Artemis II.'},
+      {en:'Every U.S. crew to the Moon and the ISS leaves Earth from Florida.',es:'Todas las tripulaciones estadounidenses a la Luna y a la ISS salen de la Tierra desde Florida.'}),
+    AG('jpl','Jet Propulsion Laboratory','NASA · Caltech','1936–','center',34.201,-118.171,{en:'Pasadena, California (USA)',es:'Pasadena, California (EE. UU.)'},
+      {en:'NASA\'s centre for robotic exploration of the Solar System.',es:'Centro de la NASA para la exploración robótica del Sistema Solar.'},
+      {en:'Built and drives the Mars rovers and the Voyager, Cassini and Europa Clipper probes.',es:'Construye y conduce los rovers de Marte y las sondas Voyager, Cassini y Europa Clipper.'},
+      {en:'Its robots scout the places where humans may go next.',es:'Sus robots exploran los lugares adonde podrían ir después los humanos.'}),
+    AG('esahq','ESA Headquarters','ESA','1975–','agency',48.834,2.281,{en:'Paris (France)',es:'París (Francia)'},
+      {en:'Head office of the European Space Agency, with more than 20 member states.',es:'Sede de la Agencia Espacial Europea, con más de 20 Estados miembros.'},
+      {en:'Coordinates European science, Earth observation, launchers and human spaceflight.',es:'Coordina la ciencia, la observación de la Tierra, los lanzadores y los vuelos tripulados europeos.'},
+      {en:'Europe builds the service module that powers NASA\'s Orion capsule.',es:'Europa construye el módulo de servicio que impulsa la cápsula Orion de la NASA.'}),
+    AG('estec','ESTEC','ESA','1968–','center',52.219,4.422,{en:'Noordwijk (Netherlands)',es:'Noordwijk (Países Bajos)'},
+      {en:'ESA\'s technical heart, where missions are designed and tested.',es:'El corazón técnico de la ESA, donde se diseñan y prueban las misiones.'},
+      {en:'Hosts Europe\'s largest spacecraft test centre.',es:'Alberga el mayor centro de pruebas de naves espaciales de Europa.'},
+      {en:'Columbus, the European ISS laboratory, was managed from here.',es:'Desde aquí se gestionó Columbus, el laboratorio europeo de la ISS.'}),
+    AG('eac','European Astronaut Centre','ESA · DLR','1990–','train',50.878,7.122,{en:'Cologne (Germany)',es:'Colonia (Alemania)'},
+      {en:'Where Europe\'s astronauts — including Pablo Álvarez and Sara García — train.',es:'Donde se entrenan los astronautas europeos, entre ellos Pablo Álvarez y Sara García.'},
+      {en:'Next to it, the LUNA facility (2024) recreates the lunar surface for training.',es:'Junto a él, la instalación LUNA (2024) recrea la superficie lunar para entrenar.'},
+      {en:'Also supports crew medicine and psychological care during missions.',es:'También da apoyo médico y psicológico a las tripulaciones durante las misiones.'}),
+    AG('esoc','ESOC','ESA','1967–','control',49.870,8.622,{en:'Darmstadt (Germany)',es:'Darmstadt (Alemania)'},
+      {en:'ESA\'s mission control centre.',es:'El centro de control de misiones de la ESA.'},
+      {en:'Flies Mars Express, the ExoMars orbiter and many Earth-observation satellites.',es:'Opera Mars Express, el orbitador ExoMars y muchos satélites de observación terrestre.'},
+      {en:'Monitors space debris, a growing risk for crewed stations.',es:'Vigila la basura espacial, un riesgo creciente para las estaciones tripuladas.'}),
+    AG('kourou','Guiana Space Centre','ESA · CNES','1968–','port',5.239,-52.768,{en:'Kourou (French Guiana)',es:'Kourou (Guayana Francesa)'},
+      {en:'Europe\'s spaceport, close to the Equator.',es:'El puerto espacial de Europa, cerca del ecuador.'},
+      {en:'Launch site of the Ariane rockets, including the James Webb Space Telescope in 2021.',es:'Base de lanzamiento de los cohetes Ariane, incluido el telescopio espacial James Webb en 2021.'},
+      {en:'Its equatorial location gives rockets an extra boost from Earth\'s rotation.',es:'Su posición ecuatorial da a los cohetes un impulso extra gracias a la rotación terrestre.'}),
+    AG('cnes','CNES','France','1961–','agency',43.56,1.48,{en:'Toulouse (France)',es:'Toulouse (Francia)'},
+      {en:'The French space agency.',es:'La agencia espacial francesa.'},
+      {en:'Flew the first Western European in space (Jean-Loup Chrétien, 1982) and runs the Kourou spaceport.',es:'Llevó al primer europeo occidental al espacio (Jean-Loup Chrétien, 1982) y gestiona el puerto de Kourou.'},
+      {en:'Its MEDES institute studies space medicine with bed-rest and dry-immersion experiments.',es:'Su instituto MEDES estudia medicina espacial con experimentos de reposo en cama e inmersión seca.'}),
+    AG('asi','Italian Space Agency (ASI)','Italy','1988–','agency',41.853,12.615,{en:'Rome (Italy)',es:'Roma (Italia)'},
+      {en:'Italy\'s space agency.',es:'La agencia espacial italiana.'},
+      {en:'Italy built about half of the ISS pressurised volume, including modules and the Cupola.',es:'Italia construyó cerca de la mitad del volumen presurizado de la ISS, incluidos módulos y la Cúpula.'},
+      {en:'Contributes habitat technology to the lunar Gateway and Artemis.',es:'Aporta tecnología de hábitats a la estación lunar Gateway y a Artemis.'}),
+    AG('aee','Spanish Space Agency (AEE)','Spain','2023–','agency',37.389,-5.984,{en:'Seville (Spain)',es:'Sevilla (España)'},
+      {en:'Spain\'s new space agency, based in Seville since 2023.',es:'La nueva agencia espacial española, con sede en Sevilla desde 2023.'},
+      {en:'Coordinates Spain\'s participation in ESA, where Spain contributes to launchers, satellites and exploration.',es:'Coordina la participación de España en la ESA, donde contribuye a lanzadores, satélites y exploración.'},
+      {en:'Supports the Spanish astronauts Pablo Álvarez and Sara García.',es:'Respalda a los astronautas españoles Pablo Álvarez y Sara García.'}),
+    AG('uksa','UK Space Agency','UK','2010–','agency',51.56,-1.78,{en:'Swindon (UK)',es:'Swindon (Reino Unido)'},
+      {en:'The United Kingdom\'s space agency.',es:'La agencia espacial del Reino Unido.'},
+      {en:'Funded Tim Peake\'s Principia mission and UK roles in ExoMars.',es:'Financió la misión Principia de Tim Peake y la participación británica en ExoMars.'},
+      {en:'Supports UK ESA astronauts such as Rosemary Coogan and John McFall, the first astronaut with a physical disability.',es:'Apoya a astronautas británicos de la ESA como Rosemary Coogan y John McFall, el primer astronauta con discapacidad física.'}),
+    AG('roscosmos','Roscosmos','Russia','1992–','agency',55.751,37.618,{en:'Moscow (Russia)',es:'Moscú (Rusia)'},
+      {en:'Russia\'s state space corporation, heir of the Soviet programme.',es:'La corporación espacial estatal rusa, heredera del programa soviético.'},
+      {en:'Operates the Soyuz spacecraft and the Russian segment of the ISS.',es:'Opera las naves Soyuz y el segmento ruso de la ISS.'},
+      {en:'Its Institute of Biomedical Problems runs long isolation studies such as SIRIUS.',es:'Su Instituto de Problemas Biomédicos organiza largos estudios de aislamiento como SIRIUS.'}),
+    AG('starcity','Gagarin Cosmonaut Training Centre','Roscosmos','1960–','train',55.88,38.11,{en:'Star City (Russia)',es:'Ciudad de las Estrellas (Rusia)'},
+      {en:'The training base of cosmonauts since Gagarin.',es:'La base de entrenamiento de los cosmonautas desde Gagarin.'},
+      {en:'Has Soyuz simulators, a hydrolab for spacewalk training and a large centrifuge.',es:'Tiene simuladores Soyuz, un hidrolaboratorio para paseos espaciales y una gran centrifugadora.'},
+      {en:'Every astronaut flying on Soyuz trains here, including international crews.',es:'Todo astronauta que vuela en Soyuz se entrena aquí, incluidas las tripulaciones internacionales.'}),
+    AG('baikonur','Baikonur Cosmodrome','Roscosmos','1955–','port',45.965,63.305,{en:'Kazakhstan (leased by Russia)',es:'Kazajistán (arrendado por Rusia)'},
+      {en:'The world\'s first and largest spaceport.',es:'El primer y mayor puerto espacial del mundo.'},
+      {en:'Launched Sputnik, Gagarin and all Soyuz crews to the ISS.',es:'Desde aquí despegaron el Sputnik, Gagarin y todas las tripulaciones Soyuz a la ISS.'},
+      {en:'Still the only Russian site for crewed launches.',es:'Sigue siendo el único lugar ruso para lanzamientos tripulados.'}),
+    AG('jaxa','JAXA · Tsukuba Space Center','Japan','2003–','agency',36.066,140.131,{en:'Tsukuba (Japan)',es:'Tsukuba (Japón)'},
+      {en:'Japan\'s space agency and its astronaut training centre.',es:'La agencia espacial japonesa y su centro de entrenamiento de astronautas.'},
+      {en:'Controls the Kibo laboratory on the ISS and flew the Hayabusa asteroid sample missions.',es:'Controla el laboratorio Kibo de la ISS y realizó las misiones Hayabusa de muestras de asteroides.'},
+      {en:'Japan plans to send an astronaut to the lunar surface with Artemis.',es:'Japón planea enviar un astronauta a la superficie lunar con Artemis.'}),
+    AG('tanegashima','Tanegashima Space Center','JAXA','1969–','port',30.400,130.976,{en:'Tanegashima Island (Japan)',es:'Isla de Tanegashima (Japón)'},
+      {en:'Japan\'s main launch site, often called the most beautiful spaceport in the world.',es:'Principal base de lanzamiento de Japón, a menudo llamada el puerto espacial más bonito del mundo.'},
+      {en:'Launches the H-II and H3 rockets and the HTV cargo ships to the ISS.',es:'Lanza los cohetes H-II y H3 y las naves de carga HTV a la ISS.'},
+      {en:'Delivers supplies that keep crews in orbit.',es:'Envía suministros que mantienen a las tripulaciones en órbita.'}),
+    AG('cnsa','CNSA','China','1993–','agency',39.905,116.391,{en:'Beijing (China)',es:'Pekín (China)'},
+      {en:'China\'s national space administration.',es:'La administración espacial nacional de China.'},
+      {en:'Runs the Chang\'e lunar and Tianwen planetary programmes.',es:'Dirige los programas lunar Chang\'e y planetario Tianwen.'},
+      {en:'Crewed flights are run by the China Manned Space Agency, which plans a crewed Moon landing before 2030.',es:'Los vuelos tripulados los dirige la Agencia de Vuelos Espaciales Tripulados de China, que planea un alunizaje tripulado antes de 2030.'}),
+    AG('jiuquan','Jiuquan Satellite Launch Center','China','1958–','port',40.96,100.29,{en:'Gobi Desert (China)',es:'Desierto del Gobi (China)'},
+      {en:'China\'s crewed launch site.',es:'El lugar de lanzamiento tripulado de China.'},
+      {en:'Every Shenzhou crew, from Yang Liwei in 2003 to today\'s Tiangong crews, launched from here.',es:'Todas las tripulaciones Shenzhou, desde Yang Liwei en 2003 hasta las actuales de Tiangong, han despegado de aquí.'},
+      {en:'Crews land back in the nearby Dongfeng area.',es:'Las tripulaciones aterrizan en la cercana zona de Dongfeng.'}),
+    AG('isro','ISRO','India','1969–','agency',12.972,77.594,{en:'Bengaluru (India)',es:'Bangalore (India)'},
+      {en:'The Indian Space Research Organisation.',es:'La Organización de Investigación Espacial de la India.'},
+      {en:'Landed near the lunar south pole (Chandrayaan-3) and reached Mars on its first try.',es:'Aterrizó cerca del polo sur lunar (Chandrayaan-3) y llegó a Marte al primer intento.'},
+      {en:'Its Gaganyaan programme will launch Indian astronauts on Indian rockets.',es:'Su programa Gaganyaan lanzará astronautas indios en cohetes indios.'}),
+    AG('csa','Canadian Space Agency','Canada','1989–','agency',45.519,-73.393,{en:'Longueuil, Quebec (Canada)',es:'Longueuil, Quebec (Canadá)'},
+      {en:'Canada\'s space agency.',es:'La agencia espacial canadiense.'},
+      {en:'Built the Canadarm robotic arms of the Shuttle and the ISS.',es:'Construyó los brazos robóticos Canadarm del transbordador y de la ISS.'},
+      {en:'Jeremy Hansen flew around the Moon on Artemis II; Canada will provide Canadarm3 for the Gateway.',es:'Jeremy Hansen rodeó la Luna en el Artemis II; Canadá aportará el Canadarm3 para la Gateway.'}),
+    AG('mbrsc','Mohammed bin Rashid Space Centre','UAE','2006–','center',25.23,55.47,{en:'Dubai (UAE)',es:'Dubái (EAU)'},
+      {en:'The United Arab Emirates\' space centre.',es:'El centro espacial de los Emiratos Árabes Unidos.'},
+      {en:'Runs the Hope Mars orbiter and the UAE astronaut programme.',es:'Opera el orbitador marciano Hope y el programa de astronautas emiratí.'},
+      {en:'Sultan Al Neyadi made the first long-duration Arab mission; the UAE will provide the Gateway airlock.',es:'Sultan Al Neyadi realizó la primera misión árabe de larga duración; los EAU aportarán la esclusa de la Gateway.'}),
+    AG('kasa','Korea AeroSpace Administration','South Korea','2024–','agency',35.08,128.07,{en:'Sacheon (South Korea)',es:'Sacheon (Corea del Sur)'},
+      {en:'South Korea\'s new space agency, created in 2024.',es:'La nueva agencia espacial surcoreana, creada en 2024.'},
+      {en:'Inherits the Nuri rocket and the Danuri lunar orbiter.',es:'Hereda el cohete Nuri y el orbitador lunar Danuri.'},
+      {en:'Plans a lunar lander in the 2030s.',es:'Planea un aterrizador lunar en la década de 2030.'}),
+    /* ---------- analog missions (2016–2026) ---------- */
+    AN('hera','HERA','NASA','2014–','habitat','active',29.562,-95.096,{en:'Johnson Space Center, Houston (USA)',es:'Centro Espacial Johnson, Houston (EE. UU.)'},
+      {en:'A small three-storey habitat to study crews of four in isolation for up to 45 days.',es:'Un pequeño hábitat de tres plantas para estudiar tripulaciones de cuatro personas aisladas hasta 45 días.'},
+      {en:'Yearly campaigns simulating trips to an asteroid or Mars, with communication delays, sleep restriction and team tasks.',es:'Campañas anuales que simulan viajes a un asteroide o a Marte, con retrasos de comunicación, restricción de sueño y tareas en equipo.'},
+      {en:'Its data feed NASA\'s models of behavioural health, teamwork and countermeasures for long missions.',es:'Sus datos alimentan los modelos de la NASA sobre salud conductual, trabajo en equipo y contramedidas para misiones largas.'}),
+    AN('chapea','CHAPEA','NASA','2023–','habitat','active',29.556,-95.082,{en:'Johnson Space Center, Houston (USA)',es:'Centro Espacial Johnson, Houston (EE. UU.)'},
+      {en:'Year-long simulated stays on Mars in Mars Dune Alpha, a 3D-printed 160 m² habitat.',es:'Estancias de un año simulando Marte en Mars Dune Alpha, un hábitat de 160 m² impreso en 3D.'},
+      {en:'Mission 1 lasted 378 days (2023–2024). Mission 2 began on 19 October 2025 and its crew came out on 31 October 2026. Crews face limited resources, 22-minute communication delays and simulated Mars walks.',es:'La misión 1 duró 378 días (2023-2024). La misión 2 empezó el 19 de octubre de 2025 y su tripulación salió el 31 de octubre de 2026. Las tripulaciones afrontan recursos limitados, retrasos de comunicación de 22 minutos y paseos marcianos simulados.'},
+      {en:'Helps NASA weigh risks and resources for the first crewed Mars mission.',es:'Ayuda a la NASA a sopesar riesgos y recursos para la primera misión tripulada a Marte.'}),
+    AN('sirius','SIRIUS 17 · 19 · 21 · 23','IBMP · NASA','2017–','habitat','active',55.778,37.511,{en:'IBMP, Moscow (Russia)',es:'IBMP, Moscú (Rusia)'},
+      {en:'A series of increasingly long isolation experiments in the sealed habitat that also hosted Mars-500.',es:'Una serie de experimentos de aislamiento cada vez más largos en el hábitat sellado que acogió también Mars-500.'},
+      {en:'17 days (2017), 120 days (2019), 240 days (2021–22) and a full year, SIRIUS-23 (Nov 2023 – Nov 2024), simulating a lunar mission with dockings and "moonwalks" in virtual reality.',es:'17 días (2017), 120 días (2019), 240 días (2021-22) y un año completo, SIRIUS-23 (nov 2023 – nov 2024), simulando una misión lunar con atraques y "paseos lunares" en realidad virtual.'},
+      {en:'Studies of crew cohesion, autonomy, sleep and immunity; more year-long runs are planned up to 2028.',es:'Estudios de cohesión de la tripulación, autonomía, sueño e inmunidad; hay más ensayos de un año previstos hasta 2028.'}),
+    AN('lunarpalace','Lunar Palace 365 (Yuegong-1)','Beihang University','2017–2018','habitat','ended',39.981,116.347,{en:'Beijing (China)',es:'Pekín (China)'},
+      {en:'Test a bioregenerative life-support system: plants, insects and people recycling air, water and food.',es:'Probar un soporte vital biorregenerativo: plantas, insectos y personas reciclando aire, agua y comida.'},
+      {en:'Student crews rotated through 370 days of closed living, recycling almost all water and oxygen and growing much of their food.',es:'Tripulaciones de estudiantes se turnaron durante 370 días de vida cerrada, reciclando casi toda el agua y el oxígeno y cultivando gran parte de su comida.'},
+      {en:'The longest test of its kind; it informs lunar base designs and showed how crew mood follows group dynamics.',es:'La prueba más larga de su tipo; sirve para diseñar bases lunares y mostró cómo el ánimo de la tripulación sigue a la dinámica del grupo.'}),
+    AN('hiseas','HI-SEAS','University of Hawaiʻi · IMA','2013–','habitat','active',19.60,-155.48,{en:'Mauna Loa, Hawaiʻi (USA)',es:'Mauna Loa, Hawái (EE. UU.)'},
+      {en:'A dome on volcanic terrain at 2,500 m used for Mars and Moon simulations.',es:'Una cúpula sobre terreno volcánico a 2500 m usada para simulaciones de Marte y la Luna.'},
+      {en:'Its 365-day HI-SEAS IV ended in 2016 — one of the longest NASA-funded isolation studies. Since 2018 it hosts shorter international lunar and Mars missions.',es:'Su misión de 365 días, HI-SEAS IV, terminó en 2016: uno de los estudios de aislamiento financiados por la NASA más largos. Desde 2018 acoge misiones lunares y marcianas internacionales más cortas.'},
+      {en:'Research on crew cohesion, conflict and wearable monitoring of mood and sleep.',es:'Investigación sobre cohesión, conflicto y monitorización con wearables del ánimo y el sueño.'}),
+    AN('mdrs','Mars Desert Research Station','The Mars Society','2001–','field','active',38.406,-110.792,{en:'Hanksville, Utah (USA)',es:'Hanksville, Utah (EE. UU.)'},
+      {en:'A two-storey "hab" in red desert where crews live as on Mars for two-week rotations.',es:'Un "hab" de dos plantas en un desierto rojo donde las tripulaciones viven como en Marte en turnos de dos semanas.'},
+      {en:'Hundreds of crews from all over the world, including the Catalan all-female Hypatia I crew (2023), with spacesuit EVAs and field geology.',es:'Cientos de tripulaciones de todo el mundo, incluida la tripulación catalana femenina Hypatia I (2023), con salidas en traje y geología de campo.'},
+      {en:'A training ground for scientists, engineers and future analog astronauts.',es:'Un campo de entrenamiento para científicos, ingenieros y futuros astronautas análogos.'}),
+    AN('mars160','Mars-160','The Mars Society','2016–2017','field','ended',75.43,-89.82,{en:'MDRS (Utah) and FMARS, Devon Island (Canada)',es:'MDRS (Utah) y FMARS, isla Devon (Canadá)'},
+      {en:'A 160-day simulation run in two very different Mars analogs: a desert and the High Arctic.',es:'Una simulación de 160 días en dos análogos marcianos muy distintos: un desierto y el Ártico.'},
+      {en:'The same crew did about 80 days at each site, comparing field science and crew performance.',es:'La misma tripulación pasó unos 80 días en cada lugar, comparando ciencia de campo y rendimiento.'},
+      {en:'Showed how environment and isolation level change productivity and well-being.',es:'Mostró cómo el entorno y el grado de aislamiento cambian la productividad y el bienestar.'}),
+    AN('concordia','Concordia winter-over','ESA · IPEV · PNRA','2005–','polar','active',-75.10,123.35,{en:'Dome C, Antarctica',es:'Domo C, Antártida'},
+      {en:'A French-Italian station 3,200 m up on the Antarctic plateau, isolated for nine months each winter.',es:'Una estación franco-italiana a 3200 m en la meseta antártica, aislada nueve meses cada invierno.'},
+      {en:'Every year an ESA-sponsored doctor studies the crew: months of darkness, thin air, −80 °C and no way out.',es:'Cada año un médico patrocinado por la ESA estudia a la tripulación: meses de oscuridad, aire enrarecido, −80 °C y sin forma de salir.'},
+      {en:'Called "White Mars", it is one of the best analogs for long missions — sleep, mood, circadian rhythms and team dynamics.',es:'Llamada "Marte blanco", es uno de los mejores análogos de misiones largas: sueño, ánimo, ritmos circadianos y dinámica de equipo.'}),
+    AN('neemo','NEEMO 21–23','NASA','2016–2019','underwater','ended',24.95,-80.45,{en:'Aquarius reef base, Key Largo (USA)',es:'Base Aquarius, Cayo Largo (EE. UU.)'},
+      {en:'Astronauts and scientists live 19 m under the sea to rehearse exploration.',es:'Astronautas y científicos viven a 19 m bajo el mar para ensayar la exploración.'},
+      {en:'NEEMO 21 (2016), 22 (2017) and 23 (2019, an all-female crew led by Samantha Cristoforetti) tested spacewalk tools, time delays and science operations.',es:'NEEMO 21 (2016), 22 (2017) y 23 (2019, con una tripulación femenina dirigida por Samantha Cristoforetti) probaron herramientas de paseo espacial, retrasos y operaciones científicas.'},
+      {en:'Used to design how crews and mission control will work together on the Moon.',es:'Se usa para diseñar cómo trabajarán juntos tripulación y control de misión en la Luna.'}),
+    AN('caves','CAVES & PANGAEA','ESA','2011–','cave','active',40.25,9.55,{en:'Sardinia (Italy) · Lanzarote and other sites',es:'Cerdeña (Italia) · Lanzarote y otros lugares'},
+      {en:'Astronaut training underground (CAVES) and in planetary geology field courses (PANGAEA).',es:'Entrenamiento de astronautas bajo tierra (CAVES) y cursos de geología planetaria de campo (PANGAEA).'},
+      {en:'International crews spend about a week in caves, exploring, mapping and doing science in darkness.',es:'Tripulaciones internacionales pasan una semana en cuevas, explorando, cartografiando y haciendo ciencia a oscuras.'},
+      {en:'Trains teamwork, leadership and decision-making in real risk — skills transferred to ISS crews.',es:'Entrena trabajo en equipo, liderazgo y toma de decisiones con riesgo real, habilidades que luego usan en la ISS.'}),
+    AN('luna','LUNA facility','ESA · DLR','2024–','field','active',50.873,7.130,{en:'Cologne (Germany)',es:'Colonia (Alemania)'},
+      {en:'A 700 m² hall filled with lunar regolith simulant, opened in 2024.',es:'Una nave de 700 m² llena de simulante de regolito lunar, inaugurada en 2024.'},
+      {en:'Lunar lighting, dust and terrain for astronaut and rover training.',es:'Iluminación, polvo y relieve lunares para entrenar astronautas y rovers.'},
+      {en:'Prepares European astronauts for Artemis surface operations.',es:'Prepara a los astronautas europeos para las operaciones en superficie de Artemis.'}),
+    AN('amadee','AMADEE-18 · -20 · -24','Austrian Space Forum','2018–2024','field','ended',39.85,44.80,{en:'Oman (2018) · Israel (2021) · Armenia (2024)',es:'Omán (2018) · Israel (2021) · Armenia (2024)'},
+      {en:'Mars field simulations in deserts, with crews in spacesuit simulators and a remote mission support centre.',es:'Simulaciones marcianas en desiertos, con tripulaciones en simuladores de traje y un centro de apoyo remoto.'},
+      {en:'Dozens of experiments per campaign: geology, robotics, medicine and the human factors of working in suits.',es:'Decenas de experimentos por campaña: geología, robótica, medicina y factores humanos del trabajo con traje.'},
+      {en:'A model of citizen science and international coordination for Mars mission planning.',es:'Un modelo de ciencia ciudadana y coordinación internacional para planificar misiones a Marte.'}),
+    AN('dmars','D-MARS','D-MARS · Israel','2017–','field','active',30.60,34.80,{en:'Ramon Crater (Israel)',es:'Cráter Ramon (Israel)'},
+      {en:'Desert Mars Analog Ramon Station, in a Mars-like erosion crater.',es:'Estación análoga marciana del desierto de Ramon, en un cráter de erosión parecido a Marte.'},
+      {en:'Short missions on psychology, communication and technology; it hosted AMADEE-20 in 2021.',es:'Misiones cortas sobre psicología, comunicación y tecnología; acogió AMADEE-20 en 2021.'},
+      {en:'Expands analog research to new countries and crews.',es:'Extiende la investigación análoga a nuevos países y tripulaciones.'}),
+    AN('lunares','LunAres','Space is More · Poland','2017–','habitat','active',53.13,16.75,{en:'Piła (Poland)',es:'Piła (Polonia)'},
+      {en:'A lunar/Mars habitat in a former military airbase hangar.',es:'Un hábitat lunar y marciano en un hangar de una antigua base aérea militar.'},
+      {en:'Two-week missions on isolation, circadian rhythms (no daylight), ergonomics and robotics; part of the World\'s Biggest Analog in 2025.',es:'Misiones de dos semanas sobre aislamiento, ritmos circadianos (sin luz natural), ergonomía y robótica; parte de The World\'s Biggest Analog en 2025.'},
+      {en:'One of Europe\'s most active analog habitats for young researchers.',es:'Uno de los hábitats análogos más activos de Europa para jóvenes investigadores.'}),
+    AN('asclepios','Asclepios','EPFL · Asclepios Project','2021–','cave','active',46.53,8.61,{en:'Swiss Alps (Switzerland)',es:'Alpes suizos (Suiza)'},
+      {en:'Student-run lunar analog missions inside mountain tunnels.',es:'Misiones lunares análogas organizadas por estudiantes dentro de túneles de montaña.'},
+      {en:'Crews live underground for one to two weeks, with simulated EVAs and full mission control.',es:'Las tripulaciones viven bajo tierra de una a dos semanas, con EVA simuladas y un control de misión completo.'},
+      {en:'Trains the next generation of space researchers and tests lunar operations concepts.',es:'Forma a la próxima generación de investigadores espaciales y prueba conceptos de operaciones lunares.'}),
+    AN('chillice','CHILL-ICE','ICEE Space','2021–','cave','active',65.57,-16.81,{en:'Lava tubes, Iceland',es:'Tubos de lava, Islandia'},
+      {en:'Build and live in a habitat inside a lava tube, as future crews might on the Moon or Mars.',es:'Montar y vivir en un hábitat dentro de un tubo de lava, como podrían hacerlo futuras tripulaciones en la Luna o Marte.'},
+      {en:'Tests habitat deployment, in-situ resources and crew operations in cold and darkness.',es:'Prueba el despliegue del hábitat, el uso de recursos locales y las operaciones en frío y oscuridad.'},
+      {en:'Explores lava tubes as natural radiation shelters.',es:'Estudia los tubos de lava como refugios naturales frente a la radiación.'}),
+    AN('sam','SAM · Biosphere 2','University of Arizona','2022–','habitat','active',32.579,-110.851,{en:'Oracle, Arizona (USA)',es:'Oracle, Arizona (EE. UU.)'},
+      {en:'A sealed, pressurised habitat built around the historic Biosphere 2 test module.',es:'Un hábitat sellado y presurizado construido en torno al histórico módulo de pruebas de Biosphere 2.'},
+      {en:'Short crewed missions with a working airlock, crop growing and suited EVAs.',es:'Misiones tripuladas cortas con una esclusa real, cultivos y EVA con traje.'},
+      {en:'Tests how closed ecosystems and crews interact.',es:'Estudia cómo interactúan los ecosistemas cerrados y las tripulaciones.'}),
+    AN('habmarte','Habitat Marte','UFRN · Brazil','2017–','habitat','active',-5.76,-36.00,{en:'Rio Grande do Norte (Brazil)',es:'Río Grande del Norte (Brasil)'},
+      {en:'Latin America\'s first Mars analog station, in the semi-arid caatinga.',es:'La primera estación análoga marciana de Latinoamérica, en la caatinga semiárida.'},
+      {en:'Monthly missions on sustainability, food production and crew well-being; first southern-hemisphere lunar analog in 2024.',es:'Misiones mensuales sobre sostenibilidad, producción de alimentos y bienestar; primer análogo lunar del hemisferio sur en 2024.'},
+      {en:'Links space research with social and environmental projects in the region.',es:'Une la investigación espacial con proyectos sociales y ambientales de la región.'}),
+    AN('ladakh','Ladakh analogs (LHAM · HOPE)','ISRO','2024–','field','active',33.30,77.98,{en:'Tso Kar valley, Ladakh (India)',es:'Valle de Tso Kar, Ladakh (India)'},
+      {en:'India\'s first human analog missions, at 4,500 m in a cold, dry Himalayan valley.',es:'Las primeras misiones análogas humanas de la India, a 4500 m en un valle himalayo frío y seco.'},
+      {en:'The Ladakh Human Analog Mission (Nov 2024) and the HOPE habitat mission (Aug 2025) studied physiology and psychology in isolation.',es:'La Ladakh Human Analog Mission (nov 2024) y la misión del hábitat HOPE (ago 2025) estudiaron fisiología y psicología en aislamiento.'},
+      {en:'Generates Indian crew data for the Gaganyaan programme.',es:'Genera datos de tripulantes indios para el programa Gaganyaan.'})
+  ];
+
   /* -------- navigable Moon / Mars: missions, robots and beacons -------- */
   MARS_STATUS.planned={en:'Planned',es:'Prevista',col:'#c79bff'};
   const CREW_COL='#ffd166';
@@ -3714,11 +3964,19 @@ void main(){
       accent:'#cfd8e6', def:'apollo11', filters:['all','humans','surface','orbit','active'],
       credit:{en:'Data: NASA, Roscosmos/USSR, CNSA, ISRO, JAXA, ESA, KARI and commercial operators · updated Oct 2026',
               es:'Datos: NASA, Roscosmos/URSS, CNSA, ISRO, JAXA, ESA, KARI y operadores comerciales · actualizado oct 2026'},
-      legend:['crew','active','ended','lost']}
+      legend:['crew','active','ended','lost']},
+    earth:{list:()=>EARTH_ITEMS, kinds:EARTH_KIND, title:{en:'Earth',es:'Tierra'},
+      sub:{en:'Where every mission begins: agencies and analog missions',es:'Donde empieza cada misión: agencias y misiones análogas'},
+      accent:'#7ec5ff', def:'chapea', filters:['all','agencies','analogs','active'],
+      credit:{en:'Analog missions of the last ten years (2016–2026) and the main space agencies and centres · updated Nov 2026',
+              es:'Misiones análogas de los últimos diez años (2016-2026) y principales agencias y centros espaciales · actualizado nov 2026'},
+      legend:['agency','active','ended']}
   };
+  const AGENCY_COL='#ffd166';
   const MS_FILTER={all:{en:'All',es:'Todas'},surface:{en:'On the surface',es:'En la superficie'},orbit:{en:'Orbit & flybys',es:'Órbita y sobrevuelos'},
-    active:{en:'Active today',es:'Activas hoy'},humans:{en:'👣 Humans on the Moon',es:'👣 Humanos en la Luna'}};
-  const msCol=m=>(m.kind==='crew'?CREW_COL:MARS_STATUS[m.st].col);
+    active:{en:'Active today',es:'Activas hoy'},humans:{en:'👣 Humans on the Moon',es:'👣 Humanos en la Luna'},
+    agencies:{en:'Agencies & centres',es:'Agencias y centros'},analogs:{en:'Analog missions',es:'Misiones análogas'}};
+  const msCol=m=>(m.kind==='crew'?CREW_COL:m.cat==='agency'?'#ffd166':MARS_STATUS[m.st].col);
   if(!state.ms) state.ms={};
   // altitude that makes the globe fill `fill` of the smaller side of its box (camera fov 50°)
   function fitAltitude(el,fill){
@@ -3732,9 +3990,14 @@ void main(){
     const backTxt=es?'Sistema solar':'Solar system';
     const gh=es?'Arrastra para rotar · rueda para acercar · toca un punto':'Drag to rotate · scroll to zoom · tap a beacon';
     const nSurf=list.filter(m=>m.lat!=null).length, nAct=list.filter(m=>m.st==='active').length, nCrew=list.filter(m=>m.kind==='crew').length;
-    const stats='<span><b>'+list.length+'</b>'+(es?'misiones':'missions')+'</span><span><b>'+nSurf+'</b>'+(es?'en la superficie':'on the surface')+'</span>'
+    const nAg=list.filter(m=>m.cat==='agency').length, nAn=list.filter(m=>m.cat==='analog').length, nAnAct=list.filter(m=>m.cat==='analog'&&m.st==='active').length;
+    const stats=body==='earth'
+      ?'<span><b>'+nAg+'</b>'+(es?'agencias y centros':'agencies & centres')+'</span><span><b>'+nAn+'</b>'+(es?'misiones análogas':'analog missions')+'</span><span><b>'+nAnAct+'</b>'+(es?'en marcha':'running')+'</span>'
+      :'<span><b>'+list.length+'</b>'+(es?'misiones':'missions')+'</span><span><b>'+nSurf+'</b>'+(es?'en la superficie':'on the surface')+'</span>'
       +(nCrew?'<span><b>'+nCrew+'</b>'+(es?'con humanos':'with humans')+'</span>':'')+'<span><b>'+nAct+'</b>'+(es?'activas':'active')+'</span>';
     const legend=C.legend.map(k=>k==='crew'?'<span><i style="background:'+CREW_COL+'"></i>'+(es?'Alunizaje tripulado':'Crewed landing')+'</span>'
+      :k==='agency'?'<span><i style="background:#ffd166"></i>'+(es?'Agencias y centros':'Agencies & centres')+'</span>'
+      :body==='earth'?'<span><i style="background:'+MARS_STATUS[k].col+'"></i>'+(k==='active'?(es?'Análogo en marcha':'Analog running'):(es?'Análogo finalizado':'Analog ended'))+'</span>'
       :'<span><i style="background:'+MARS_STATUS[k].col+'"></i>'+esc(MARS_STATUS[k][L])+'</span>').join('');
     root.innerHTML='<div class="kb-body kb-mars" style="--ms-acc:'+C.accent+'"><div class="kb-body-top">'
       +'<button class="kb-back" id="kbBack">‹ '+esc(backTxt)+'</button>'
@@ -3757,7 +4020,7 @@ void main(){
         .labelSize(1.7).labelDotRadius(1.0).labelColor(msCol).labelResolution(2).labelAltitude(0.012)
         .labelLabel(d=>'<div class="mars-tip"><b>'+esc(d.name)+'</b><br>'+esc(d.ag)+' · '+esc(d.yrs)+'</div>')
         .onLabelClick(d=>selectMs(body,d.id,true));
-      GLOBE.ringsData(surf.filter(m=>m.st==='active'||m.kind==='crew')).ringLat('lat').ringLng('lng').ringMaxRadius(4)
+      GLOBE.ringsData(surf.filter(m=>(m.st==='active'&&m.cat!=='agency')||m.kind==='crew')).ringLat('lat').ringLng('lng').ringMaxRadius(4)
         .ringColor(d=>{ const c=d.kind==='crew'?'255,209,102':'62,224,138'; return t=>'rgba('+c+','+(1-t).toFixed(2)+')'; })
         .ringPropagationSpeed(2.4).ringRepeatPeriod(1100);
     }
@@ -3766,8 +4029,10 @@ void main(){
   function msVisible(m,f){
     if(f==='surface') return m.lat!=null;
     if(f==='orbit') return m.lat==null;
-    if(f==='active') return m.st==='active';
+    if(f==='active') return m.st==='active'&&m.cat!=='agency';
     if(f==='humans') return m.kind==='crew';
+    if(f==='agencies') return m.cat==='agency';
+    if(f==='analogs') return m.cat==='analog';
     return true;
   }
   function drawMsList(body){
@@ -3788,17 +4053,19 @@ void main(){
       :m.kind==='test'?(es?'Vuelo alrededor de la Luna':'Flight around the Moon')
       :m.kind==='cruise'?(es?'Rumbo a Marte':'Heading to Mars')
       :m.st==='planned'?(es?'Aún no ha despegado':'Not launched yet'):(es?'En órbita, sin punto en el mapa':'In orbit, no point on the map');
-    const loc=m.lat!=null?'<div class="mars-loc">📍 '+Math.abs(m.lat).toFixed(2)+'°'+(m.lat>=0?'N':'S')+' · '+Math.abs(m.lng).toFixed(2)+'°'+(m.lng>=0?'E':(es?'O':'W'))+'</div>'
+    const coords=m.lat!=null?Math.abs(m.lat).toFixed(2)+'°'+(m.lat>=0?'N':'S')+' · '+Math.abs(m.lng).toFixed(2)+'°'+(m.lng>=0?'E':(es?'O':'W')):'';
+    const loc=m.place?'<div class="mars-loc">📍 '+esc(m.place[L])+'<br><span style="opacity:.7">'+coords+'</span></div>':m.lat!=null?'<div class="mars-loc">📍 '+Math.abs(m.lat).toFixed(2)+'°'+(m.lat>=0?'N':'S')+' · '+Math.abs(m.lng).toFixed(2)+'°'+(m.lng>=0?'E':(es?'O':'W'))+'</div>'
       :'<div class="mars-loc">🛰 '+inOrbit+'</div>';
     const crew=m.crewNames?'<div class="mars-crew"><span>'+(es?'Tripulación':'Crew')+'</span>'+esc(m.crewNames.replace('(surface)',es?'(superficie)':'(surface)').replace('(orbit)',es?'(órbita)':'(orbit)'))+'</div>':'';
     const sec=(t,txt)=>'<h5>'+esc(t)+'</h5><p>'+esc(txt[L])+'</p>';
+    const H=m.cat==='agency'?(es?['Qué es','Hitos','Papel en los vuelos tripulados']:['What it is','Highlights','Role in human spaceflight'])
+      :m.cat==='analog'?(es?['Para qué se creó','Qué simula y qué estudió','Cómo se usan los resultados']:['Why it was set up','What it simulates and studied','How the results are used'])
+      :(es?['Para qué se hizo','Qué datos recopiló','Cómo se han usado']:['Why it was sent','What it found','How the data are used']);
     const d=root.querySelector('#marsDetail');
     if(d) d.innerHTML='<div class="mars-card"><div class="mars-head"><h4>'+(m.kind==='crew'?'👣 ':'')+esc(m.name)+'</h4>'
       +'<div class="mars-chips"><span>'+esc(m.ag)+'</span><span>'+esc(m.yrs)+'</span><span>'+esc(C.kinds[m.kind][L])+'</span>'
       +'<span class="st" style="color:'+st.col+';border-color:'+st.col+'">'+esc(st[L])+'</span></div>'+loc+crew+'</div>'
-      +sec(es?'Para qué se hizo':'Why it was sent',m.p)
-      +sec(es?'Qué datos recopiló':'What it found',m.d)
-      +sec(es?'Cómo se han usado':'How the data are used',m.u)+'</div>';
+      +sec(H[0],m.p)+sec(H[1],m.d)+sec(H[2],m.u)+'</div>';
     if(GLOBE){
       const el=root.querySelector('#kbGlobe'), base=fitAltitude(el,0.86);
       if(fly){ const c=GLOBE.controls(); if(c) c.autoRotate=false; }
@@ -3806,7 +4073,7 @@ void main(){
         GLOBE.pointOfView({lat:m.lat,lng:m.lng,altitude:base},fly?900:0);
         GLOBE.labelColor(x=>x.id===m.id?'#ffffff':msCol(x)).labelSize(x=>x.id===m.id?2.3:1.7).labelDotRadius(x=>x.id===m.id?1.4:1.0);
       } else {
-        if(!fly) GLOBE.pointOfView({lat:12,lng:body==='mars'?100:0,altitude:base},0);
+        if(!fly) GLOBE.pointOfView({lat:12,lng:body==='mars'?100:body==='earth'?-30:0,altitude:base},0);
         GLOBE.labelColor(msCol).labelSize(1.7).labelDotRadius(1.0);
       }
     }
